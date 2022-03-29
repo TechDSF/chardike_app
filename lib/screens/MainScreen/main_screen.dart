@@ -1,3 +1,4 @@
+import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/MainScreen/controller/main_controller.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,12 @@ class MainScreen extends StatelessWidget {
         currentIndex: _mainController.tapIndex.value,
         selectedItemColor: AllColors.mainColor,
         onTap: (value){
-          _mainController.tapIndex.value = value;
+          if(value == 4){
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>CartScreen()));
+          }else{
+            _mainController.tapIndex.value = value;
+          }
+
         },
       ),)
     );

@@ -8,4 +8,6 @@ class CommonData{
     var format = NumberFormat.simpleCurrency(locale: locale.toString());
     return format.currencySymbol;
   }
+
+  static String takaSign = "৳";
 }

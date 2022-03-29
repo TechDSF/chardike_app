@@ -48,6 +48,10 @@ dependencies:
   percent_indicator: ^3.4.0
   intl: ^0.17.0
   flutter_rating_bar: ^4.0.0
+  visibility_detector: ^0.2.2
+  tab_indicator_styler: ^2.0.0
+  google_fonts: ^2.3.1
+  group_radio_button: ^1.2.0
 
 flutter_native_splash:
   color: "#FFFFFF"
