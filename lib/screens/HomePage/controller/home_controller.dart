@@ -15,7 +15,7 @@ class HomeController extends GetxController{
   ScrollController scrollController = ScrollController();
 
   var isFlashSaleDataLoading =false.obs;
-  List<FlashSaleModel> flashSaleList = List<FlashSaleModel>.empty(growable:true).obs;
+  List<ProductModel> flashSaleList = List<ProductModel>.empty(growable:true).obs;
 
   var isCategoryDataLoading =false.obs;
   List<SliderModel> categoryList = List<SliderModel>.empty(growable:true).obs;
@@ -71,7 +71,7 @@ class HomeController extends GetxController{
 
   getFlashSaleData(){
     isFlashSaleDataLoading(true);
-    var list = [
+    var lis = [
       FlashSaleModel(discount: "59", soldNumber: 146, price: 1099,image: "asset/images/flashImage/flash_sale_1.jpeg",total: 150),
       FlashSaleModel(discount: "48", soldNumber: 48, price: 1550,image: "asset/images/flashImage/flash_sale_2.jpeg",total:100),
       FlashSaleModel(discount: "2", soldNumber: 47, price: 4490,image: "asset/images/flashImage/flash_sale_3.jpeg",total: 100),
@@ -79,6 +79,16 @@ class HomeController extends GetxController{
       FlashSaleModel(discount: "26", soldNumber: 35, price: 2822,image: "asset/images/flashImage/flash_sale_5.jpg",total: 50),
       FlashSaleModel(discount: "17", soldNumber: 50, price: 2499,image: "asset/images/flashImage/flash_sale_6.png",total: 100),
       FlashSaleModel(discount: "17", soldNumber: 50, price: 2499,image: "asset/images/flashImage/flash_sale_7.jpeg",total: 100),
+    ];
+    
+    var list = [
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_1.jpeg","asset/images/flashImage/flash_sale_4.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_2.jpeg","asset/images/flashImage/flash_sale_5.jpg"], rating: 4.0, totalRating: 23, totalSold: 50, price: 270, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_3.jpeg","asset/images/flashImage/flash_sale_6.png"], rating: 4.8, totalRating: 12, totalSold: 30, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_4.jpeg","asset/images/flashImage/flash_sale_7.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_5.jpg","asset/images/flashImage/flash_sale_1.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_6.png","asset/images/flashImage/flash_sale_2.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
+      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_7.jpeg","asset/images/flashImage/flash_sale_3.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
     ];
     flashSaleList = list;
     isFlashSaleDataLoading(false);

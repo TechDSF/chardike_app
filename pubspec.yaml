@@ -52,6 +52,7 @@ dependencies:
   tab_indicator_styler: ^2.0.0
   google_fonts: ^2.3.1
   group_radio_button: ^1.2.0
+  flutter_typeahead: ^3.2.4
 
 flutter_native_splash:
   color: "#FFFFFF"
@@ -91,6 +92,8 @@ flutter:
     - asset/images/flashImage/
     - asset/images/catImage/
     - asset/images/topProduct/
+    - asset/images/category/
+    - asset/images/category/subCategory/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
