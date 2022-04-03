@@ -20,7 +20,9 @@ class SingleSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 0,
         title: Container(
+          height: getProportionateScreenHeight(40),
           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(7)),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
@@ -41,31 +43,9 @@ class SingleSearchScreen extends StatelessWidget {
               hintText: "Search here"
             ),
           ),
-          // child: TypeAheadField(
-          //   textFieldConfiguration: const TextFieldConfiguration(
-          //       autofocus: false,
-          //       decoration: InputDecoration(
-          //         hintText: "Search Here",
-          //           border: InputBorder.none,
-          //         enabledBorder: InputBorder.none,
-          //         focusedBorder: InputBorder.none
-          //       )
-          //   ),
-          //   hideOnEmpty: true,
-          //   suggestionsCallback: (pattern) async {
-          //     return await _searchController.getSearchSuggestionList(pattern);
-          //   },
-          //   itemBuilder: (context, suggestion) {
-          //     return ListTile(
-          //       title: Text(suggestion.toString()),
-          //     );
-          //   },
-          //   onSuggestionSelected: (suggestion) {
-          //
-          //   },
-          // )
         ),
         actions: <Widget>[
+          SizedBox(width: getProportionateScreenWidth(10),),
           const Center(child: FaIcon(FontAwesomeIcons.search)),
           SizedBox(width: getProportionateScreenWidth(10),)
         ],

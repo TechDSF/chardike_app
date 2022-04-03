@@ -5,6 +5,7 @@ import 'package:chardike/screens/CategoryPage/category_page.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/SearchPage/screen/single_search.dart';
+import 'package:chardike/screens/SliderDetails/screen/slider_details.dart';
 import 'package:chardike/size_config.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (_)=>SingleSearchScreen()));
                   },
                   child: Container(
-                    height: getProportionateScreenHeight(50),
+                    height: getProportionateScreenHeight(45),
                       padding: EdgeInsets.symmetric(
                           horizontal: getProportionateScreenWidth(10),),
                       decoration: BoxDecoration(
@@ -197,12 +198,17 @@ class HomeScreen extends StatelessWidget {
                               return ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     getProportionateScreenWidth(5)),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(result.image),
-                                          fit: BoxFit.cover)),
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>SliderDetails()));
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(result.image),
+                                            fit: BoxFit.cover)),
+                                  ),
                                 ),
                               );
                             },
@@ -469,10 +475,134 @@ class HomeScreen extends StatelessWidget {
                     }
                   }),
 
+                  ///related product
+                  sectionTitle(title: "Related Product", onTap: (){}),
+                  Divider(),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
+                  Obx(() {
+                    if (_homeController.isRelatedProductDataLoading.value) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey.withOpacity(0.1),
+                        highlightColor: Colors.grey.withOpacity(0.5),
+                        child: Container(
+                          height: getProportionateScreenHeight(170),
+                          color: Colors.yellow,
+                        ),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: getProportionateScreenHeight(220),
+                        child: ListView.builder(
+                          itemCount: _homeController.relatedProductList.length,
+                          shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              var result = _homeController.relatedProductList[index];
+                              return Padding(
+                                padding: EdgeInsets.only(right: getProportionateScreenWidth(10)),
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            getProportionateScreenWidth(7)),
+                                        child: Stack(
+                                          children: <Widget>[
+                                            Image.asset(
+                                              result.image[0],
+                                              height:
+                                              getProportionateScreenWidth(140),
+                                              width:
+                                              getProportionateScreenWidth(140),
+                                              fit: BoxFit.fill,
+                                            ),
+                                            Positioned(
+                                                right: 0,
+                                                child: Container(
+                                                  height:
+                                                  getProportionateScreenWidth(
+                                                      20),
+                                                  width:
+                                                  getProportionateScreenWidth(
+                                                      45),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.orange,
+                                                      borderRadius: BorderRadius.only(
+                                                          topLeft: Radius.circular(
+                                                              getProportionateScreenWidth(
+                                                                  10)),
+                                                          bottomLeft: Radius.circular(
+                                                              getProportionateScreenWidth(
+                                                                  10)))),
+                                                  child: Center(
+                                                      child: Text(
+                                                        "-${result.discount}%",
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                            getProportionateScreenWidth(
+                                                                10),
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                            FontWeight.bold),
+                                                      )),
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(child: Container(
+                                        width: getProportionateScreenWidth(150),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(height: getProportionateScreenHeight(5),),
+                                            Text(result.title,maxLines: 2,style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis
+                                            ),),
+                                            RichText(text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(text: "${CommonData.takaSign} ${result.price} ",style: TextStyle(
+                                                    fontWeight: FontWeight.bold,color: AllColors.mainColor,fontSize: getProportionateScreenWidth(15)
+                                                )),
+                                                TextSpan(text: "${CommonData.takaSign}${result.cutPrice}",style: TextStyle(color: Colors.black.withOpacity(0.7),decoration: TextDecoration.lineThrough,fontSize: getProportionateScreenWidth(13))),
+                                              ]
+                                            )),
+                                            Row(
+                                              children: <Widget>[
+                                                RatingBarIndicator(
+                                                  rating: result.rating,
+                                                  itemBuilder: (context, index) => Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  itemCount: 5,
+                                                  itemSize: getProportionateScreenWidth(10),
+                                                  direction: Axis.horizontal,
+                                                ),
+                                                Text("(${result.totalRating})")
+                                              ],
+                                            )
+                                          ],
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                        ),
+                                      ))
+                                    ],
+                                  ),
+                                ),
+                              );
+                        }));
+                    }
+                  }),
+
                   ///category section
                   sectionTitle(title: "Category",onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (_)=>CategoryScreen()));
                   }),
+                  Divider(),
                   SizedBox(height: getProportionateScreenHeight(10),),
                   Obx(() {
                     if (_homeController.isCategoryDataLoading.value) {

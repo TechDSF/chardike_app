@@ -1,8 +1,16 @@
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.blue, // navigation bar color
+    statusBarColor: Colors.white, // s// tatus bar color
+    systemNavigationBarIconBrightness: Brightness.light
+  ));
+
   runApp(const MyApp());
 }
 

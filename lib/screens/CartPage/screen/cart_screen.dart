@@ -1,6 +1,7 @@
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
+import 'package:chardike/screens/CartPage/screen/cart_item.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:group_radio_button/group_radio_button.dart';
 class CartScreen extends StatelessWidget {
   CartScreen({Key? key}) : super(key: key);
   final CartController _cartController = Get.put(CartController());
+  int counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class CartScreen extends StatelessWidget {
       bottomNavigationBar: Container(
         color: AllColors.mainColor,
         height: kToolbarHeight+10,
-        child: Center(child: Text("PROCEED TO CHECKOUT",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+        child: const Center(child: Text("PROCEED TO CHECKOUT",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
       ),
       body: _cartController.cartList.isNotEmpty?Column(
         children: <Widget>[
@@ -72,104 +74,9 @@ class CartScreen extends StatelessWidget {
               ListView.builder(
                 itemCount: 3,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context , index){
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(10)),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: getProportionateScreenHeight(100),
-                        width: getProportionateScreenHeight(100),
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
-                        ),
-                      ),
-                      SizedBox(width: getProportionateScreenWidth(10),),
-                      Expanded(child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: [
-                              Expanded(child: Text("Demo Text ",
-                                style:TextStyle(color: Colors.black,fontWeight: FontWeight.w500),maxLines: 2,)),
-                              SizedBox(width: getProportionateScreenWidth(10),),
-                              Text("${CommonData.takaSign} 990",style: TextStyle(fontWeight: FontWeight.bold),)
-                            ],
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(15),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(child: Obx(()=>RichText(
-                                text: TextSpan(
-                                  text: '',
-                                  style: TextStyle(color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: '${CommonData.takaSign} 990',
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
-                                    TextSpan(text:" x ${_cartController.quantity.value}")
-                                  ],
-                                ),
-                              ),)
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  InkWell(
-                                    onTap: (){
-                                      if(_cartController.quantity.value > 1){
-                                        _cartController.quantity.value--;
-                                      }
-                                    },
-                                    child: Container(height: getProportionateScreenWidth(20),
-                                      width: getProportionateScreenWidth(25),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.grey),
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(getProportionateScreenWidth(5)),
-                                              bottomLeft: Radius.circular(getProportionateScreenWidth(5))
-                                          )
-                                      ),
-                                      child: Center(child: Text("-")),
-                                    ),
-                                  ),
-                                  Container(height: getProportionateScreenWidth(20),
-                                    width: getProportionateScreenWidth(45),
-                                    decoration: const BoxDecoration(
-                                        border: Border.symmetric(horizontal:BorderSide(
-                                          color: Colors.grey,
-                                        ))
-                                    ),
-                                    child: Center(child: Obx(()=>Text(_cartController.quantity.value.toString()))),
-                                  ),
-                                  InkWell(
-                                    onTap: (){
-                                      if(_cartController.quantity.value < 5){
-                                        _cartController.quantity.value++;
-                                      }
-                                    },
-                                    child: Container(height: getProportionateScreenWidth(20),
-                                      width: getProportionateScreenWidth(25),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.grey),
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(getProportionateScreenWidth(5)),
-                                              bottomRight: Radius.circular(getProportionateScreenWidth(5))
-                                          )
-                                      ),
-                                      child: Center(child: const Text("+")),
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ))
-                    ],
-                  ),
-                );
+                return CartItem(itemCount: 2,price: 120,);
               }),
               SizedBox(height: getProportionateScreenHeight(15),),
               Container(
@@ -204,7 +111,7 @@ class CartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Sub Total",style: TextStyle(fontWeight: FontWeight.w400,fontSize: getProportionateScreenWidth(14)),),
-                  Text("${CommonData.takaSign} 2970",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),),
+                  Obx(()=>Text("${CommonData.takaSign} ${_cartController.subTotalAmount}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),),)
                 ],
               ),
               SizedBox(height: getProportionateScreenHeight(10),),
@@ -229,6 +136,8 @@ class CartScreen extends StatelessWidget {
                             SizedBox(width: getProportionateScreenWidth(10),),
                             Obx(()=>InkWell(
                               onTap:(){
+                                _cartController.mainTotalAmount.value = (_cartController.mainTotalAmount.value-_cartController.shippingPreviousPrice.value) + 60;
+                                _cartController.shippingPreviousPrice.value = 60;
                                 _cartController.shippingValue.value = 0;
                               },
                               child: Container(
@@ -257,6 +166,8 @@ class CartScreen extends StatelessWidget {
                             SizedBox(width: getProportionateScreenWidth(10),),
                                     Obx(()=>InkWell(
                                       onTap:(){
+                                        _cartController.mainTotalAmount.value = (_cartController.mainTotalAmount.value-_cartController.shippingPreviousPrice.value) + 0;
+                                        _cartController.shippingPreviousPrice.value = 0;
                                         _cartController.shippingValue.value = 1;
                             },
                                       child: Container(
@@ -285,7 +196,9 @@ class CartScreen extends StatelessWidget {
                             SizedBox(width: getProportionateScreenWidth(10),),
                             Obx(()=>InkWell(
                               onTap:(){
+                                _cartController.mainTotalAmount.value = (_cartController.mainTotalAmount.value-_cartController.shippingPreviousPrice.value) + 150;
                                 _cartController.shippingValue.value = 2;
+                                _cartController.shippingPreviousPrice.value = 150;
                               },
                               child: Container(
                                 height: getProportionateScreenHeight(15),
@@ -321,7 +234,8 @@ class CartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Total",style: TextStyle(fontWeight: FontWeight.w400,fontSize: getProportionateScreenWidth(14)),),
-                  Text("${CommonData.takaSign} 2970",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),),
+                  Obx(()=>Text("${CommonData.takaSign} ${_cartController.mainTotalAmount.value}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),),
+                  )
                 ],
               ),
             ],

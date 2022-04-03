@@ -53,6 +53,7 @@ dependencies:
   google_fonts: ^2.3.1
   group_radio_button: ^1.2.0
   flutter_typeahead: ^3.2.4
+  flutter_staggered_grid_view: ^0.6.1
 
 flutter_native_splash:
   color: "#FFFFFF"
@@ -91,6 +92,7 @@ flutter:
     - asset/images/
     - asset/images/flashImage/
     - asset/images/catImage/
+    - asset/images/menu/
     - asset/images/topProduct/
     - asset/images/category/
     - asset/images/category/subCategory/
