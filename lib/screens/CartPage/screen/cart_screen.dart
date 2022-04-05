@@ -101,7 +101,7 @@ class CartScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),
                         color: Colors.black
                       ),
-                      child: Center(child: Text("Apply Coupen ->",style: TextStyle(color: Colors.white),)),
+                      child: const Center(child: Text("Apply Coupen ->",style: TextStyle(color: Colors.white),)),
                     ))
                   ],
                 ),
@@ -115,7 +115,7 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: getProportionateScreenHeight(10),),
-              Divider(color: Colors.black,),
+              const Divider(color: Colors.black,),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -192,7 +192,7 @@ class CartScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Expanded(child: Text("8 Hours Delivery (Dhaka City Only): ৳ 150",textAlign: TextAlign.end)),
+                            const Expanded(child: Text("8 Hours Delivery (Dhaka City Only): ৳ 150",textAlign: TextAlign.end)),
                             SizedBox(width: getProportionateScreenWidth(10),),
                             Obx(()=>InkWell(
                               onTap:(){

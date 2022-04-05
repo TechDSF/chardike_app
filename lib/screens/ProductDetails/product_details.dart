@@ -13,13 +13,16 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class ProductDetails extends StatelessWidget {
-  ProductDetails({Key? key,required this.productModel}) : super(key: key);
-  ProductModel productModel;
+  ProductDetails({Key? key}) : super(key: key);
   final ProductDetailsController _detailsController =Get.put(ProductDetailsController());
   final HomeController _homeController = Get.put(HomeController());
+  static const String routeName = "/product_details";
 
   @override
   Widget build(BuildContext context) {
+
+    final productModel = ModalRoute.of(context)!.settings.arguments as ProductModel;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -37,11 +40,11 @@ class ProductDetails extends StatelessWidget {
                             actions: <Widget>[
                               Padding(
                                 padding: EdgeInsets.only(right: getProportionateScreenWidth(20)),
-                                child: const FaIcon(FontAwesomeIcons.home,color: Colors.grey,),
+                                child: const Center(child: FaIcon(FontAwesomeIcons.home,color: Colors.grey,)),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(right: getProportionateScreenWidth(20)),
-                                child: const FaIcon(FontAwesomeIcons.cartShopping,color: Colors.grey,),
+                                child: const Center(child: FaIcon(FontAwesomeIcons.cartShopping,color: Colors.grey,)),
                               ),
                             ],
                           ),
@@ -402,7 +405,7 @@ class ProductDetails extends StatelessWidget {
                                     var result = _homeController.productList[index];
                                     return InkWell(
                                       onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                                        Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
                                       },
                                       child: Container(
                                         width: getProportionateScreenWidth(150),

@@ -10,6 +10,7 @@ import '../../CommonData/all_colors.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
+  static const String routeName = "/mainScreen";
   final MainController _mainController = Get.put(MainController());
 
 

@@ -59,7 +59,7 @@ class SingleSearchScreen extends StatelessWidget {
               var result = _homeController.productList[index];
               return InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                  Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
                 },
                 child: Column(
                   children: [

@@ -1,3 +1,4 @@
+import 'package:chardike/route.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
+          titleSpacing: 0,
           backgroundColor: Colors.white,
           elevation: 0,
           titleTextStyle: TextStyle(
@@ -39,7 +41,8 @@ class MyApp extends StatelessWidget {
           centerTitle: true
         )
       ),
-      home: MainScreen(),
+      routes: routes,
+      initialRoute: MainScreen.routeName,
     );
   }
 }

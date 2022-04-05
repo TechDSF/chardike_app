@@ -2,10 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CategoryPage/category_page.dart';
+import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/SearchPage/screen/single_search.dart';
 import 'package:chardike/screens/SliderDetails/screen/slider_details.dart';
+import 'package:chardike/screens/TopProduct/screens/top_product_page.dart';
 import 'package:chardike/size_config.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,7 @@ class HomeScreen extends StatelessWidget {
   final HomeController _homeController = Get.put(HomeController());
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
 
-  Widget flashDealSectionTitle() {
+  Widget flashDealSectionTitle({required VoidCallback onTap}) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -53,9 +55,12 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        Text(
-          "Shop More >",
-          style: TextStyle(color: AllColors.mainColor),
+        InkWell(
+          onTap: onTap,
+          child: Text(
+            "Shop More >",
+            style: TextStyle(color: AllColors.mainColor),
+          ),
         )
       ],
     );
@@ -134,6 +139,7 @@ class HomeScreen extends StatelessWidget {
                   },
                   child: Container(
                     height: getProportionateScreenHeight(45),
+                      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                       padding: EdgeInsets.symmetric(
                           horizontal: getProportionateScreenWidth(10),),
                       decoration: BoxDecoration(
@@ -143,7 +149,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Row(
                         children: <Widget>[
-                          FaIcon(
+                          const FaIcon(
                             FontAwesomeIcons.search,
                             color: Colors.grey,
                           ),
@@ -352,7 +358,7 @@ class HomeScreen extends StatelessWidget {
                   ),
 
                   ///flash deal product
-                  flashDealSectionTitle(),
+                  flashDealSectionTitle(onTap:(){Navigator.pushNamed(context, FlashSaleDetails.routeName);}),
                   SizedBox(
                     height: getProportionateScreenHeight(10),
                   ),
@@ -386,7 +392,7 @@ class HomeScreen extends StatelessWidget {
                               var result = _homeController.flashSaleList[index];
                               return InkWell(
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                                  Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
                                 },
                                 child: Column(
                                   children: <Widget>[
@@ -476,7 +482,7 @@ class HomeScreen extends StatelessWidget {
                   }),
 
                   ///related product
-                  sectionTitle(title: "Related Product", onTap: (){}),
+                  sectionTitle(title: "Top Product", onTap: (){}),
                   Divider(),
                   SizedBox(
                     height: getProportionateScreenHeight(10),
@@ -504,37 +510,37 @@ class HomeScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(right: getProportionateScreenWidth(10)),
                                 child: InkWell(
                                   onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                                    Navigator.pushNamed(context, TopProductPage.routeName);
                                   },
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            getProportionateScreenWidth(7)),
-                                        child: Stack(
+                                  child: Container(
+                                    width: getProportionateScreenHeight(150),
+                                    height: getProportionateScreenHeight(220),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.withOpacity(0.2))
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Stack(
                                           children: <Widget>[
                                             Image.asset(
                                               result.image[0],
-                                              height:
-                                              getProportionateScreenWidth(140),
-                                              width:
-                                              getProportionateScreenWidth(140),
+                                              width: getProportionateScreenHeight(150),
+                                              height: getProportionateScreenHeight(150),
                                               fit: BoxFit.fill,
                                             ),
                                             Positioned(
-                                                right: 0,
                                                 child: Container(
                                                   height:
                                                   getProportionateScreenWidth(
-                                                      20),
+                                                      30),
                                                   width:
                                                   getProportionateScreenWidth(
-                                                      45),
+                                                      25),
                                                   decoration: BoxDecoration(
                                                       color: Colors.orange,
                                                       borderRadius: BorderRadius.only(
-                                                          topLeft: Radius.circular(
+                                                          bottomRight: Radius.circular(
                                                               getProportionateScreenWidth(
                                                                   10)),
                                                           bottomLeft: Radius.circular(
@@ -542,11 +548,11 @@ class HomeScreen extends StatelessWidget {
                                                                   10)))),
                                                   child: Center(
                                                       child: Text(
-                                                        "-${result.discount}%",
+                                                        "Top",
                                                         style: TextStyle(
                                                             fontSize:
                                                             getProportionateScreenWidth(
-                                                                10),
+                                                                8),
                                                             color: Colors.white,
                                                             fontWeight:
                                                             FontWeight.bold),
@@ -554,49 +560,35 @@ class HomeScreen extends StatelessWidget {
                                                 ))
                                           ],
                                         ),
-                                      ),
-                                      Expanded(child: Container(
-                                        width: getProportionateScreenWidth(150),
-                                        child: Column(
-                                          children: [
-                                            SizedBox(height: getProportionateScreenHeight(5),),
-                                            Text(result.title,maxLines: 2,style: const TextStyle(
-                                              overflow: TextOverflow.ellipsis
-                                            ),),
-                                            RichText(text: TextSpan(
-                                              children: <TextSpan>[
-                                                TextSpan(text: "${CommonData.takaSign} ${result.price} ",style: TextStyle(
-                                                    fontWeight: FontWeight.bold,color: AllColors.mainColor,fontSize: getProportionateScreenWidth(15)
-                                                )),
-                                                TextSpan(text: "${CommonData.takaSign}${result.cutPrice}",style: TextStyle(color: Colors.black.withOpacity(0.7),decoration: TextDecoration.lineThrough,fontSize: getProportionateScreenWidth(13))),
-                                              ]
-                                            )),
-                                            Row(
-                                              children: <Widget>[
-                                                RatingBarIndicator(
-                                                  rating: result.rating,
-                                                  itemBuilder: (context, index) => Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  itemCount: 5,
-                                                  itemSize: getProportionateScreenWidth(10),
-                                                  direction: Axis.horizontal,
-                                                ),
-                                                Text("(${result.totalRating})")
-                                              ],
-                                            )
-                                          ],
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                        ),
-                                      ))
-                                    ],
+                                        Expanded(child: Container(
+                                            color: Colors.grey.withOpacity(0.05),
+                                          width: double.infinity,
+                                          padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text("Cleansing Oil",style: TextStyle(overflow: TextOverflow.ellipsis,fontSize: getProportionateScreenWidth(12),color: Colors.black),maxLines: 2,),
+                                              Text("16k+ sold",style: TextStyle(
+                                                fontSize: getProportionateScreenWidth(11),
+                                                color: Colors.black.withOpacity(0.7),
+                                                overflow: TextOverflow.ellipsis
+                                              ),maxLines: 1,),
+                                            ],
+                                          ),
+                                          )
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
                         }));
                     }
                   }),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
 
                   ///category section
                   sectionTitle(title: "Category",onTap: (){
@@ -664,8 +656,8 @@ class HomeScreen extends StatelessWidget {
                     height: getProportionateScreenHeight(10),
                   ),
 
-                  ///top product section
-                  sectionTitle(title: "Top Product",onTap: (){}),
+                  ///Feature product section
+                  sectionTitle(title: "Feature Product",onTap: (){}),
                   SizedBox(
                     height: getProportionateScreenHeight(10),
                   ),
@@ -699,7 +691,7 @@ class HomeScreen extends StatelessWidget {
                               var result = _homeController.productList[index];
                               return InkWell(
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                                  Navigator.pushNamed(context, ProductDetails.routeName , arguments: result);
                                 },
                                 child: Column(
                                   children: <Widget>[
@@ -714,7 +706,7 @@ class HomeScreen extends StatelessWidget {
                                               fit: BoxFit.fill,
                                             ),
                                             Positioned(
-                                                right: 0,
+                                              right: 0,
                                                 child: Container(
                                                   height:
                                                   getProportionateScreenWidth(
@@ -816,7 +808,7 @@ class HomeScreen extends StatelessWidget {
                             var result = _homeController.productList[(_homeController.productList.length-1) - index];
                             return InkWell(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetails(productModel: result)));
+                                Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
