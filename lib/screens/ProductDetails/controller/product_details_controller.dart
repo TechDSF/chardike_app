@@ -7,6 +7,7 @@ class ProductDetailsController extends GetxController{
   var imageIndex = 1.obs;
   var quantityItem = 1.obs;
   List<ProductReviewModel> reviewList = List<ProductReviewModel>.empty(growable: true).obs;
+  var isHaveCart = false.obs;
 
   @override
   void onInit() {

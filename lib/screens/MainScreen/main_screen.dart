@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/MainScreen/controller/main_controller.dart';
 import 'package:chardike/screens/SearchPage/screen/search_screen.dart';
@@ -20,25 +21,25 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       body: Obx(()=> _mainController.pageList[_mainController.tapIndex.value]),
       bottomNavigationBar: Obx(()=>BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.bars),
             label: 'Menu',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.search),
             label: 'Search',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.house),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.user),
             label: 'User',
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.cartShopping),
+            icon: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.grey),
             label: 'Cart',
           ),
         ],
@@ -54,9 +55,9 @@ class MainScreen extends StatelessWidget {
         selectedItemColor: AllColors.mainColor,
         onTap: (value){
           if(value == 4){
-            Navigator.push(context, MaterialPageRoute(builder: (_)=>CartScreen()));
+            Navigator.pushNamed(context, CartScreen.routeName);
           }else if(value == 1){
-            Navigator.push(context, MaterialPageRoute(builder: (_)=>SearchScreen()));
+            Navigator.pushNamed(context, SearchScreen.routeName);
           }
           else{
             _mainController.tapIndex.value = value;

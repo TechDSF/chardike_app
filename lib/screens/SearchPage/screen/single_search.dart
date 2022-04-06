@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/SearchPage/controller/search_controller.dart';
@@ -33,6 +36,9 @@ class SingleSearchScreen extends StatelessWidget {
             onChanged: (value){
               if(value.isEmpty){
                 _searchController.showType.value = false;
+                _searchController.isTextEmpty.value = true;
+              }else{
+                _searchController.isTextEmpty.value = false;
               }
               _searchController.getSearchSuggestionList(value);
             },
@@ -134,22 +140,24 @@ class SingleSearchScreen extends StatelessWidget {
               );
           });
         }else{
-          if(_searchController.searchTextController.value.text.isNotEmpty){
-            return ListView.builder(
-                itemCount: _searchController.suggestionList.value.length,
-                itemBuilder: (context , index){
-                  return ListTile(
-                    onTap: (){
-                      _searchController.showType.value = true;
-                      _searchController.searchTextController.value.text = _searchController.suggestionList.value[index];
-                    },
-                    title: Text(_searchController.suggestionList.value[index]),
-                    trailing: const FaIcon(FontAwesomeIcons.arrowUpLong),
-                  );
-                });
-          }else{
-            return SizedBox();
-          }
+          return Obx((){
+            if(_searchController.isTextEmpty.value){
+              return SizedBox();
+            }else{
+              return ListView.builder(
+                  itemCount: _searchController.suggestionList.value.length,
+                  itemBuilder: (context , index){
+                    return ListTile(
+                      onTap: (){
+                        _searchController.showType.value = true;
+                        _searchController.searchTextController.value.text = _searchController.suggestionList.value[index];
+                      },
+                      title: Text(_searchController.suggestionList.value[index]),
+                      trailing: const FaIcon(FontAwesomeIcons.arrowUpLong),
+                    );
+                  });
+            }
+          });
         }
       })
     );

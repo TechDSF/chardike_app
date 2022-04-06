@@ -36,13 +36,14 @@ class TopProductPage extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               centerTitle: false,
-              actions: const <Widget>[
-                Center(
+              actions: <Widget>[
+                const Center(
                   child: Text(
                     "More",
                     style: TextStyle(color: Colors.white),
                   ),
-                )
+                ),
+                SizedBox(width: getProportionateScreenWidth(10),)
               ],
       ),
       body: DefaultTabController(

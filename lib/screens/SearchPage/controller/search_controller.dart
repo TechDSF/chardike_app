@@ -6,6 +6,7 @@ class SearchController extends GetxController{
   var searchTextController = TextEditingController().obs;
   Rx<List<String>> suggestionList = Rx<List<String>>([]);
   var showType = false.obs;
+  var isTextEmpty = true.obs;
 
 
   @override
@@ -14,7 +15,8 @@ class SearchController extends GetxController{
     super.onInit();
   }
 
-  List<String> searchCategoryList = ["Acne Patch",
+  List<String> searchCategoryList = [
+    "Acne Patch",
     "All Products",
     "Ampoule",
     "BB Cream",

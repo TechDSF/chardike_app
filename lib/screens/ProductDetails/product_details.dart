@@ -1,5 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
+import 'package:chardike/screens/CartPage/model/cart_model.dart';
+import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/ProductDetails/controller/product_details_controller.dart';
@@ -7,6 +11,7 @@ import 'package:chardike/size_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -16,12 +21,14 @@ class ProductDetails extends StatelessWidget {
   ProductDetails({Key? key}) : super(key: key);
   final ProductDetailsController _detailsController =Get.put(ProductDetailsController());
   final HomeController _homeController = Get.put(HomeController());
+  final CartController _cartController = Get.put(CartController());
   static const String routeName = "/product_details";
 
   @override
   Widget build(BuildContext context) {
 
     final productModel = ModalRoute.of(context)!.settings.arguments as ProductModel;
+    _detailsController.isHaveCart.value = _cartController.cartList.where((element) => element.title == productModel.title).isEmpty?false:true;
 
     return Scaffold(
       body: SafeArea(
@@ -44,7 +51,9 @@ class ProductDetails extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(right: getProportionateScreenWidth(20)),
-                                child: const Center(child: FaIcon(FontAwesomeIcons.cartShopping,color: Colors.grey,)),
+                                child: Center(child: InkWell(onTap: (){
+                                  Navigator.pushNamed(context, CartScreen.routeName);
+                                },child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.grey))),
                               ),
                             ],
                           ),
@@ -142,7 +151,7 @@ class ProductDetails extends StatelessWidget {
                           color: AllColors.mainColor
                         ),
                         isScrollable: true,
-                          tabs: [
+                          tabs: const [
                         Tab(text: "Description",),
                         Tab(text: "Product Reviews"),
                         Tab(text: "Product Inquiry"),
@@ -480,7 +489,7 @@ class ProductDetails extends StatelessWidget {
                   right: getProportionateScreenWidth(10),
                   top: getProportionateScreenWidth(10),
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(
                   top: BorderSide(
@@ -491,19 +500,74 @@ class ProductDetails extends StatelessWidget {
               ),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex:1,
                     child: Center(child: FaIcon(FontAwesomeIcons.heart)),
                   ),
                   Expanded(
                     flex: 4,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),
-                              border: Border.all(color: AllColors.mainColor)
-                          ),
-                          child: TextButton.icon(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.cartShopping), label: Text("ADD To CART")))
+                      child: Obx((){
+                        if(_detailsController.isHaveCart.value){
+                          return InkWell(
+                            onTap: (){
+                              try {
+                                _cartController.cartList.removeWhere((element) => element.title == productModel.title);
+                              } finally {
+                                // TODO
+                                _detailsController.isHaveCart.value = _cartController.cartList.where((element) => element.title == productModel.title).isEmpty?false:true;
+                                Fluttertoast.showToast(msg: "Remove Successfully",toastLength: Toast.LENGTH_LONG);
+                              }
+                            },
+                            child: Container(
+                                height: getProportionateScreenHeight(40),
+                                margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),
+                                    border: Border.all(color: AllColors.mainColor)
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CommonData.icon(icon: "asset/icons/cart.png", color: Colors.red),
+                                    SizedBox(width: getProportionateScreenWidth(5),),
+                                    Text("REMOVE from CART",style: TextStyle(color: Colors.red,fontSize: getProportionateScreenWidth(11)),)
+                                  ],
+                                )),
+                          );
+                        }else{
+                          return InkWell(
+                            onTap: (){
+                              try {
+                                _cartController.cartList.add(CartModel(
+                                    title: productModel.title,
+                                    image: productModel.image[0],
+                                    quantity: _detailsController.quantityItem.value,
+                                    price: productModel.price)
+                                );
+                              } finally {
+                                // TODO
+                                _detailsController.isHaveCart.value = _cartController.cartList.where((element) => element.title == productModel.title).isEmpty?false:true;
+                                Fluttertoast.showToast(msg: "Added Successfully",toastLength: Toast.LENGTH_LONG);
+                              }
+                            },
+                            child: Container(
+                                height: getProportionateScreenHeight(40),
+                                margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),
+                                    border: Border.all(color: AllColors.mainColor)
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CommonData.icon(icon: "asset/icons/cart.png", color: Colors.blue),
+                                    SizedBox(width: getProportionateScreenWidth(5),),
+                                    Text("ADD to CART",style: TextStyle(color: Colors.blue,fontSize: getProportionateScreenWidth(13)),)
+                                  ],
+                                )),
+                          );
+                        }
+                      })
                   ),
                   Expanded(
                     flex: 3,

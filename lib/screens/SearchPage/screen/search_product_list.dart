@@ -1,3 +1,4 @@
+import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -45,7 +46,11 @@ class SearchProductList extends StatelessWidget {
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
-          const Center(child: FaIcon(FontAwesomeIcons.cartShopping)),
+          Center(child: InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, CartScreen.routeName);
+            },
+              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.black))),
           SizedBox(
             width: getProportionateScreenWidth(10),
           )

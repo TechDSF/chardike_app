@@ -8,4 +8,5 @@ class AllColors{
     fontWeight: FontWeight.bold,
     fontSize: getProportionateScreenWidth(15)
   );
+
 }

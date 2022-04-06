@@ -1,4 +1,6 @@
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -69,11 +71,13 @@ class SliderDetails extends StatelessWidget {
         titleSpacing: 0,
         centerTitle: false,
         title: const Text("Hot Deal"),
-        actions: const <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: FaIcon(FontAwesomeIcons.cartShopping)),
-          )
+        actions: <Widget>[
+          Center(child: InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, CartScreen.routeName);
+            },
+              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.black))),
+          SizedBox(width: getProportionateScreenWidth(10),)
         ],
       ),
       body: Padding(
@@ -123,7 +127,7 @@ class SliderDetails extends StatelessWidget {
                         var result = _homeController.productList[(_homeController.productList.length-1) - index];
                         return InkWell(
                           onTap: (){
-                            Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
+                            Navigator.pushNamed(context, ProductDetails.routeName,arguments: result);
                           },
                           child: Container(
                             decoration: BoxDecoration(

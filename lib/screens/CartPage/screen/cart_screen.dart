@@ -11,20 +11,21 @@ import 'package:group_radio_button/group_radio_button.dart';
 class CartScreen extends StatelessWidget {
   CartScreen({Key? key}) : super(key: key);
   final CartController _cartController = Get.put(CartController());
+  static const String routeName = "/cart_screen";
   int counter = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SHOPPING CART"),
+        title: const Text("SHOPPING CART"),
       ),
       bottomNavigationBar: Container(
         color: AllColors.mainColor,
         height: kToolbarHeight+10,
         child: const Center(child: Text("PROCEED TO CHECKOUT",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
       ),
-      body: _cartController.cartList.isNotEmpty?Column(
+      body: _cartController.cartList.isEmpty?Column(
         children: <Widget>[
           Expanded(
             flex: 4,
