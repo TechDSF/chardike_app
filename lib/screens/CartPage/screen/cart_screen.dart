@@ -2,28 +2,83 @@ import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/CartPage/screen/cart_item.dart';
+import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
+import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../ProductDetails/product_details.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({Key? key}) : super(key: key);
   final CartController _cartController = Get.put(CartController());
   static const String routeName = "/cart_screen";
   int counter = 0;
+  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
+    _cartController.getTotalAmount();
+
+    var _aspectRatio;
+
+    double aspt(double height) {
+      var _crossAxisSpacing = 8;
+      var _screenWidth = MediaQuery.of(context).size.width;
+      var _crossAxisCount = 2;
+      var _width =
+          (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+              _crossAxisCount;
+      var cellHeight = height;
+      return _aspectRatio = _width / cellHeight;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("SHOPPING CART"),
       ),
-      bottomNavigationBar: Container(
-        color: AllColors.mainColor,
-        height: kToolbarHeight+10,
-        child: const Center(child: Text("PROCEED TO CHECKOUT",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+      bottomNavigationBar: _cartController.cartList.isEmpty?SizedBox():Container(
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 50,
+              offset: Offset(5 , -2)
+            )
+          ]
+        ),
+        child: Row(
+          children: [
+            Expanded(child: Row(
+              children: <Widget>[
+                Text("Total: "),
+                Obx(()=>Text(CommonData.takaSign+ " "+_cartController.subTotalAmount.value.toString(),style: TextStyle(fontWeight: FontWeight.bold),))
+              ],
+            )),
+            InkWell(
+              onTap: (){
+                Navigator.pushNamed(context, CheckOutPage.routeName);
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(5)),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                decoration: BoxDecoration(
+                    color: AllColors.mainColor,
+                  borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
+                ),
+                height: getProportionateScreenWidth(40),
+                child: const Center(child: Text("CHECKOUT",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+              ),
+            ),
+          ],
+        ),
       ),
       body: _cartController.cartList.isEmpty?Column(
         children: <Widget>[
@@ -66,181 +121,206 @@ class CartScreen extends StatelessWidget {
             ),
           ))
         ],
-      ):Padding(
-        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListView.builder(
-                itemCount: 3,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context , index){
-                return CartItem(itemCount: 2,price: 120,);
-              }),
-              SizedBox(height: getProportionateScreenHeight(15),),
-              Container(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(getProportionateScreenWidth(5))
-                ),
-                child: Row(
-                  children: <Widget>[
-                    const Expanded(flex: 3,child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        hintText: "Coupen code"
-                      ),
-                    )),
-                    Expanded(flex:2,child: Container(
-                      height: kToolbarHeight-5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),
-                        color: Colors.black
-                      ),
-                      child: const Center(child: Text("Apply Coupen ->",style: TextStyle(color: Colors.white),)),
-                    ))
-                  ],
-                ),
-              ),
-              SizedBox(height: getProportionateScreenHeight(15),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ):SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+              child: Column(
                 children: [
-                  Text("Sub Total",style: TextStyle(fontWeight: FontWeight.w400,fontSize: getProportionateScreenWidth(14)),),
-                  Obx(()=>Text("${CommonData.takaSign} ${_cartController.subTotalAmount}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),),)
-                ],
-              ),
-              SizedBox(height: getProportionateScreenHeight(10),),
-              const Divider(color: Colors.black,),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Shipping",style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: getProportionateScreenWidth(14)
-                  ),),
-                  SizedBox(width: getProportionateScreenWidth(10),),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  ListView.builder(
+                    itemCount: _cartController.cartList.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context , index){
+                      var result = _cartController.cartList[index];
+                      //return Container(color: Colors.blue,height: 100,margin: EdgeInsets.all(10),);
+                    return CartItem(cartModel: _cartController.cartList[index],itemCount: result.quantity,);
+                  }),
+                  SizedBox(height: getProportionateScreenHeight(15),),
+                  Container(
+                    padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(getProportionateScreenWidth(5))
+                    ),
+                    child: Row(
                       children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(10),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(child: Text("Delivery Charge ${CommonData.takaSign}60",textAlign: TextAlign.end)),
-                            SizedBox(width: getProportionateScreenWidth(10),),
-                            Obx(()=>InkWell(
-                              onTap:(){
-                                _cartController.mainTotalAmount.value = (_cartController.mainTotalAmount.value-_cartController.shippingPreviousPrice.value) + 60;
-                                _cartController.shippingPreviousPrice.value = 60;
-                                _cartController.shippingValue.value = 0;
-                              },
-                              child: Container(
-                                height: getProportionateScreenHeight(15),
-                                width: getProportionateScreenHeight(15),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: AllColors.mainColor)
-                                ),
-                                child: _cartController.shippingValue.value == 0?Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AllColors.mainColor
-                                  ),
-                                ):SizedBox(),
-                                padding: EdgeInsets.all(getProportionateScreenHeight(2)),
-                              ),
-                            ))
-                          ],
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(10),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(child: Text("Spot Purchase",textAlign: TextAlign.end,)),
-                            SizedBox(width: getProportionateScreenWidth(10),),
-                                    Obx(()=>InkWell(
-                                      onTap:(){
-                                        _cartController.mainTotalAmount.value = (_cartController.mainTotalAmount.value-_cartController.shippingPreviousPrice.value) + 0;
-                                        _cartController.shippingPreviousPrice.value = 0;
-                                        _cartController.shippingValue.value = 1;
-                            },
-                                      child: Container(
-                                        height: getProportionateScreenHeight(15),
-                                        width: getProportionateScreenHeight(15),
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(color: AllColors.mainColor)
-                                        ),
-                                        child: _cartController.shippingValue.value == 1?Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AllColors.mainColor
-                                          ),
-                                        ):SizedBox(),
-                                        padding: EdgeInsets.all(getProportionateScreenHeight(2)),
-                                      ),
-                                    ))
-                          ],
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(10),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Expanded(child: Text("8 Hours Delivery (Dhaka City Only): ৳ 150",textAlign: TextAlign.end)),
-                            SizedBox(width: getProportionateScreenWidth(10),),
-                            Obx(()=>InkWell(
-                              onTap:(){
-                                _cartController.mainTotalAmount.value = (_cartController.mainTotalAmount.value-_cartController.shippingPreviousPrice.value) + 150;
-                                _cartController.shippingValue.value = 2;
-                                _cartController.shippingPreviousPrice.value = 150;
-                              },
-                              child: Container(
-                                height: getProportionateScreenHeight(15),
-                                width: getProportionateScreenHeight(15),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: AllColors.mainColor)
-                                ),
-                                child: _cartController.shippingValue.value == 2?Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AllColors.mainColor
-                                  ),
-                                ):SizedBox(),
-                                padding: EdgeInsets.all(getProportionateScreenHeight(2)),
-                              ),
-                            ))
-                          ],
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(10),),
-                        Text("Shipping to Dhaka",textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.w400,fontSize: getProportionateScreenWidth(14)),),
-                        SizedBox(height: getProportionateScreenHeight(10),),
-                        Text("Change Address",textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color:AllColors.mainColor, fontSize: getProportionateScreenWidth(14)),)
-
+                        const Expanded(flex: 3,child: TextField(
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              hintText: "Coupen code"
+                          ),
+                        )),
+                        Expanded(flex:2,child: Container(
+                          height: kToolbarHeight-5,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),
+                              color: Colors.black
+                          ),
+                          child: const Center(child: Text("Apply Coupen ->",style: TextStyle(color: Colors.white),)),
+                        ))
                       ],
-                    )
-                  )
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: getProportionateScreenHeight(10),),
-              Divider(color: Colors.black,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Total",style: TextStyle(fontWeight: FontWeight.w400,fontSize: getProportionateScreenWidth(14)),),
-                  Obx(()=>Text("${CommonData.takaSign} ${_cartController.mainTotalAmount.value}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),),
-                  )
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10),),
+            Container(
+              height: getProportionateScreenHeight(20),
+              color: Colors.grey.withOpacity(0.1),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset("asset/icons/three_line_icon.png",height: getProportionateScreenWidth(25),width: getProportionateScreenWidth(25),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Text("Just For You"),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Image.asset("asset/icons/three_line_icon.png",height: getProportionateScreenWidth(25),width: getProportionateScreenWidth(25),)
+              ],
+            ),
+            Obx(() {
+              if (_homeController.isProductDataLoading.value) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey.withOpacity(0.1),
+                  highlightColor: Colors.grey.withOpacity(0.5),
+                  child: Container(
+                    height: getProportionateScreenHeight(170),
+                    color: Colors.yellow,
+                  ),
+                );
+              }
+              else {
+                return GridView.builder(
+                    gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: aspt(300),
+                    ),
+                    itemCount: _homeController.productList.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      var result = _homeController.productList[(_homeController.productList.length-1) - index];
+                      return InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                top: const BorderSide(color: Colors.grey,width: 0.5),
+                                left: index%2==0?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
+                                right: index%2==0?const BorderSide(color: Colors.grey,width: 0):const BorderSide(color: Colors.grey,width: 0.5),
+                                bottom: index == _homeController.productList.length-1 || index == _homeController.productList.length-2?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
+                              )
+                          ),
+                          padding: EdgeInsets.all(getProportionateScreenWidth(8)),
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      result.image[0],
+                                      fit: BoxFit.fill,
+                                    ),
+                                    Positioned(
+                                        right: 0,
+                                        child: Container(
+                                          height:
+                                          getProportionateScreenWidth(
+                                              20),
+                                          width:
+                                          getProportionateScreenWidth(
+                                              45),
+                                          decoration: BoxDecoration(
+                                              color: Colors.orange,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(
+                                                      getProportionateScreenWidth(
+                                                          10)),
+                                                  bottomLeft: Radius.circular(
+                                                      getProportionateScreenWidth(
+                                                          10)))),
+                                          child: Center(
+                                              child: Text(
+                                                "-${result.discount}%",
+                                                style: TextStyle(
+                                                    fontSize:
+                                                    getProportionateScreenWidth(
+                                                        10),
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                    FontWeight.bold),
+                                              )),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Text(result.title,maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(12)
+                              ),),
+                              SizedBox(
+                                height: getProportionateScreenHeight(5),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                    getProportionateScreenWidth(5)),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "₺ " + result.price.toString()+" ",
+                                      style: TextStyle(
+                                          color: AllColors.mainColor),
+                                    ),
+                                    Text(
+                                      "₺" + result.price.toString(),
+                                      style: TextStyle(
+                                          decoration: TextDecoration.lineThrough,
+                                          color: Colors.grey,fontSize: getProportionateScreenWidth(10)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(5),
+                              ),
+                              Row(
+                                children: [
+                                  RatingBarIndicator(
+                                    rating: result.rating,
+                                    itemBuilder: (context, index) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: getProportionateScreenWidth(10),
+                                    direction: Axis.horizontal,
+                                  ),
+                                  Text("(${result.totalRating})",style: TextStyle(
+                                      fontSize: getProportionateScreenWidth(10)
+                                  ),)
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              }
+            }),
+          ],
         ),
       )
     );

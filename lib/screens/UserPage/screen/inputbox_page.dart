@@ -14,7 +14,7 @@ class InputBoxPage extends StatelessWidget {
         title: Text("Edit $type"),
       ),
       body: Column(
-        children: <Widget>[
+        children: const <Widget>[
           TextField(
             decoration: InputDecoration(
               hintText: "Name here",

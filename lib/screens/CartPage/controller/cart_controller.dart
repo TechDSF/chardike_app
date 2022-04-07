@@ -20,9 +20,11 @@ class CartController extends GetxController{
   }
 
   getTotalAmount(){
+    subTotalAmount.value = 0;
+    mainTotalAmount.value = 0;
     cartList.forEach((element) {
-      subTotalAmount += element.price;
+      subTotalAmount += element.totalPrice;
     });
-    mainTotalAmount.value += 60;
+    mainTotalAmount.value = subTotalAmount.value + 60;
   }
 }

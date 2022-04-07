@@ -1,4 +1,5 @@
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
+import 'package:chardike/screens/CartPage/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,9 +7,10 @@ import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
 
 class CartItem extends StatefulWidget {
-  CartItem({Key? key,required this.itemCount, required this.price}) : super(key: key);
+  CartItem({Key? key,required this.cartModel,required this.itemCount}) : super(key: key);
+  CartModel cartModel;
   int itemCount;
-  double price;
+
 
   @override
   State<CartItem> createState() => _CartItemState();
@@ -28,7 +30,10 @@ class _CartItemState extends State<CartItem> {
             width: getProportionateScreenHeight(100),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
+                borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
+              image: DecorationImage(
+                image: AssetImage(widget.cartModel.image)
+              )
             ),
           ),
           SizedBox(width: getProportionateScreenWidth(10),),
@@ -37,10 +42,10 @@ class _CartItemState extends State<CartItem> {
             children: <Widget>[
               Row(
                 children: [
-                  const Expanded(child: Text("Demo Text ",
-                    style:TextStyle(color: Colors.black,fontWeight: FontWeight.w500),maxLines: 2,)),
+                  Expanded(child: Text("${widget.cartModel.title} ",
+                    style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w500),maxLines: 2,)),
                   SizedBox(width: getProportionateScreenWidth(10),),
-                  Text("${CommonData.takaSign} 990",style: TextStyle(fontWeight: FontWeight.bold),)
+                  Text("${CommonData.takaSign} ${widget.itemCount * widget.cartModel.price}",style: TextStyle(fontWeight: FontWeight.bold),)
                 ],
               ),
               SizedBox(height: getProportionateScreenHeight(15),),
@@ -52,7 +57,7 @@ class _CartItemState extends State<CartItem> {
                       style: TextStyle(color: Colors.black),
                       children: <TextSpan>[
                         TextSpan(
-                            text: '${CommonData.takaSign} 990',
+                            text: '${CommonData.takaSign} ${widget.cartModel.price}',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(text:" x ${widget.itemCount}")
                       ],
@@ -65,9 +70,8 @@ class _CartItemState extends State<CartItem> {
                         onTap: (){
                           if(widget.itemCount > 1){
                             setState(() {
-                              _cartController.subTotalAmount.value -= widget.price.toInt();
-                              _cartController.mainTotalAmount.value -= widget.price.toInt();
-
+                              _cartController.subTotalAmount.value -= widget.cartModel.price.toInt();
+                              _cartController.mainTotalAmount.value -= widget.cartModel.price.toInt();
                               widget.itemCount--;
                             });
                           }
@@ -97,8 +101,8 @@ class _CartItemState extends State<CartItem> {
                         onTap: (){
                           if(widget.itemCount < 5){
                             setState(() {
-                              _cartController.subTotalAmount.value += widget.price.toInt();
-                              _cartController.mainTotalAmount.value += widget.price.toInt();
+                              _cartController.subTotalAmount.value += widget.cartModel.price.toInt();
+                              _cartController.mainTotalAmount.value += widget.cartModel.price.toInt();
                               widget.itemCount++;
                             });
 
