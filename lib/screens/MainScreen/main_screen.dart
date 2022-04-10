@@ -22,24 +22,24 @@ class MainScreen extends StatelessWidget {
       body: Obx(()=> _mainController.pageList[_mainController.tapIndex.value]),
       bottomNavigationBar: Obx(()=>BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.bars),
-            label: 'Menu',
+          BottomNavigationBarItem(
+            icon: CommonData.bottomIcon(icon: "asset/icons/newspaper.png", color: _mainController.tapIndex.value == 0?AllColors.mainColor:Colors.grey),
+            label: 'Feed',
           ),
-          const BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.search),
+          BottomNavigationBarItem(
+            icon: CommonData.bottomIcon(icon: "asset/icons/search_icon.png", color: _mainController.tapIndex.value == 1?AllColors.mainColor:Colors.grey),
             label: 'Search',
           ),
-          const BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
+          BottomNavigationBarItem(
+            icon: CommonData.bottomIcon(icon: "asset/icons/home.png", color: _mainController.tapIndex.value == 2?AllColors.mainColor:Colors.grey),
             label: 'Home',
           ),
-          const BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.user),
+          BottomNavigationBarItem(
+            icon: CommonData.bottomIcon(icon: "asset/icons/user.png", color: _mainController.tapIndex.value == 3?AllColors.mainColor:Colors.grey),
             label: 'User',
           ),
           BottomNavigationBarItem(
-            icon: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.grey),
+            icon: CommonData.bottomIcon(icon: "asset/icons/cart.png", color: _mainController.tapIndex.value == 4?AllColors.mainColor:Colors.grey),
             label: 'Cart',
           ),
         ],

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
           titleTextStyle: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             fontSize: 16
           ),
           iconTheme: IconThemeData(

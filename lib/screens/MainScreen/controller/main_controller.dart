@@ -1,4 +1,5 @@
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
+import 'package:chardike/screens/FeedPage/screens/feed_page.dart';
 import 'package:chardike/screens/HomePage/screen/home_screen.dart';
 import 'package:chardike/screens/MenuPage/screen/menu_screen.dart';
 import 'package:chardike/screens/SearchPage/screen/search_screen.dart';
@@ -16,7 +17,7 @@ class MainController extends GetxController{
   }
 
   var pageList = [
-    MenuScreen(),
+    FeedPage(),
     SearchScreen(),
     HomeScreen(),
     UserScreen(),

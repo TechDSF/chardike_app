@@ -52,7 +52,7 @@ class SingleSearchScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           SizedBox(width: getProportionateScreenWidth(10),),
-          const Center(child: FaIcon(FontAwesomeIcons.search)),
+          CommonData.icon(icon: "asset/icons/search_icon.png", color: Colors.black),
           SizedBox(width: getProportionateScreenWidth(10),)
         ],
       ),
@@ -153,7 +153,7 @@ class SingleSearchScreen extends StatelessWidget {
                         _searchController.searchTextController.value.text = _searchController.suggestionList.value[index];
                       },
                       title: Text(_searchController.suggestionList.value[index]),
-                      trailing: const FaIcon(FontAwesomeIcons.arrowUpLong),
+                      trailing: Icon(Icons.keyboard_arrow_up),
                     );
                   });
             }

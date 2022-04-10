@@ -128,8 +128,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const FaIcon(FontAwesomeIcons.bell,color: Colors.black,),
-                    SizedBox(width: getProportionateScreenWidth(5),)
+                    CommonData.icon(icon: "asset/icons/notification.png", color: Colors.black),
+                    SizedBox(width: getProportionateScreenWidth(10),)
                   ],
                 ),
                 SizedBox(height: getProportionateScreenHeight(10),),
@@ -138,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (_)=>SingleSearchScreen()));
                   },
                   child: Container(
-                    height: getProportionateScreenHeight(45),
+                    height: getProportionateScreenWidth(45),
                       margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                       padding: EdgeInsets.symmetric(
                           horizontal: getProportionateScreenWidth(10),),
@@ -149,10 +149,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Row(
                         children: <Widget>[
-                          const FaIcon(
-                            FontAwesomeIcons.search,
-                            color: Colors.grey,
-                          ),
+                          CommonData.bottomIcon(icon: "asset/icons/search_icon.png", color: Colors.grey),
                           SizedBox(
                             width: getProportionateScreenWidth(10),
                           ),
@@ -160,8 +157,8 @@ class HomeScreen extends StatelessWidget {
                             child: Text(
                               "Search your product",
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                  fontSize: getProportionateScreenWidth(14)),
+                                  color: Colors.black.withOpacity(0.6),
+                                  fontSize: getProportionateScreenWidth(13)),
                               maxLines: 1,
                             ),
                           )

@@ -76,7 +76,7 @@ class SliderDetails extends StatelessWidget {
             onTap: (){
               Navigator.pushNamed(context, CartScreen.routeName);
             },
-              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.black))),
+              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.grey))),
           SizedBox(width: getProportionateScreenWidth(10),)
         ],
       ),

@@ -1,20 +1,100 @@
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/screens/UserPage/controller/edit_profile_controller.dart';
+import 'package:chardike/screens/UserPage/screen/inputbox_page.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  EditProfile({Key? key}) : super(key: key);
   static const String routeName = "/edit_profile";
+  final EditProfileController _editProfileController = Get.put(EditProfileController());
 
   @override
   Widget build(BuildContext context) {
+
+    void openEditUsernameDialog(BuildContext context) {
+      showGeneralDialog(
+        barrierLabel: "Barrier",
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: Duration(milliseconds: 700),
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return AlertDialog(
+            content: Text("You can change your username only one time. Please think long and hard when choosing a new username."),
+            actions: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("CANCEL"),
+                color: Colors.white,
+                elevation: 0,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("CONTINUE",style: TextStyle(color: AllColors.mainColor),),
+                color: Colors.white,
+                elevation: 0,
+              ),
+            ],
+          );
+        },
+        transitionBuilder: (_, anim, __, child) {
+          return SlideTransition(
+            position: Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim),
+            child: child,
+          );
+        },
+      );
+    }
+    void openGenderDialog(BuildContext context) {
+      showGeneralDialog(
+        barrierLabel: "Barrier",
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: Duration(milliseconds: 700),
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return AlertDialog(
+            title: const Text("Gender"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text("Male"),
+                ),
+                ListTile(
+                  title: Text("Female"),
+                ),
+                ListTile(
+                  title: Text("Other"),
+                ),
+
+              ],
+            ),
+          );
+        },
+        transitionBuilder: (_, anim, __, child) {
+          return SlideTransition(
+            position: Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim),
+            child: child,
+          );
+        },
+      );
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("Edit Profile"),
+        title: const Text("Edit Profile"),
         actions: <Widget>[
-          Center(child: FaIcon(FontAwesomeIcons.check)),
+          const Center(child: FaIcon(FontAwesomeIcons.check)),
           SizedBox(width: getProportionateScreenWidth(15),)
         ],
       ),
@@ -26,14 +106,19 @@ class EditProfile extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  Container(
-                    height: getProportionateScreenWidth(200),
-                    width: getProportionateScreenWidth(200),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AllColors.mainColor)
+                  InkWell(
+                    onTap: (){
+                      _editProfileController.openGallery();
+                    },
+                    child: Container(
+                      height: getProportionateScreenWidth(200),
+                      width: getProportionateScreenWidth(200),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AllColors.mainColor)
+                      ),
+                      child: Icon(Icons.person,size: getProportionateScreenWidth(100),),
                     ),
-                    child: Icon(Icons.person,size: getProportionateScreenWidth(100),),
                   ),
                   Positioned(
                     bottom: getProportionateScreenWidth(10),
@@ -44,6 +129,9 @@ class EditProfile extends StatelessWidget {
             ),
             SizedBox(height: getProportionateScreenHeight(10),),
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, InputBoxPage.routeName,arguments: {"data":"Roben Baskey","type":"name"});
+              },
               title: Text("Name"),
               trailing: RichText(
                 text: TextSpan(
@@ -61,6 +149,9 @@ class EditProfile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
+              onTap: (){
+                openEditUsernameDialog(context);
+              },
                 title: Text("Username"),
                 trailing: RichText(
                   text: TextSpan(
@@ -78,6 +169,9 @@ class EditProfile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, InputBoxPage.routeName,arguments: {"data":"Roben Baskey","type":"bio"});
+              },
                 title: Text("Bio"),
                 trailing: RichText(
                   text: TextSpan(
@@ -99,6 +193,9 @@ class EditProfile extends StatelessWidget {
               color: Colors.grey.withOpacity(0.1),
             ),
             ListTile(
+              onTap: (){
+                openGenderDialog(context);
+              },
                 title: Text("Gender"),
                 trailing: RichText(
                   text: TextSpan(
@@ -116,19 +213,22 @@ class EditProfile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
+              onTap: (){
+                _editProfileController.selectDate(context);
+              },
                 title: Text("Birthday"),
-                trailing: RichText(
+                trailing: Obx(()=>RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Set Now ",style: TextStyle(color: Colors.black.withOpacity(0.8),fontSize: getProportionateScreenWidth(13)),
+                        text: _editProfileController.birthDate.value.isEmpty?"Set Now ":_editProfileController.birthDate.value+ " ",style: TextStyle(color: Colors.black.withOpacity(0.8),fontSize: getProportionateScreenWidth(13)),
                       ),
                       WidgetSpan(
                         child: Icon(Icons.arrow_forward_ios, size: getProportionateScreenWidth(15)),
                       ),
                     ],
                   ),
-                )
+                ))
 
             ),
             const Divider(),
