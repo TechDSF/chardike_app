@@ -35,7 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.1.0
-  scrollable_list_tabview: ^0.2.0-nullsafety
+  scroll_to_index: ^2.1.1
+  rect_getter: ^1.1.0
   get: ^4.6.1
   shared_preferences: ^2.0.13
   animated_splash_screen: ^1.2.0

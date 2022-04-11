@@ -4,6 +4,7 @@ import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dar
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/screens/PaymentMethodPage/screen/payment_screen.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
+import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/SearchPage/screen/search_screen.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_page.dart';
 import 'package:chardike/screens/UserPage/screen/account_setting.dart';

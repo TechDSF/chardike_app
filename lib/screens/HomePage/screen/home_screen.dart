@@ -57,9 +57,17 @@ class HomeScreen extends StatelessWidget {
         ),
         InkWell(
           onTap: onTap,
-          child: Text(
-            "Shop More >",
-            style: TextStyle(color: AllColors.mainColor),
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: Colors.black.withOpacity(0.5),
+                fontSize: getProportionateScreenWidth(12)
+              ),
+              children: [
+                TextSpan(text: "See More"),
+                WidgetSpan(child: Center(child: Icon(Icons.arrow_forward_ios,size: getProportionateScreenWidth(14),color: Colors.black.withOpacity(0.5),)))
+              ]
+            ),
           ),
         )
       ],
@@ -79,9 +87,17 @@ class HomeScreen extends StatelessWidget {
         ),
         InkWell(
           onTap: onTap,
-          child: Text(
-            "Shop More >",
-            style: TextStyle(color: AllColors.mainColor),
+          child: RichText(
+            text: TextSpan(
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    fontSize: getProportionateScreenWidth(12)
+                ),
+                children: [
+                  TextSpan(text: "See More"),
+                  WidgetSpan(child: Center(child: Icon(Icons.arrow_forward_ios,size: getProportionateScreenWidth(14),color: Colors.black.withOpacity(0.5),)))
+                ]
+            ),
           ),
         )
       ],

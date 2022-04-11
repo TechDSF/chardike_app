@@ -443,6 +443,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  rect_getter:
+    dependency: "direct main"
+    description:
+      name: rect_getter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   scroll_indicator:
     dependency: "direct main"
     description:
@@ -450,20 +457,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.3"
-  scrollable_list_tabview:
+  scroll_to_index:
     dependency: "direct main"
     description:
-      name: scrollable_list_tabview
+      name: scroll_to_index
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0-nullsafety"
-  scrollable_positioned_list:
-    dependency: transitive
-    description:
-      name: scrollable_positioned_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.3"
+    version: "2.1.1"
   shared_preferences:
     dependency: "direct main"
     description:
