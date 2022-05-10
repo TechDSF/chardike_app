@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/FeedPage/screens/feed_page.dart';
 import 'package:chardike/screens/HomePage/screen/home_screen.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 class MainController extends GetxController{
   var isLoading = false.obs;
   var tapIndex = 2.obs;
+  final CommonController _commonController = Get.put(CommonController());
 
   @override
   void onInit() {

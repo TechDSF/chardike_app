@@ -1,14 +1,22 @@
+import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
+import 'package:chardike/screens/UserPage/controller/user_controller.dart';
 import 'package:chardike/screens/UserPage/screen/account_setting.dart';
 import 'package:chardike/screens/UserPage/screen/edit_profile.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class UserScreen extends StatelessWidget {
-  const UserScreen({Key? key}) : super(key: key);
+  UserScreen({Key? key}) : super(key: key);
+  final UserController userController = Get.put(UserController());
+  final CommonController _commonController = Get.put(CommonController());
+
 
 
   Widget ButtonWithText({required String text, required Color color, required String icon}){
@@ -64,75 +72,134 @@ class UserScreen extends StatelessWidget {
                         SizedBox(width: getProportionateScreenWidth(10),)
                       ],
                     ),
-                    SizedBox(height: getProportionateScreenHeight(10),),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            height: getProportionateScreenWidth(70),
-                            width: getProportionateScreenWidth(70),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,color: Colors.white
-                            ),
-                            child: Icon(Icons.person,color: AllColors.mainColor,size: getProportionateScreenWidth(40),),
-                          ),
-                          SizedBox(width: getProportionateScreenWidth(15),),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Roben Baskey",style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: getProportionateScreenWidth(15)
-                                ),),
-                                SizedBox(height: getProportionateScreenHeight(3),),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10),vertical: getProportionateScreenWidth(3)),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
-                                    color: Colors.white
-                                  ),
-                                  child: Text("Classic Member  >",style: TextStyle(color: AllColors.mainColor),),
+                    SizedBox(height: getProportionateScreenHeight(15),),
+                    Obx((){
+                      if(_commonController.isLogin.value){
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: getProportionateScreenWidth(70),
+                                width: getProportionateScreenWidth(70),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,color: Colors.white
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(3),),
-                                Row(
+                                child: Icon(Icons.person,color: AllColors.mainColor,size: getProportionateScreenWidth(40),),
+                              ),
+                              SizedBox(width: getProportionateScreenWidth(15),),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    RichText(
-                                        text: TextSpan(
-                                          text: "Follower ",
-                                          style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(13)
-                                          ),
-                                          children: <TextSpan>[
-                                            TextSpan(text: "0",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(13)))
-                                          ]
-                                        )
+                                    Text("Roben Baskey",style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: getProportionateScreenWidth(15)
+                                    ),),
+                                    SizedBox(height: getProportionateScreenHeight(3),),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10),vertical: getProportionateScreenWidth(3)),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
+                                          color: Colors.white
+                                      ),
+                                      child: Text("Classic Member  >",style: TextStyle(color: AllColors.mainColor),),
                                     ),
-                                    SizedBox(
-                                      height: getProportionateScreenWidth(10),
-                                        width: getProportionateScreenWidth(15),
-                                        child: VerticalDivider(color: Colors.white,width: getProportionateScreenWidth(5),)),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: "Following ",
-                                            style: TextStyle(
-                                                fontSize: getProportionateScreenWidth(13)
-                                            ),
-                                            children: <TextSpan>[
-                                              TextSpan(text: "1",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(13)))
-                                            ]
-                                        )
-                                    ),
+                                    SizedBox(height: getProportionateScreenHeight(3),),
+                                    Row(
+                                      children: <Widget>[
+                                        RichText(
+                                            text: TextSpan(
+                                                text: "Follower ",
+                                                style: TextStyle(
+                                                    fontSize: getProportionateScreenWidth(13)
+                                                ),
+                                                children: <TextSpan>[
+                                                  TextSpan(text: "0",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(13)))
+                                                ]
+                                            )
+                                        ),
+                                        SizedBox(
+                                            height: getProportionateScreenWidth(10),
+                                            width: getProportionateScreenWidth(15),
+                                            child: VerticalDivider(color: Colors.white,width: getProportionateScreenWidth(5),)),
+                                        RichText(
+                                            text: TextSpan(
+                                                text: "Following ",
+                                                style: TextStyle(
+                                                    fontSize: getProportionateScreenWidth(13)
+                                                ),
+                                                children: <TextSpan>[
+                                                  TextSpan(text: "1",style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(13)))
+                                                ]
+                                            )
+                                        ),
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }else{
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: getProportionateScreenWidth(50),
+                                width: getProportionateScreenWidth(50),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,color: Colors.white
+                                ),
+                                child: Icon(Icons.person,color: AllColors.mainColor,size: getProportionateScreenWidth(25),),
+                              ),
+                              Expanded(child: Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(context, LoginScreen.routeName);
+                                    },
+                                    child: Container(
+                                      child: Text("Log In",style: TextStyle(fontWeight: FontWeight.bold,color: AllColors.mainColor),),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: getProportionateScreenWidth(15),
+                                        vertical: getProportionateScreenWidth(8)
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(getProportionateScreenWidth(2))
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: getProportionateScreenWidth(10),),
+                                  InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(context, RegisterScreen.routeName);
+                                    },
+                                    child: Container(
+                                      child: const Text("Sign Up",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: getProportionateScreenWidth(15),
+                                          vertical: getProportionateScreenWidth(8)
+                                      ),
+                                      decoration: BoxDecoration(
+                                          color: AllColors.mainColor,
+                                          borderRadius: BorderRadius.circular(getProportionateScreenWidth(2)),
+                                        border: Border.all(color: Colors.white)
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.end,
+                              ))
+                            ],
+                          ),
+                        );
+                      }
+                    }),
                     SizedBox(height: getProportionateScreenHeight(10),),
                   ],
                 ),

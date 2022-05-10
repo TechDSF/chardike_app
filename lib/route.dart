@@ -1,3 +1,5 @@
+import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
 import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dart';
@@ -24,4 +26,6 @@ var routes = <String, WidgetBuilder>{
   InputBoxPage.routeName: (context) => InputBoxPage(),
   CheckOutPage.routeName: (context) => CheckOutPage(),
   PaymentScreen.routeName: (context) => PaymentScreen(),
+  LoginScreen.routeName: (context) => LoginScreen(),
+  RegisterScreen.routeName: (context) => RegisterScreen()
 };

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
+  static const String routeName = "register_screen";
   final LoginController _loginController = Get.put(LoginController());
 
   @override
