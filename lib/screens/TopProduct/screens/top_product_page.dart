@@ -68,9 +68,9 @@ class TopProductPage extends StatelessWidget {
           ),
             Expanded(child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: _homeController.productList.length,
+                itemCount: _homeController.apiProductList.length,
                 itemBuilder: (context , index){
-                  var result = _homeController.productList[index];
+                  var result = _homeController.apiProductList[index];
                   return InkWell(
                     onTap: (){
                       Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
@@ -90,7 +90,7 @@ class TopProductPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
                                       image: DecorationImage(
-                                          image: AssetImage(result.image[0]),fit: BoxFit.fill
+                                          image: AssetImage(result.featureImage),fit: BoxFit.fill
                                       )
                                   ),
                                 ),
@@ -101,7 +101,7 @@ class TopProductPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text(result.title,style: TextStyle(
+                                      Text(result.name,style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: getProportionateScreenWidth(14)
                                       ),maxLines: 3,),
@@ -121,7 +121,7 @@ class TopProductPage extends StatelessWidget {
                                           const Expanded(flex: 1, child: SizedBox())
                                         ],
                                       ),
-                                      Text(CommonData.takaSign+" "+result.price.toString(),style: TextStyle(color: AllColors.mainColor,fontWeight: FontWeight.bold),)
+                                      Text(CommonData.takaSign+" "+result.newPrice.toString(),style: TextStyle(color: AllColors.mainColor,fontWeight: FontWeight.bold),)
                                     ],
                                   ),
                                 )),

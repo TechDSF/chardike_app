@@ -42,7 +42,7 @@ class SearchProductList extends StatelessWidget {
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
-          Center(child: Icon(Icons.home_outlined,size: getProportionateScreenWidth(30),)),
+          Center(child: Image.asset("asset/icons/home.png",height: getProportionateScreenWidth(25),width: getProportionateScreenWidth(25),)),
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
@@ -58,9 +58,9 @@ class SearchProductList extends StatelessWidget {
       ),
       body: ListView.builder(
           shrinkWrap: true,
-          itemCount: _homeController.productList.length,
+          itemCount: _homeController.apiProductList.length,
           itemBuilder: (context , index){
-            var result = _homeController.productList[index];
+            var result = _homeController.apiProductList[index];
             return InkWell(
               onTap: (){
                 Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
@@ -79,8 +79,9 @@ class SearchProductList extends StatelessWidget {
                             width: getProportionateScreenHeight(150),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
+                                border: Border.all(color: Colors.grey.withOpacity(0.2)),
                                 image: DecorationImage(
-                                    image: AssetImage(result.image[0]),fit: BoxFit.fill
+                                    image: NetworkImage(result.featureImage),fit: BoxFit.fill
                                 )
                             ),
                           ),
@@ -91,7 +92,7 @@ class SearchProductList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(result.title,style: TextStyle(
+                                Text(result.name,style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: getProportionateScreenWidth(14)
                                 ),maxLines: 2,),
@@ -100,14 +101,14 @@ class SearchProductList extends StatelessWidget {
                                     text: '',
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "${result.discount.toString()}% ${CommonData.takaSign}",style: const TextStyle(color: Colors.black)),
-                                      TextSpan(text: '${result.cutPrice}',style: const TextStyle(
+                                          text: "10% ${CommonData.takaSign}",style: const TextStyle(color: Colors.black)),
+                                      TextSpan(text: '${result.oldPrice}',style: const TextStyle(
                                           decoration: TextDecoration.lineThrough,color: Colors.black
                                       )),
                                     ],
                                   ),
                                 ),
-                                Text(CommonData.takaSign + " "+result.price.toString(),style: TextStyle(
+                                Text(CommonData.takaSign + " "+result.newPrice.toString(),style: TextStyle(
                                     fontSize: getProportionateScreenWidth(15),
                                     fontWeight: FontWeight.w600,
                                     color: AllColors.mainColor
@@ -115,7 +116,7 @@ class SearchProductList extends StatelessWidget {
                                 Row(
                                   children: [
                                     RatingBarIndicator(
-                                      rating: result.rating,
+                                      rating: 3,
                                       itemBuilder: (context, index) => const Icon(
                                         Icons.star,
                                         color: Colors.amber,
@@ -124,7 +125,7 @@ class SearchProductList extends StatelessWidget {
                                       itemSize: getProportionateScreenWidth(12),
                                       direction: Axis.horizontal,
                                     ),
-                                    Text("(${result.totalRating})")
+                                    Text("(5)")
                                   ],
                                 ),
                               ],

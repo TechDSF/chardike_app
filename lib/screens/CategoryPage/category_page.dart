@@ -34,22 +34,22 @@ class CategoryScreen extends StatelessWidget {
               NavigationRailDestination(
                 icon: Image.asset("asset/images/category/skin_care.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),),
                 selectedIcon: Image.asset("asset/images/category/skin_care.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),fit: BoxFit.contain,color: Colors.black,),
-                label: const Text('SKIN CARE'),
+                label: Text('SKIN CARE',style: TextStyle(fontSize: getProportionateScreenWidth(13)),),
               ),
               NavigationRailDestination(
                 icon: Image.asset("asset/images/category/body_care.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),),
                 selectedIcon: Image.asset("asset/images/category/body_care.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),fit: BoxFit.contain,color: Colors.black,),
-                label: const Text('BODY CARE'),
+                label: Text('BODY CARE',style: TextStyle(fontSize: getProportionateScreenWidth(13)),),
               ),
               NavigationRailDestination(
                 icon: Image.asset("asset/images/category/hair_care.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),),
                 selectedIcon: Image.asset("asset/images/category/hair_care.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),fit: BoxFit.contain,color: Colors.black,),
-                label: const Text('HAIR CARE'),
+                label: Text('HAIR CARE',style: TextStyle(fontSize: getProportionateScreenWidth(13)),),
               ),
               NavigationRailDestination(
                 icon: Image.asset("asset/images/category/makeup.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),),
                 selectedIcon: Image.asset("asset/images/category/makeup.png",height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),fit: BoxFit.contain,color: Colors.black,),
-                label: const Text('MAKE UP'),
+                label: Text('MAKE UP',style: TextStyle(fontSize: getProportionateScreenWidth(13)),),
               ),
             ],
           ),),
@@ -89,7 +89,7 @@ class CategoryScreen extends StatelessWidget {
             Navigator.push(context, MaterialPageRoute(builder: (_)=>AllProduct(type: result.title,)));
           },
           title: Image.asset(result.icon,height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),),
-          subtitle: Text(result.title,textAlign: TextAlign.center,style: TextStyle(color: Colors.black),),
+          subtitle: Text(result.title,textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(13)),),
         ),
       );
     });

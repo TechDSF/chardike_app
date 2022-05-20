@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/route.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/size_config.dart';
@@ -5,13 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.blue, // navigation bar color
-    statusBarColor: Colors.white, // s// tatus bar color
-    systemNavigationBarIconBrightness: Brightness.light
-  ));
-
   runApp(const MyApp());
 }
 
@@ -25,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Chardike App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           titleSpacing: 0,
@@ -38,7 +33,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: Colors.black
           ),
-          centerTitle: true
+          centerTitle: true, systemOverlayStyle: SystemUiOverlayStyle.light
         )
       ),
       routes: routes,

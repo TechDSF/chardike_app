@@ -1,138 +1,154 @@
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/screens/AuthenticationPage/controller/login_controllr.dart';
+import 'package:chardike/screens/AuthenticationPage/widget/auth_widget.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
   static const String routeName = "register_screen";
   final LoginController _loginController = Get.put(LoginController());
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.9),
       appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.9),
-        elevation: 1,
-        centerTitle: false,
-        leading: Center(child: InkWell(onTap:(){Navigator.pop(context);},child: FaIcon(FontAwesomeIcons.arrowLeft))),
-        title: Text("Register"),
+        leading: InkWell(onTap: (){Navigator.pop(context);},child: Icon(Icons.arrow_back)),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20),vertical:getProportionateScreenWidth(8)),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: getProportionateScreenHeight(50),),
-              Center(child: FaIcon(FontAwesomeIcons.warehouse,size: getProportionateScreenWidth(50),color: AllColors.mainColor,)),
-              SizedBox(height: getProportionateScreenHeight(30),),
+              Container(
+                height: height / 3.7,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("asset/icons/auth/sign_up_icon.png"),fit: BoxFit.contain
+                    )
+                ),
+              ),
+              SizedBox(height: height * 0.020,),
+              Text("Sign Up",style: TextStyle(fontSize: height * 0.025,fontWeight: FontWeight.bold),),
+              SizedBox(height: height * 0.030,),
               Form(
+                key: formKey,
                 child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Phone number",
-                        prefixIcon: Icon(Icons.person_outline_sharp),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red.withOpacity(0.9), width: 0.0),
-                        ),
-                      ),
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            height: height * 0.050,
+                            child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.person,color: Colors.grey,size: height * 0.030,))),
+                        SizedBox(width: getProportionateScreenWidth(20),),
+                        Expanded(
+                          child: TextFormField(
+                            validator: (value){
+                              if(value!.isEmpty){
+                                return "Name is required!";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: "Full Name"
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(height: getProportionateScreenHeight(40),),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(15)),
-                      color: Colors.blue,
-                      child: Center(child: Text("NEXT",style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: getProportionateScreenWidth(16),
-                          color: Colors.white
-                      ),)),
+                    SizedBox(height: height * 0.030,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            height: height * 0.050,
+                            child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.alternate_email,color: Colors.grey,size: height * 0.030,))),
+                        SizedBox(width: getProportionateScreenWidth(20),),
+                        Expanded(
+                          child: TextFormField(
+                            validator: (value){
+                              bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(value!);
+                              if(value.isEmpty){
+                                return "Email is required!";
+                              }else if(!emailValid){
+                                return "Please enter valid email!";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: "demo@gmail.com"
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: height * 0.030,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            height: height * 0.050,
+                            child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.security,color: Colors.grey,size: height * 0.030,))),
+                        SizedBox(width: getProportionateScreenWidth(20),),
+                        Expanded(
+                            child: Obx(()=>TextFormField(
+                              obscureText: _loginController.isVisible.value,
+                              validator: (value){
+                                if(value!.isEmpty){
+                                  return "Password is required!";
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  hintText: "Password",
+                                  suffixIcon: !_loginController.isVisible.value?InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility_off),):InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility),)
+                              ),
+                            ),)
+                        )
+                      ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: getProportionateScreenHeight(20),),
-              Row(
-                children: <Widget>[
-                  Expanded(child: Divider(color: Colors.grey,)),
-                  Padding(child: Text("OR"),padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15))),
-                  Expanded(child: Divider(color: Colors.grey,)),
-                ],
-              ),
-              SizedBox(height: getProportionateScreenHeight(20),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    height: getProportionateScreenWidth(60),
-                    width: getProportionateScreenWidth(60),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        shape: BoxShape.circle
-                    ),
-                    child: Center(child: FaIcon(FontAwesomeIcons.facebook,size: getProportionateScreenWidth(40),)),
+              SizedBox(height: height * 0.040,),
+              RichText(text: TextSpan(
+                  children: [
+                    TextSpan(text: "By signing up, you're agree to our ",style: TextStyle(color: Colors.black.withOpacity(0.7))),
+                    TextSpan(text: "Terms and Conditions ",style: TextStyle(color: Colors.blue)),
+                    TextSpan(text: "and ",style: TextStyle(color: Colors.black.withOpacity(0.7))),
+                    TextSpan(text: "Privacy Policy",style: TextStyle(color: Colors.blue)),
+                  ]
+              )),
+              SizedBox(height: height * 0.040,),
+              InkWell(
+                onTap: (){
+                  if(formKey.currentState!.validate()){
+
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
                   ),
-                  Container(
-                    height: getProportionateScreenWidth(60),
-                    width: getProportionateScreenWidth(60),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        shape: BoxShape.circle
-                    ),
-                    child: Center(child: FaIcon(FontAwesomeIcons.google,size: getProportionateScreenWidth(40),)),
-                  ),
-                  Container(
-                    height: getProportionateScreenWidth(60),
-                    width: getProportionateScreenWidth(60),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        shape: BoxShape.circle
-                    ),
-                    child: Center(child: FaIcon(FontAwesomeIcons.apple,size: getProportionateScreenWidth(40),)),
-                  )
-                ],
-              ),
-              SizedBox(height: getProportionateScreenHeight(20),),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(25)),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: "By signing up, you agree to Chardike's ",
-                    style: TextStyle(
-                      color: Colors.black
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Term of Service',
-                          style: TextStyle(fontWeight: FontWeight.bold,color: AllColors.mainColor)),
-                      TextSpan(text: ' & '),
-                      TextSpan(text: "Privacy Policy",style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AllColors.mainColor
-                      ))
-                    ],
-                  ),
+                  padding: EdgeInsets.all(getProportionateScreenWidth(17)),
+                  child: Center(child: Text("Continue",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                 ),
               ),
-              SizedBox(height: getProportionateScreenHeight(30),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Have a account?"),
-                  InkWell(
-                      onTap: (){
-
-                      },
-                      child: Text("Login",style: TextStyle(fontWeight: FontWeight.bold,color: AllColors.mainColor),))
-                ],
-              )
+              SizedBox(height: height * 0.030,),
+              Center(
+                child: RichText(textAlign: TextAlign.center,text: TextSpan(
+                    children: [
+                      TextSpan(text: "Joined us before? ",style: TextStyle(color: Colors.black.withOpacity(0.7))),
+                      TextSpan(text: "Login ",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold)),
+                    ]
+                )),
+              ),
             ],
           ),
         ),

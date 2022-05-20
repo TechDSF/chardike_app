@@ -186,7 +186,7 @@ class CartScreen extends StatelessWidget {
               ],
             ),
             Obx(() {
-              if (_homeController.isProductDataLoading.value) {
+              if (_homeController.isApiProductLoading.value) {
                 return Shimmer.fromColors(
                   baseColor: Colors.grey.withOpacity(0.1),
                   highlightColor: Colors.grey.withOpacity(0.5),
@@ -203,11 +203,11 @@ class CartScreen extends StatelessWidget {
                       crossAxisCount: 2,
                       childAspectRatio: aspt(300),
                     ),
-                    itemCount: _homeController.productList.length,
+                    itemCount: _homeController.apiProductList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      var result = _homeController.productList[(_homeController.productList.length-1) - index];
+                      var result = _homeController.apiProductList[(_homeController.apiProductList.length-1) - index];
                       return InkWell(
                         onTap: (){
                           Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
@@ -218,7 +218,7 @@ class CartScreen extends StatelessWidget {
                                 top: const BorderSide(color: Colors.grey,width: 0.5),
                                 left: index%2==0?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
                                 right: index%2==0?const BorderSide(color: Colors.grey,width: 0):const BorderSide(color: Colors.grey,width: 0.5),
-                                bottom: index == _homeController.productList.length-1 || index == _homeController.productList.length-2?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
+                                bottom: index == _homeController.apiProductList.length-1 || index == _homeController.apiProductList.length-2?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
                               )
                           ),
                           padding: EdgeInsets.all(getProportionateScreenWidth(8)),
@@ -228,7 +228,7 @@ class CartScreen extends StatelessWidget {
                                 child: Stack(
                                   children: <Widget>[
                                     Image.asset(
-                                      result.image[0],
+                                      result.featureImage,
                                       fit: BoxFit.fill,
                                     ),
                                     Positioned(
@@ -251,7 +251,7 @@ class CartScreen extends StatelessWidget {
                                                           10)))),
                                           child: Center(
                                               child: Text(
-                                                "-${result.discount}%",
+                                                "-10%",
                                                 style: TextStyle(
                                                     fontSize:
                                                     getProportionateScreenWidth(
@@ -267,7 +267,7 @@ class CartScreen extends StatelessWidget {
                               SizedBox(
                                 height: getProportionateScreenHeight(10),
                               ),
-                              Text(result.title,maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
+                              Text(result.name,maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
                                   fontSize: getProportionateScreenWidth(12)
                               ),),
                               SizedBox(
@@ -280,12 +280,12 @@ class CartScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "₺ " + result.price.toString()+" ",
+                                      "₺ " + result.newPrice.toString()+" ",
                                       style: TextStyle(
                                           color: AllColors.mainColor),
                                     ),
                                     Text(
-                                      "₺" + result.price.toString(),
+                                      "₺" + result.oldPrice.toString(),
                                       style: TextStyle(
                                           decoration: TextDecoration.lineThrough,
                                           color: Colors.grey,fontSize: getProportionateScreenWidth(10)),
@@ -299,7 +299,7 @@ class CartScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   RatingBarIndicator(
-                                    rating: result.rating,
+                                    rating: 3,
                                     itemBuilder: (context, index) => const Icon(
                                       Icons.star,
                                       color: Colors.amber,
@@ -308,7 +308,7 @@ class CartScreen extends StatelessWidget {
                                     itemSize: getProportionateScreenWidth(10),
                                     direction: Axis.horizontal,
                                   ),
-                                  Text("(${result.totalRating})",style: TextStyle(
+                                  Text("(5)",style: TextStyle(
                                       fontSize: getProportionateScreenWidth(10)
                                   ),)
                                 ],

@@ -5,7 +5,7 @@ import '../../../size_config.dart';
 
 class ImageSliderItem extends StatefulWidget {
   ImageSliderItem({Key? key,required this.images}) : super(key: key);
-  List<String> images;
+  String images;
 
   @override
   _ImageSliderItemState createState() => _ImageSliderItemState();
@@ -23,12 +23,12 @@ class _ImageSliderItemState extends State<ImageSliderItem> {
         child: Stack(
           children: [
             CarouselSlider.builder(
-                itemCount: widget.images.length,
+                itemCount: 1,
                 itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(widget.images[itemIndex]),
+                          image: NetworkImage(widget.images),
                           fit: BoxFit.cover
                         )
                       ),
@@ -62,7 +62,7 @@ class _ImageSliderItemState extends State<ImageSliderItem> {
                     borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
                     color: Colors.black.withOpacity(0.4)
                 ),
-                child: Text("${itemCount.toString()}/${widget.images.length}",style: TextStyle(color: Colors.white,fontSize: getProportionateScreenWidth(10)),),
+                child: Text("4/5",style: TextStyle(color: Colors.white,fontSize: getProportionateScreenWidth(10)),),
               ),
             )
           ],

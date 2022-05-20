@@ -105,6 +105,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
   Widget build(BuildContext context) {
     final productModel =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -129,20 +130,20 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                   onTap: () {
                     try {
                       _cartController.cartList.add(CartModel(
-                          title: productModel.title,
-                          image: productModel.image[0],
+                          title: productModel.name,
+                          image: productModel.featureImage,
                           quantity:
                           _detailsController.quantityItem.value,
-                          price: productModel.price,
+                          price: int.parse(productModel.newPrice),
                           totalPrice:
                           _detailsController.quantityItem.value *
-                              productModel.price));
+                              int.parse(productModel.newPrice)));
                     } finally {
                       // TODO
                       _detailsController
                           .isHaveCart.value = _cartController.cartList
                           .where((element) =>
-                      element.title == productModel.title)
+                      element.title == productModel.name)
                           .isEmpty
                           ? false
                           : true;
@@ -219,7 +220,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
       slivers: [
         SliverAppBar(
           automaticallyImplyLeading: true,
-          expandedHeight: getProportionateScreenHeight(310 + kToolbarHeight),
+          expandedHeight: getProportionateScreenHeight(320 + kToolbarHeight),
           flexibleSpace: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -263,7 +264,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                   child: Stack(
                     children: [
                       CarouselSlider.builder(
-                        itemCount: productModel.image.length,
+                        itemCount: 1,
                         options: CarouselOptions(
                           height: getProportionateScreenHeight(300),
                           viewportFraction: 1,
@@ -285,8 +286,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                   borderRadius: BorderRadius.circular(
                                       getProportionateScreenWidth(10)),
                                   image: DecorationImage(
-                                      image: AssetImage(
-                                          productModel.image[itemIndex]),
+                                      image: NetworkImage(
+                                          productModel.featureImage),
                                       fit: BoxFit.fill)),
                               width: double.infinity,
                             ),
@@ -322,8 +323,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                         .imageIndex.value
                                         .toString())),
                                     Text("/"),
-                                    Text(productModel.image.length
-                                        .toString())
+                                    Text("1")
                                   ],
                                 ),
                               ),
@@ -389,7 +389,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 title: Text(
                                   CommonData.takaSign +
                                       " " +
-                                      productModel.price.toString(),
+                                      productModel.newPrice.toString(),
                                   style: TextStyle(
                                       fontSize: getProportionateScreenWidth(16),
                                       fontWeight: FontWeight.bold),
@@ -401,16 +401,16 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: CommonData.takaSign +
-                                            productModel.cutPrice.toString(),
+                                            productModel.oldPrice.toString(),
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough,
                                             color:
                                                 Colors.black.withOpacity(0.6)),
                                       ),
-                                      TextSpan(
+                                      const TextSpan(
                                           text: "  -" +
-                                              productModel.discount.toString() +
+                                              "10" +
                                               "%"),
                                     ],
                                   ),
@@ -419,7 +419,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 contentPadding: EdgeInsets.all(0),
                               ),
                               Text(
-                                productModel.title,
+                                productModel.name,
                                 style: TextStyle(
                                     fontSize: getProportionateScreenWidth(18)),
                               ),
@@ -429,7 +429,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               Row(
                                 children: [
                                   RatingBarIndicator(
-                                    rating: productModel.rating,
+                                    rating: 3,
                                     itemBuilder: (context, index) => const Icon(
                                       Icons.star,
                                       color: Colors.amber,
@@ -441,7 +441,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                   SizedBox(
                                     width: getProportionateScreenWidth(5),
                                   ),
-                                  Text(productModel.rating.toString())
+                                  Text("10")
                                 ],
                               ),
                               SizedBox(
@@ -800,10 +800,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                           scrollDirection: Axis.horizontal,
                                           shrinkWrap: true,
                                           itemCount: _homeController
-                                              .productList.length,
+                                              .apiProductList.length,
                                           itemBuilder: (context, index) {
                                             var result = _homeController
-                                                .productList[index];
+                                                .apiProductList[index];
                                             return InkWell(
                                               onTap: () {},
                                               child: Container(
@@ -824,9 +824,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                       child: Container(
                                                         decoration: BoxDecoration(
                                                             image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    result.image[
-                                                                        0]),
+                                                                image: NetworkImage(
+                                                                    result.featureImage),
                                                                 fit: BoxFit
                                                                     .fill),
                                                             borderRadius:
@@ -842,7 +841,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                               5),
                                                     ),
                                                     Text(
-                                                      result.title,
+                                                      result.name,
                                                       maxLines: 2,
                                                       textAlign:
                                                           TextAlign.start,
@@ -860,7 +859,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                       children: [
                                                         Text(
                                                           "₺ " +
-                                                              result.price
+                                                              result.newPrice
                                                                   .toString() +
                                                               " ",
                                                           style: TextStyle(
@@ -869,7 +868,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                         ),
                                                         Text(
                                                           "₺" +
-                                                              result.price
+                                                              result.oldPrice
                                                                   .toString(),
                                                           style: TextStyle(
                                                               decoration:
@@ -889,7 +888,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                               5),
                                                     ),
                                                     RatingBarIndicator(
-                                                      rating: result.rating,
+                                                      rating: 3,
                                                       itemBuilder:
                                                           (context, index) =>
                                                               const Icon(

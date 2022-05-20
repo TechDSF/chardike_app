@@ -65,13 +65,13 @@ class SearchScreen extends StatelessWidget {
               ),
               Wrap(
                 spacing: 8,
-                children: List.generate(_searchController.searchBrandList.length,
+                children: List.generate(_searchController.brandList.length,
                     (index) {
-                  var result = _searchController.searchBrandList[index];
+                  var result = _searchController.brandList[index];
                   return ChoiceChip(
                     labelPadding: const EdgeInsets.all(2.0),
                     label: Text(
-                      result,
+                      result.name,
                       style: TextStyle(color: Colors.black.withOpacity(0.7),fontSize: getProportionateScreenWidth(13))
                     ),
                     selected: true,
@@ -94,13 +94,13 @@ class SearchScreen extends StatelessWidget {
               ),
               Wrap(
                 spacing: 8,
-                children: List.generate(_searchController.searchCategoryList.length,
+                children: List.generate(_searchController.categoryList.length,
                         (index) {
-                      var result = _searchController.searchCategoryList[index];
+                      var result = _searchController.categoryList[index];
                       return ChoiceChip(
                         labelPadding: const EdgeInsets.all(2.0),
                         label: Text(
-                            result,
+                            result.categoryName,
                             style: TextStyle(color: Colors.black.withOpacity(0.7),fontSize: getProportionateScreenWidth(13))
                         ),
                         selected: true,

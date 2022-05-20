@@ -5,6 +5,8 @@ import 'package:chardike/screens/HomePage/screen/home_screen.dart';
 import 'package:chardike/screens/MenuPage/screen/menu_screen.dart';
 import 'package:chardike/screens/SearchPage/screen/search_screen.dart';
 import 'package:chardike/screens/UserPage/screen/user_screen.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainController extends GetxController{
@@ -17,6 +19,7 @@ class MainController extends GetxController{
     // TODO: implement onInit
     super.onInit();
   }
+
 
   var pageList = [
     FeedPage(),

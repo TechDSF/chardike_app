@@ -85,9 +85,9 @@ class FlashSaleDetails extends StatelessWidget {
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: _homeController.flashSaleList.length,
+                      itemCount: _homeController.apiProductList.length,
                       itemBuilder: (context , index){
-                      var result = _homeController.flashSaleList[index];
+                      var result = _homeController.apiProductList[index];
                       return InkWell(
                         onTap: (){
                           Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
@@ -101,8 +101,9 @@ class FlashSaleDetails extends StatelessWidget {
                                     height: getProportionateScreenHeight(120),
                                     width: getProportionateScreenHeight(120),
                                     decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.withOpacity(0.1)),
                                       image: DecorationImage(
-                                        image: AssetImage(result.image[0])
+                                        image: NetworkImage(result.featureImage)
                                       )
                                     ),
                                   ),
@@ -110,8 +111,8 @@ class FlashSaleDetails extends StatelessWidget {
                                   Expanded(child: Column(
                                     children: <Widget>[
                                       const Text("Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
-                                      Text(CommonData.takaSign+result.cutPrice.toString(),style: TextStyle(decoration: TextDecoration.lineThrough),),
-                                      Text(CommonData.takaSign+" "+result.price.toString(),style: TextStyle(
+                                      Text(CommonData.takaSign+result.oldPrice.toString(),style: TextStyle(decoration: TextDecoration.lineThrough),),
+                                      Text(CommonData.takaSign+" "+result.newPrice.toString(),style: TextStyle(
                                         fontSize: getProportionateScreenWidth(15),fontWeight: FontWeight.bold,color: AllColors.mainColor
                                       ),),
                                       Row(
@@ -121,7 +122,7 @@ class FlashSaleDetails extends StatelessWidget {
                                             child: LinearPercentIndicator(
                                               lineHeight: 8.0,
                                               percent: double.parse(
-                                                  (result.totalSold / 100)
+                                                  (23 / 100)
                                                       .toStringAsFixed(1)),
                                               progressColor: Colors.orange,
                                             ),

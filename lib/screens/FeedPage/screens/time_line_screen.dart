@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/FeedPage/components/image_slider_item.dart';
 import 'package:chardike/screens/FeedPage/controller/feed_controller.dart';
+import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,13 +11,14 @@ import 'package:get/get.dart';
 class TimeLineScreen extends StatelessWidget {
   TimeLineScreen({Key? key}) : super(key: key);
   final FeedController _feedController = Get.put(FeedController());
+  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: _feedController.timeLineList.length,
+      itemCount: _homeController.apiProductList.length,
         itemBuilder: (context, index) {
-        var result = _feedController.timeLineList[index];
+        var result = _homeController.apiProductList[index];
       return Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(10)),
@@ -43,7 +45,7 @@ class TimeLineScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: getProportionateScreenWidth(10),),
-            ImageSliderItem(images: result.image),
+            ImageSliderItem(images: result.featureImage),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
               child: Column(
@@ -56,7 +58,7 @@ class TimeLineScreen extends StatelessWidget {
                         children: [
                           Icon(Icons.favorite_border,color: Colors.grey,size: getProportionateScreenWidth(20),),
                           SizedBox(width: getProportionateScreenWidth(5),),
-                          Text(result.totalLike.toString(),style: TextStyle(color: Colors.grey,fontSize: getProportionateScreenWidth(12)),)
+                          Text("216",style: TextStyle(color: Colors.grey,fontSize: getProportionateScreenWidth(12)),)
                         ],
                       ),
                       SizedBox(width: getProportionateScreenWidth(15),),
@@ -64,7 +66,7 @@ class TimeLineScreen extends StatelessWidget {
                         children: [
                           Icon(Icons.mode_comment_outlined,color: Colors.grey,size: getProportionateScreenWidth(20),),
                           SizedBox(width: getProportionateScreenWidth(5),),
-                          Text(result.totalComment.toString(),style: TextStyle(color: Colors.grey,fontSize: getProportionateScreenWidth(12)),)
+                          Text("50".toString(),style: TextStyle(color: Colors.grey,fontSize: getProportionateScreenWidth(12)),)
                         ],
                       ),
                       SizedBox(width: getProportionateScreenWidth(10),),
@@ -76,7 +78,7 @@ class TimeLineScreen extends StatelessWidget {
                   RichText(text: TextSpan(
                       children: [
                         TextSpan(text: "Chardike ",style: TextStyle(fontSize: getProportionateScreenWidth(13),fontWeight: FontWeight.bold,color: Colors.black)),
-                        TextSpan(text: result.title,style: CommonData.customTextStyle())
+                        TextSpan(text: result.name,style: CommonData.customTextStyle())
                       ]
                   )),
                   SizedBox(height: getProportionateScreenWidth(10),),
@@ -106,7 +108,8 @@ class TimeLineScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: getProportionateScreenWidth(3),),
-                  Text(CommonData.findOutDifferenceDate(result.postHour),style: TextStyle(fontSize: getProportionateScreenWidth(10)),)
+                  Text("a month ago",style: TextStyle(fontSize: getProportionateScreenWidth(10)),)
+                  //Text(CommonData.findOutDifferenceDate(result.postHour),style: TextStyle(fontSize: getProportionateScreenWidth(10)),)
                 ],
               ),
             )

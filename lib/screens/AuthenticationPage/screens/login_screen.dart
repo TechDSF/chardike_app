@@ -1,8 +1,10 @@
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/screens/AuthenticationPage/controller/login_controllr.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/forgot_password.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -10,136 +12,162 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   static const String routeName = "login_screen";
   final LoginController _loginController = Get.put(LoginController());
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.9),
       appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.9),
-        elevation: 1,
-        centerTitle: false,
-        leading: Center(child: InkWell(onTap:(){Navigator.pop(context);},child: FaIcon(FontAwesomeIcons.arrowLeft))),
-        title: Text("Log In"),
-        actions: [
-          IconButton(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.circleQuestion,color: AllColors.mainColor,))
-        ],
+        leading: InkWell(onTap: (){Navigator.pop(context);},child: Icon(Icons.arrow_back)),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20),vertical:getProportionateScreenWidth(8)),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: getProportionateScreenHeight(50),),
-              Center(child: FaIcon(FontAwesomeIcons.warehouse,size: getProportionateScreenWidth(50),color: AllColors.mainColor,)),
-              SizedBox(height: getProportionateScreenHeight(30),),
+              Container(
+                height: height / 3.7,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("asset/icons/auth/login_icon.png"),fit: BoxFit.contain
+                  )
+                ),
+              ),
+              SizedBox(height: height * 0.020,),
+              Text("Login",style: TextStyle(fontSize: height * 0.025,fontWeight: FontWeight.bold),),
+              SizedBox(height: height * 0.030,),
               Form(
+                key: formKey,
                 child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Phone/Email/Username",
-                        prefixIcon: Icon(Icons.person_outline_sharp),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red.withOpacity(0.9), width: 0.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: getProportionateScreenHeight(10),),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Password",
-                        prefixIcon: Icon(Icons.security),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red.withOpacity(0.9), width: 0.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: getProportionateScreenHeight(40),),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(15)),
-                      color: Colors.blue,
-                      child: Center(child: Text("Login",style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: getProportionateScreenWidth(16),
-                        color: Colors.white
-                      ),)),
-                    ),
+                  children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Obx(()=>Checkbox(value: _loginController.checkBoxValue.value, onChanged: (value){
-                              _loginController.checkBoxValue.value = value!;
-                            }),),
-                            Text("Remember me")
-                          ],
-                        ),
-                        Text("I forgot my password")
+                        SizedBox(
+                            height: height * 0.050,
+                            child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.alternate_email,color: Colors.grey,size: height * 0.030,))),
+                        SizedBox(width: getProportionateScreenWidth(20),),
+                        Expanded(
+                          child: TextFormField(
+                            validator: (value){
+                              bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(value!);
+                              if(value.isEmpty){
+                                return "Email is required!";
+                              }else if(!emailValid){
+                                return "Please enter valid email!";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: "Email ID"
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: height * 0.030,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            height: height * 0.050,
+                            child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.security,color: Colors.grey,size: height * 0.030,))),
+                        SizedBox(width: getProportionateScreenWidth(20),),
+                        Expanded(
+                          child: Obx(()=>TextFormField(
+                            obscureText: _loginController.isVisible.value,
+                            validator: (value){
+                              if(value!.isEmpty){
+                                return "Password is required!";
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: "Password",
+                                suffixIcon: !_loginController.isVisible.value?InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility_off),):InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility),)
+                            ),
+                          ),)
+                        )
                       ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: getProportionateScreenHeight(20),),
+              SizedBox(height: height * 0.030,),
+              Align(alignment: Alignment.centerRight,child: InkWell(onTap: (){
+                Navigator.pushNamed(context, ForgotPassword.routeName);
+              },child: const Text("Forgot Password?",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w500),))),
+              SizedBox(height: height * 0.040,),
+              InkWell(
+                onTap: (){
+                  if(formKey.currentState!.validate()){
+
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
+                  ),
+                  padding: EdgeInsets.all(getProportionateScreenWidth(17)),
+                  child: Center(child: Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
+                ),
+              ),
+              SizedBox(height: height * 0.030,),
               Row(
                 children: <Widget>[
-                  Expanded(child: Divider(color: Colors.grey,)),
-                  Padding(child: Text("OR"),padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15))),
-                  Expanded(child: Divider(color: Colors.grey,)),
+                  Expanded(child: Divider()),
+                  SizedBox(width: getProportionateScreenWidth(10),),
+                  Text("OR",style: TextStyle(color: Colors.black.withOpacity(0.7)),),
+                  SizedBox(width: getProportionateScreenWidth(10),),
+                  Expanded(child: Divider()),
                 ],
               ),
-              SizedBox(height: getProportionateScreenHeight(20),),
+              SizedBox(height: height * 0.020,),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    height: getProportionateScreenWidth(60),
-                    width: getProportionateScreenWidth(60),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      shape: BoxShape.circle
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset("asset/icons/auth/social icon-01.png",height: getProportionateScreenHeight(50),width: getProportionateScreenHeight(50),),
+                          Expanded(child: Center(child: Text("Facebook",style: TextStyle(color: Colors.black.withOpacity(0.8),fontWeight: FontWeight.bold),))),
+                        ],
+                      ),
                     ),
-                    child: Center(child: FaIcon(FontAwesomeIcons.facebook,size: getProportionateScreenWidth(40),)),
                   ),
-                  Container(
-                    height: getProportionateScreenWidth(60),
-                    width: getProportionateScreenWidth(60),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        shape: BoxShape.circle
+                  SizedBox(width: getProportionateScreenWidth(10),),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset("asset/icons/auth/social icon-14.png",height: getProportionateScreenHeight(50),width: getProportionateScreenHeight(50),),
+                          Expanded(child: Center(child: Text("Google",style: TextStyle(color: Colors.black.withOpacity(0.8),fontWeight: FontWeight.bold),))),
+                        ],
+                      ),
                     ),
-                    child: Center(child: FaIcon(FontAwesomeIcons.google,size: getProportionateScreenWidth(40),)),
                   ),
-                  Container(
-                    height: getProportionateScreenWidth(60),
-                    width: getProportionateScreenWidth(60),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        shape: BoxShape.circle
-                    ),
-                    child: Center(child: FaIcon(FontAwesomeIcons.apple,size: getProportionateScreenWidth(40),)),
-                  )
                 ],
               ),
-              SizedBox(height: getProportionateScreenHeight(20),),
+              SizedBox(height: height * 0.030,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("New to Chardike?"),
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>RegisterScreen()));
-                    },
-                      child: Text("Register",style: TextStyle(fontWeight: FontWeight.bold,color: AllColors.mainColor),))
+                  Text("New to Logistic?",style: TextStyle(color: Colors.black.withOpacity(0.7))),
+                  TextButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterScreen()));
+                  }, child: Text("Register",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),))
                 ],
-              )
+              ),
             ],
           ),
         ),

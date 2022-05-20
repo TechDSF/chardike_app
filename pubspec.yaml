@@ -59,6 +59,10 @@ dependencies:
   dotted_line: ^3.1.0
   image_picker: ^0.8.5
   jiffy: ^5.0.0
+  loader_overlay: ^2.0.6
+  flutter_fortune_wheel: ^1.2.0
+  animated_bottom_navigation_bar: ^0.3.2
+  pin_code_fields: ^7.4.0
 
 
 flutter_native_splash:
@@ -97,10 +101,7 @@ flutter:
   assets:
     - asset/images/
     - asset/icons/
-    - asset/images/flashImage/
-    - asset/images/catImage/
-    - asset/images/menu/
-    - asset/images/topProduct/
+    - asset/icons/auth/
     - asset/images/category/
     - asset/images/category/subCategory/
   #   - images/a_dot_ham.jpeg

@@ -88,7 +88,7 @@ class FAppBar extends SliverAppBar {
             child: Stack(
               children: [
                 CarouselSlider.builder(
-                  itemCount: productModel.image.length,
+                  itemCount: 1,
                   options: CarouselOptions(
                     height: getProportionateScreenHeight(300),
                     viewportFraction: 1,
@@ -111,7 +111,7 @@ class FAppBar extends SliverAppBar {
                                 getProportionateScreenWidth(10)),
                             image: DecorationImage(
                                 image: AssetImage(
-                                    productModel.image[itemIndex]),
+                                    productModel.featureImage),
                                 fit: BoxFit.fill)),
                         width: double.infinity,
                       ),
@@ -147,8 +147,7 @@ class FAppBar extends SliverAppBar {
                                   .imageIndex.value
                                   .toString())),
                               Text("/"),
-                              Text(productModel.image.length
-                                  .toString())
+                              Text("1")
                             ],
                           ),
                         ),

@@ -1,4 +1,7 @@
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
+import 'package:chardike/screens/UserPage/components/edit_phone_page.dart';
+import 'package:chardike/screens/UserPage/components/link_social_media.dart';
 import 'package:chardike/screens/UserPage/controller/edit_profile_controller.dart';
 import 'package:chardike/screens/UserPage/screen/inputbox_page.dart';
 import 'package:chardike/size_config.dart';
@@ -52,6 +55,7 @@ class EditProfile extends StatelessWidget {
         },
       );
     }
+
     void openGenderDialog(BuildContext context) {
       showGeneralDialog(
         barrierLabel: "Barrier",
@@ -233,7 +237,10 @@ class EditProfile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-                title: Text("Phone"),
+              onTap: (){
+                Navigator.pushNamed(context, EditPhone.routeName);
+              },
+                title: const Text("Phone"),
                 trailing: RichText(
                   text: TextSpan(
                     children: [
@@ -250,7 +257,7 @@ class EditProfile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-                title: Text("Phone"),
+                title: const Text("Email"),
                 trailing: RichText(
                   text: TextSpan(
                     children: [
@@ -270,6 +277,9 @@ class EditProfile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, LinkSocialMedia.routeName);
+              },
                 title: Text("Social Media Accounts"),
                 trailing: RichText(
                   text: TextSpan(
@@ -288,6 +298,9 @@ class EditProfile extends StatelessWidget {
               color: Colors.grey.withOpacity(0.1),
             ),
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, OtpScreen.routeName);
+              },
                 title: Text("Set Password"),
                 trailing: RichText(
                   text: TextSpan(

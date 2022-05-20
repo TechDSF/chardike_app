@@ -1,41 +1,158 @@
+import 'dart:async';
+
+import 'package:chardike/Service/ApiService/api_service.dart';
 import 'package:chardike/screens/HomePage/model/flash_sale_model.dart';
+import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../size_config.dart';
 
 class HomeController extends GetxController{
+
+  late SharedPreferences preferences;
+  var perDayDiscountItem = 6.obs;
 
   var isSliderDataLoading =false.obs;
   List<SliderModel> sliderList = List<SliderModel>.empty(growable:true).obs;
   var dotIndex = 0.obs;
+  final navigatorKey = GlobalKey<NavigatorState>();
+  late Timer timer;
 
   var isProdctTypeDataLoading =false.obs;
   List<SliderModel> productTypeList = List<SliderModel>.empty(growable:true).obs;
   ScrollController scrollController = ScrollController();
 
-  var isFlashSaleDataLoading =false.obs;
-  List<ProductModel> flashSaleList = List<ProductModel>.empty(growable:true).obs;
 
-  var isRelatedProductDataLoading =false.obs;
-  List<ProductModel> relatedProductList = List<ProductModel>.empty(growable:true).obs;
 
-  var isCategoryDataLoading =false.obs;
-  List<SliderModel> categoryList = List<SliderModel>.empty(growable:true).obs;
+   var isCategoryDataLoading =false.obs;
+   List<SliderModel> categoryList = List<SliderModel>.empty(growable:true).obs;
+  //
+  // var isProductDataLoading =false.obs;
+  // List<ProductModel> productList = List<ProductModel>.empty(growable:true).obs;
 
-  var isProductDataLoading =false.obs;
-  List<ProductModel> productList = List<ProductModel>.empty(growable:true).obs;
+  var isApiProductLoading = false.obs;
+  List<ProductModel> apiProductList = List<ProductModel>.empty(growable: true).obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     getSliderItem();
     getProductType();
-    getFlashSaleData();
     getCategoryData();
-    getProduct();
-    getRelatedProduct();
+    getApiProduct();
+    checkYourDiscount();
+    openDiscountBanner();
     super.onInit();
+  }
+
+  checkYourDiscount()async{
+    preferences = await SharedPreferences.getInstance();
+    int date = preferences.getInt("discount") ?? 100;
+    if(date == 100){
+      preferences.setInt("discount", DateTime.now().day);
+      preferences.setInt("totalDiscount", 0);
+      perDayDiscountItem.value = 0;
+    }else if(date == DateTime.now().day){
+      perDayDiscountItem.value = preferences.getInt("totalDiscount")!;
+    }else if(date != DateTime.now().day){
+      preferences.setInt("discount", DateTime.now().day);
+      preferences.setInt("totalDiscount", 0);
+      perDayDiscountItem.value = 0;
+    }
+  }
+
+  setPerDayDiscount()async{
+    preferences = await SharedPreferences.getInstance();
+    perDayDiscountItem.value = perDayDiscountItem.value + 1;
+    preferences.setInt("totalDiscount" , perDayDiscountItem.value);
+  }
+
+  openDiscountBanner()async{
+    Future.delayed(Duration(seconds: 5), (){
+      showGeneralDialog(
+        context: navigatorKey.currentContext!,
+        barrierLabel: "Barrier",
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: Duration(milliseconds: 700),
+        pageBuilder: (_, __, ___) {
+          return Center(
+            child: Container(
+              height: SizeConfig.screenHeight / 2.5,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      height: getProportionateScreenHeight(40),
+                      width: getProportionateScreenHeight(40),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white
+                      ),
+                      child: Center(child: GestureDetector(onTap: (){Navigator.pop(navigatorKey.currentContext!);},child: Icon(Icons.clear,size: getProportionateScreenHeight(20),)),),
+                    ),
+                  ),
+                  SizedBox(height: getProportionateScreenHeight(10),),
+                  Expanded(child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
+                      image: DecorationImage(
+                        image: AssetImage("asset/images/supar_sale_discount_image.png")
+                      )
+                    ),
+                  ))
+                ],
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.transparent, borderRadius: BorderRadius.circular(40)
+              ),
+            ),
+          );
+        },
+        transitionBuilder: (_, anim, __, child) {
+          Tween<Offset> tween;
+          if (anim.status == AnimationStatus.reverse) {
+            tween = Tween(begin: Offset(0, 0), end: Offset.zero);
+          } else {
+            tween = Tween(begin: Offset(0, 0), end: Offset.zero);
+          }
+
+          return SlideTransition(
+            position: tween.animate(anim),
+            child: FadeTransition(
+              opacity: anim,
+              child: child,
+            ),
+          );
+        },
+      );
+    });
+
+  }
+
+  getApiProduct()async{
+    isApiProductLoading(true);
+    var data = await ApiService.fetchProducts();
+    if(data.runtimeType == int){
+      isApiProductLoading(false);
+      Fluttertoast.showToast(msg: "Product fetch error");
+    }else{
+      ProductResult myData = data;
+      myData.results.forEach((element) {
+        apiProductList.add(element);
+      });
+      isApiProductLoading(false);
+    }
   }
 
   getSliderItem(){
@@ -73,48 +190,6 @@ class HomeController extends GetxController{
     isProdctTypeDataLoading(false);
   }
 
-  getFlashSaleData(){
-    isFlashSaleDataLoading(true);
-    var lis = [
-      FlashSaleModel(discount: "59", soldNumber: 146, price: 1099,image: "asset/images/flashImage/flash_sale_1.jpeg",total: 150),
-      FlashSaleModel(discount: "48", soldNumber: 48, price: 1550,image: "asset/images/flashImage/flash_sale_2.jpeg",total:100),
-      FlashSaleModel(discount: "2", soldNumber: 47, price: 4490,image: "asset/images/flashImage/flash_sale_3.jpeg",total: 100),
-      FlashSaleModel(discount: "30", soldNumber: 171, price: 2029,image: "asset/images/flashImage/flash_sale_4.jpeg",total: 200),
-      FlashSaleModel(discount: "26", soldNumber: 35, price: 2822,image: "asset/images/flashImage/flash_sale_5.jpg",total: 50),
-      FlashSaleModel(discount: "17", soldNumber: 50, price: 2499,image: "asset/images/flashImage/flash_sale_6.png",total: 100),
-      FlashSaleModel(discount: "17", soldNumber: 50, price: 2499,image: "asset/images/flashImage/flash_sale_7.jpeg",total: 100),
-    ];
-    
-    var list = [
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_1.jpeg","asset/images/flashImage/flash_sale_4.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_2.jpeg","asset/images/flashImage/flash_sale_5.jpg"], rating: 4.0, totalRating: 23, totalSold: 50, price: 270, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_3.jpeg","asset/images/flashImage/flash_sale_6.png"], rating: 4.8, totalRating: 12, totalSold: 30, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_4.jpeg","asset/images/flashImage/flash_sale_7.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_5.jpg","asset/images/flashImage/flash_sale_1.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_6.png","asset/images/flashImage/flash_sale_2.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_7.jpeg","asset/images/flashImage/flash_sale_3.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-    ];
-    flashSaleList = list;
-    isFlashSaleDataLoading(false);
-  }
-
-  getRelatedProduct(){
-    isRelatedProductDataLoading(true);
-    var list = [
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_7.jpeg","asset/images/flashImage/flash_sale_3.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_5.jpg","asset/images/flashImage/flash_sale_1.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_6.png","asset/images/flashImage/flash_sale_2.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_7.jpeg","asset/images/flashImage/flash_sale_3.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_4.jpeg","asset/images/flashImage/flash_sale_7.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_1.jpeg","asset/images/flashImage/flash_sale_4.jpeg"], rating: 4.5, totalRating: 30, totalSold: 50, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_2.jpeg","asset/images/flashImage/flash_sale_5.jpg"], rating: 4.0, totalRating: 23, totalSold: 50, price: 270, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-      ProductModel(title: "Title Demo", image: ["asset/images/flashImage/flash_sale_3.jpeg","asset/images/flashImage/flash_sale_6.png"], rating: 4.8, totalRating: 12, totalSold: 30, price: 150, cutPrice: 180, discount: 10, isFree: true, shoppingFrom: "Dhaka", shoppingFee: "90"),
-    ];
-    relatedProductList = list;
-    isRelatedProductDataLoading(false);
-  }
-
-
   getCategoryData(){
     isCategoryDataLoading(true);
     var list = [
@@ -136,429 +211,4 @@ class HomeController extends GetxController{
     isCategoryDataLoading(false);
   }
 
-  getProduct(){
-    isProductDataLoading(true);
-    var list = [
-      ProductModel(
-          title: "Cosrx Salicylic Acid Daily Gentle Cleanser- 150ml",
-          image: [
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 970, cutPrice: 1000,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Laneige Lip Sleeping Mask Berry- 3g",
-          image: [
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg"
-          ],
-          rating: 4.5,
-          totalRating: 7, totalSold: 16,
-          price: 320, cutPrice: 350,
-          discount: 17, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Tiam Vita B3 Source Serum- 40ml",
-          image: [
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg"
-          ],
-          rating: 4.0,
-          totalRating: 14, totalSold: 26,
-          price: 1220, cutPrice: 1500,
-          discount: 30, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Missha Soft Finish Sun Milk- 70ml",
-          image: [
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg"
-          ],
-          rating: 4.7,
-          totalRating: 41, totalSold: 60,
-          price: 1350, cutPrice: 1500,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Snail Truecica Miracle Repair Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg"
-          ],
-          rating: 4.9,
-          totalRating: 4, totalSold: 6,
-          price: 1330, cutPrice: 1500,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Yuja Niacin 30 Days Brightening Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg"
-          ],
-          rating: 4.6,
-          totalRating: 34, totalSold: 46,
-          price: 1250, cutPrice: 1300,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Centella Blemish Cream- 30g",
-          image: [
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 1250, cutPrice: 1400,
-          discount: 15, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Acne Pimple Master Patch- 24 Patch",
-          image: [
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 330, cutPrice: 400,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Salicylic Acid Daily Gentle Cleanser- 150ml",
-          image: [
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 970, cutPrice: 1000,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Laneige Lip Sleeping Mask Berry- 3g",
-          image: [
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg"
-          ],
-          rating: 4.5,
-          totalRating: 7, totalSold: 16,
-          price: 320, cutPrice: 350,
-          discount: 17, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Tiam Vita B3 Source Serum- 40ml",
-          image: [
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg"
-          ],
-          rating: 4.0,
-          totalRating: 14, totalSold: 26,
-          price: 1220, cutPrice: 1500,
-          discount: 30, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Missha Soft Finish Sun Milk- 70ml",
-          image: [
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg"
-          ],
-          rating: 4.7,
-          totalRating: 41, totalSold: 60,
-          price: 1350, cutPrice: 1500,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Snail Truecica Miracle Repair Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg"
-          ],
-          rating: 4.9,
-          totalRating: 4, totalSold: 6,
-          price: 1330, cutPrice: 1500,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Yuja Niacin 30 Days Brightening Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg"
-          ],
-          rating: 4.6,
-          totalRating: 34, totalSold: 46,
-          price: 1250, cutPrice: 1300,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Centella Blemish Cream- 30g",
-          image: [
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 1250, cutPrice: 1400,
-          discount: 15, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Acne Pimple Master Patch- 24 Patch",
-          image: [
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 330, cutPrice: 400,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Salicylic Acid Daily Gentle Cleanser- 150ml",
-          image: [
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 970, cutPrice: 1000,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Laneige Lip Sleeping Mask Berry- 3g",
-          image: [
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg"
-          ],
-          rating: 4.5,
-          totalRating: 7, totalSold: 16,
-          price: 320, cutPrice: 350,
-          discount: 17, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Tiam Vita B3 Source Serum- 40ml",
-          image: [
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg"
-          ],
-          rating: 4.0,
-          totalRating: 14, totalSold: 26,
-          price: 1220, cutPrice: 1500,
-          discount: 30, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Missha Soft Finish Sun Milk- 70ml",
-          image: [
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg"
-          ],
-          rating: 4.7,
-          totalRating: 41, totalSold: 60,
-          price: 1350, cutPrice: 1500,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Snail Truecica Miracle Repair Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg"
-          ],
-          rating: 4.9,
-          totalRating: 4, totalSold: 6,
-          price: 1330, cutPrice: 1500,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Yuja Niacin 30 Days Brightening Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg"
-          ],
-          rating: 4.6,
-          totalRating: 34, totalSold: 46,
-          price: 1250, cutPrice: 1300,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Centella Blemish Cream- 30g",
-          image: [
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 1250, cutPrice: 1400,
-          discount: 15, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Acne Pimple Master Patch- 24 Patch",
-          image: [
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 330, cutPrice: 400,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Salicylic Acid Daily Gentle Cleanser- 150ml",
-          image: [
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 970, cutPrice: 1000,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Laneige Lip Sleeping Mask Berry- 3g",
-          image: [
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg"
-          ],
-          rating: 4.5,
-          totalRating: 7, totalSold: 16,
-          price: 320, cutPrice: 350,
-          discount: 17, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Tiam Vita B3 Source Serum- 40ml",
-          image: [
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg"
-          ],
-          rating: 4.0,
-          totalRating: 14, totalSold: 26,
-          price: 1220, cutPrice: 1500,
-          discount: 30, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Missha Soft Finish Sun Milk- 70ml",
-          image: [
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg"
-          ],
-          rating: 4.7,
-          totalRating: 41, totalSold: 60,
-          price: 1350, cutPrice: 1500,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Snail Truecica Miracle Repair Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg",
-            "asset/images/topProduct/tp_5.jpeg",
-            "asset/images/topProduct/tp_1.jpeg"
-          ],
-          rating: 4.9,
-          totalRating: 4, totalSold: 6,
-          price: 1330, cutPrice: 1500,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Some By Mi Yuja Niacin 30 Days Brightening Starter Kit",
-          image: [
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg",
-            "asset/images/topProduct/tp_6.jpeg",
-            "asset/images/topProduct/tp_2.jpeg"
-          ],
-          rating: 4.6,
-          totalRating: 34, totalSold: 46,
-          price: 1250, cutPrice: 1300,
-          discount: 5, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Centella Blemish Cream- 30g",
-          image: [
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg",
-            "asset/images/topProduct/tp_7.jpeg",
-            "asset/images/topProduct/tp_3.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 1250, cutPrice: 1400,
-          discount: 15, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-      ProductModel(
-          title: "Cosrx Acne Pimple Master Patch- 24 Patch",
-          image: [
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg",
-            "asset/images/topProduct/tp_8.jpeg",
-            "asset/images/topProduct/tp_4.jpeg"
-          ],
-          rating: 5.0,
-          totalRating: 4, totalSold: 6,
-          price: 330, cutPrice: 400,
-          discount: 20, isFree: true,
-          shoppingFrom: "Mainland Korea", shoppingFee: "90"),
-    ];
-
-    productList = list;
-    isProductDataLoading(false);
-
-  }
 }
