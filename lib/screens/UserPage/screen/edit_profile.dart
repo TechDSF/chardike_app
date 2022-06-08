@@ -1,4 +1,5 @@
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
 import 'package:chardike/screens/UserPage/components/edit_phone_page.dart';
 import 'package:chardike/screens/UserPage/components/link_social_media.dart';
@@ -13,6 +14,7 @@ class EditProfile extends StatelessWidget {
   EditProfile({Key? key}) : super(key: key);
   static const String routeName = "/edit_profile";
   final EditProfileController _editProfileController = Get.put(EditProfileController());
+  final UserDataController _userDataController = Get.put(UserDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +30,17 @@ class EditProfile extends StatelessWidget {
           return AlertDialog(
             content: Text("You can change your username only one time. Please think long and hard when choosing a new username."),
             actions: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: Text("CANCEL"),
-                color: Colors.white,
-                elevation: 0,
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: Text("CONTINUE",style: TextStyle(color: AllColors.mainColor),),
-                color: Colors.white,
-                elevation: 0,
               ),
             ],
           );
@@ -134,14 +132,14 @@ class EditProfile extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(10),),
             ListTile(
               onTap: (){
-                Navigator.pushNamed(context, InputBoxPage.routeName,arguments: {"data":"Roben Baskey","type":"name"});
+                Navigator.pushNamed(context, InputBoxPage.routeName,arguments: {"data":_userDataController.fullName.value,"type":"name"});
               },
               title: Text("Name"),
               trailing: RichText(
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "Roben Baskey ",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(13)),
+                      text: "${_userDataController.fullName.value} ",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(13)),
                     ),
                     WidgetSpan(
                       child: Icon(Icons.arrow_forward_ios, size: getProportionateScreenWidth(15)),
@@ -161,7 +159,7 @@ class EditProfile extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "robenbaskey017 ",style: TextStyle(color: Colors.black.withOpacity(0.8),fontSize: getProportionateScreenWidth(13)),
+                        text: "${_userDataController.userName.value} ",style: TextStyle(color: Colors.black.withOpacity(0.8),fontSize: getProportionateScreenWidth(13)),
                       ),
                       WidgetSpan(
                         child: Icon(Icons.arrow_forward_ios, size: getProportionateScreenWidth(15)),
@@ -245,7 +243,7 @@ class EditProfile extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Set Now ",style: TextStyle(color: AllColors.mainColor,fontSize: getProportionateScreenWidth(13)),
+                        text: "${_userDataController.phone.value} ",style: TextStyle(color: AllColors.mainColor,fontSize: getProportionateScreenWidth(13)),
                       ),
                       WidgetSpan(
                         child: Icon(Icons.arrow_forward_ios, size: getProportionateScreenWidth(15)),
@@ -262,7 +260,7 @@ class EditProfile extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "baskeyjames10@gmail.com ",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(13)),
+                        text: "${_userDataController.email.value} ",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(13)),
                       ),
                       TextSpan(
                         text: "Verify Now ",style: TextStyle(color: AllColors.mainColor,fontSize: getProportionateScreenWidth(13)),

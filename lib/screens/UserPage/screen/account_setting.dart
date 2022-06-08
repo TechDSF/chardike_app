@@ -17,13 +17,14 @@ class AccountSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTab = SizeConfig.screenWidth > 768;
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
         centerTitle: false,
         title: Text("Account Settings"),
         actions: <Widget>[
-          CommonData.icon(icon: "asset/icons/messenger.png", color: AllColors.mainColor),
+          CommonData.icon(icon: "asset/icons/messenger.png", color: AllColors.mainColor,isTab: isTab),
           SizedBox(width: getProportionateScreenWidth(10),)
         ],
       ),

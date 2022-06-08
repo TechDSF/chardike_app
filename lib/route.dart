@@ -10,12 +10,14 @@ import 'package:chardike/screens/ChardikeService/screens/community_rulse.dart';
 import 'package:chardike/screens/ChardikeService/screens/help_center.dart';
 import 'package:chardike/screens/ChardikeService/screens/tips_tricks_screen.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
+import 'package:chardike/screens/FeatureProduct/screens/feature_products.dart';
 import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/screens/PaymentMethodPage/screen/payment_screen.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
-import 'package:chardike/screens/SearchPage/screen/search_screen.dart';
+import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
+import 'package:chardike/screens/TopProduct/screens/top_product_main.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_page.dart';
 import 'package:chardike/screens/UserPage/components/edit_phone_page.dart';
 import 'package:chardike/screens/UserPage/components/link_social_media.dart';
@@ -49,5 +51,7 @@ var routes = <String, WidgetBuilder>{
   TipsTricksScreen.routeName: (context) => TipsTricksScreen(),
   CommunityRules.routeName: (context) => CommunityRules(),
   ChardikePolicy.routeName: (context) => ChardikePolicy(),
-  AboutChardike.routeName: (context) => AboutChardike()
+  AboutChardike.routeName: (context) => AboutChardike(),
+  TopProductMain.routeName: (context) => TopProductMain(),
+  FeatureProduct.routeName: (context) => FeatureProduct()
 };

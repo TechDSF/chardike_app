@@ -40,6 +40,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
 
   // prevent animate when press on tab bar
   bool pauseRectGetterIndex = false;
+  bool isTab = SizeConfig.screenWidth > 768;
 
   @override
   void initState() {
@@ -130,7 +131,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                   onTap: () {
                     try {
                       _cartController.cartList.add(CartModel(
-                          title: productModel.name,
+                          title: productModel.productName.toString(),
                           image: productModel.featureImage,
                           quantity:
                           _detailsController.quantityItem.value,
@@ -143,7 +144,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                       _detailsController
                           .isHaveCart.value = _cartController.cartList
                           .where((element) =>
-                      element.title == productModel.name)
+                      element.title == productModel.productName.toString())
                           .isEmpty
                           ? false
                           : true;
@@ -166,7 +167,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                         children: <Widget>[
                           CommonData.icon(
                               icon: "asset/icons/cart.png",
-                              color: Colors.blue),
+                              color: Colors.blue,isTab: isTab),
                           SizedBox(
                             width: getProportionateScreenWidth(5),
                           ),
@@ -220,7 +221,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
       slivers: [
         SliverAppBar(
           automaticallyImplyLeading: true,
-          expandedHeight: getProportionateScreenHeight(320 + kToolbarHeight),
+          expandedHeight: isTab?getProportionateScreenHeight(450 + kToolbarHeight):getProportionateScreenHeight(320 + kToolbarHeight),
           flexibleSpace: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -236,7 +237,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                             },
                             child: CommonData.icon(
                                 icon: "asset/icons/home.png",
-                                color: Colors.grey),
+                                color: Colors.grey,isTab: isTab),
                           )),
                     ),
                     Padding(
@@ -250,12 +251,12 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               },
                               child: CommonData.icon(
                                   icon: "asset/icons/cart.png",
-                                  color: Colors.grey))),
+                                  color: Colors.grey, isTab: isTab))),
                     ),
                   ],
                 ),
                 Container(
-                  height: getProportionateScreenHeight(310),
+                  height: isTab?getProportionateScreenHeight(440):getProportionateScreenHeight(310),
                   margin: EdgeInsets.symmetric(
                       horizontal: getProportionateScreenWidth(10)),
                   decoration: BoxDecoration(
@@ -266,7 +267,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                       CarouselSlider.builder(
                         itemCount: 1,
                         options: CarouselOptions(
-                          height: getProportionateScreenHeight(300),
+                          height: isTab?getProportionateScreenHeight(430):getProportionateScreenHeight(300),
                           viewportFraction: 1,
                           initialPage: 0,
                           onPageChanged: (value, reason) {
@@ -401,7 +402,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: CommonData.takaSign +
-                                            productModel.oldPrice.toString(),
+                                            productModel.regularPrice.toString(),
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough,
@@ -419,7 +420,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 contentPadding: EdgeInsets.all(0),
                               ),
                               Text(
-                                productModel.name,
+                                productModel.productName.toString(),
                                 style: TextStyle(
                                     fontSize: getProportionateScreenWidth(18)),
                               ),
@@ -841,7 +842,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                               5),
                                                     ),
                                                     Text(
-                                                      result.name,
+                                                      result.productName.toString(),
                                                       maxLines: 2,
                                                       textAlign:
                                                           TextAlign.start,
@@ -868,7 +869,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                         ),
                                                         Text(
                                                           "₺" +
-                                                              result.oldPrice
+                                                              result.regularPrice
                                                                   .toString(),
                                                           style: TextStyle(
                                                               decoration:

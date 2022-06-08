@@ -17,8 +17,25 @@ class TopProductPage extends StatelessWidget {
   final TopProductController _topProductController = Get.put(TopProductController());
   final HomeController _homeController = Get.put(HomeController());
 
+  bool isTab = SizeConfig.screenWidth > 768;
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    var _aspectRatio;
+    double aspt(double height) {
+      var _crossAxisSpacing = 8;
+      var _screenWidth = MediaQuery.of(context).size.width;
+      var _crossAxisCount = 2;
+      var _width =
+          (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+              _crossAxisCount;
+      var cellHeight = height;
+      return _aspectRatio = _width / cellHeight;
+    }
+
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -66,7 +83,80 @@ class TopProductPage extends StatelessWidget {
               ),
             )
           ),
-            Expanded(child: ListView.builder(
+            Expanded(child:
+            isTab?Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: _homeController.apiProductList.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: getProportionateScreenWidth(10),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: getProportionateScreenWidth(10),
+                childAspectRatio: aspt(getProportionateScreenWidth(170))
+              ), itemBuilder: (context , index){
+                var result = _homeController.apiProductList[index];
+                return InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.withOpacity(0.2))
+                    ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: getProportionateScreenHeight(5),
+                          horizontal: getProportionateScreenWidth(5)
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: getProportionateScreenWidth(120),
+                            width: getProportionateScreenWidth(120),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                                borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
+                                image: DecorationImage(
+                                    image: NetworkImage(result.featureImage),fit: BoxFit.fill
+                                )
+                            ),
+                          ),
+                          SizedBox(width: getProportionateScreenWidth(10),),
+                          Expanded(child: SizedBox(
+                            height: getProportionateScreenWidth(120),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(result.productName.toString(),style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: getProportionateScreenWidth(14)
+                                ),maxLines: 2,),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex : 3,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
+                                            color: AllColors.mainColor.withOpacity(0.8)
+                                        ),
+                                        height: getProportionateScreenHeight(20),
+                                        child: Center(child: Text("Monthly Sales: 119,018",style: TextStyle(fontSize: getProportionateScreenWidth(12),color: Colors.white),)),
+                                      ),
+                                    ),
+                                    const Expanded(flex: 1, child: SizedBox())
+                                  ],
+                                ),
+                                Text(CommonData.takaSign+" "+result.newPrice.toString(),style: TextStyle(color: AllColors.mainColor,fontWeight: FontWeight.bold),)
+                              ],
+                            ),
+                          )),
+                        ],
+                      )),
+                );
+              }),
+            ):
+            ListView.builder(
                 shrinkWrap: true,
                 itemCount: _homeController.apiProductList.length,
                 itemBuilder: (context , index){
@@ -90,7 +180,7 @@ class TopProductPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
                                       image: DecorationImage(
-                                          image: AssetImage(result.featureImage),fit: BoxFit.fill
+                                          image: NetworkImage(result.featureImage),fit: BoxFit.fill
                                       )
                                   ),
                                 ),
@@ -101,7 +191,7 @@ class TopProductPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text(result.name,style: TextStyle(
+                                      Text(result.productName.toString(),style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: getProportionateScreenWidth(14)
                                       ),maxLines: 3,),
@@ -131,7 +221,8 @@ class TopProductPage extends StatelessWidget {
                       ],
                     ),
                   );
-                }),)
+                })
+            )
           ],
         ),
       ),

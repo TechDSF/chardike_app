@@ -288,7 +288,7 @@ class WheelScreen extends StatelessWidget {
                           SizedBox(
                             height: getProportionateScreenHeight(10),
                           ),
-                          Text(result.name,maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
+                          Text(result.productName.toString(),maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
                               fontSize: getProportionateScreenWidth(12)
                           ),),
                           SizedBox(

@@ -12,6 +12,7 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTab = SizeConfig.screenWidth > 768;
     return Scaffold(
         appBar: AppBar(
           leading: Center(
@@ -27,7 +28,7 @@ class FeedPage extends StatelessWidget {
                   Navigator.pushNamed(context, CartScreen.routeName);
                 },
                 child: CommonData.icon(
-                    icon: "asset/icons/cart.png", color: AllColors.mainColor)),
+                    icon: "asset/icons/cart.png", color: AllColors.mainColor, isTab: isTab)),
             SizedBox(
               width: getProportionateScreenWidth(15),
             ),
@@ -37,7 +38,7 @@ class FeedPage extends StatelessWidget {
                 },
                 child: CommonData.icon(
                     icon: "asset/icons/messenger.png",
-                    color: AllColors.mainColor)),
+                    color: AllColors.mainColor,isTab: isTab)),
             SizedBox(
               width: getProportionateScreenWidth(10),
             )

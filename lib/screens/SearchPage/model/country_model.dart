@@ -1,17 +1,21 @@
+// To parse this JSON data, do
+//
+//     final countryModel = countryModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<BrandModel> brandModelFromJson(String str) => List<BrandModel>.from(json.decode(str).map((x) => BrandModel.fromJson(x)));
+List<CountryModel> countryModelFromJson(String str) => List<CountryModel>.from(json.decode(str).map((x) => CountryModel.fromJson(x)));
 
-String brandModelToJson(List<BrandModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String countryModelToJson(List<CountryModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class BrandModel {
-  BrandModel({
+class CountryModel {
+  CountryModel({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
     required this.isActive,
     required this.name,
-    required this.brandWebsite,
     required this.description,
   });
 
@@ -20,17 +24,15 @@ class BrandModel {
   DateTime updatedAt;
   bool isActive;
   String name;
-  String brandWebsite;
   String description;
 
-  factory BrandModel.fromJson(Map<String, dynamic> json) => BrandModel(
+  factory CountryModel.fromJson(Map<String, dynamic> json) => CountryModel(
     id: json["id"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     isActive: json["is_active"],
     name: json["name"],
-    brandWebsite: json["brand_website"] ?? "",
-    description: json["description"]??"",
+    description: json["description"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -39,7 +41,6 @@ class BrandModel {
     "updated_at": updatedAt.toIso8601String(),
     "is_active": isActive,
     "name": name,
-    "brand_website": brandWebsite??"",
-    "description": description??"",
+    "description": description,
   };
 }

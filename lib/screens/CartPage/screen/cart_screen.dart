@@ -267,7 +267,7 @@ class CartScreen extends StatelessWidget {
                               SizedBox(
                                 height: getProportionateScreenHeight(10),
                               ),
-                              Text(result.name,maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
+                              Text(result.productName.toString(),maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
                                   fontSize: getProportionateScreenWidth(12)
                               ),),
                               SizedBox(
@@ -285,7 +285,7 @@ class CartScreen extends StatelessWidget {
                                           color: AllColors.mainColor),
                                     ),
                                     Text(
-                                      "₺" + result.oldPrice.toString(),
+                                      "₺" + result.regularPrice.toString(),
                                       style: TextStyle(
                                           decoration: TextDecoration.lineThrough,
                                           color: Colors.grey,fontSize: getProportionateScreenWidth(10)),

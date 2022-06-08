@@ -78,7 +78,7 @@ class TimeLineScreen extends StatelessWidget {
                   RichText(text: TextSpan(
                       children: [
                         TextSpan(text: "Chardike ",style: TextStyle(fontSize: getProportionateScreenWidth(13),fontWeight: FontWeight.bold,color: Colors.black)),
-                        TextSpan(text: result.name,style: CommonData.customTextStyle())
+                        TextSpan(text: result.productName.toString(),style: CommonData.customTextStyle())
                       ]
                   )),
                   SizedBox(height: getProportionateScreenWidth(10),),

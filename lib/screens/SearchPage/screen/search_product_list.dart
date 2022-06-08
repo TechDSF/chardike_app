@@ -14,8 +14,11 @@ class SearchProductList extends StatelessWidget {
   SearchProductList({Key? key}) : super(key: key);
   final HomeController _homeController = Get.put(HomeController());
 
+
+
   @override
   Widget build(BuildContext context) {
+    bool isTab = SizeConfig.screenWidth > 768;
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -42,15 +45,11 @@ class SearchProductList extends StatelessWidget {
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
-          Center(child: Image.asset("asset/icons/home.png",height: getProportionateScreenWidth(25),width: getProportionateScreenWidth(25),)),
-          SizedBox(
-            width: getProportionateScreenWidth(10),
-          ),
           Center(child: InkWell(
             onTap: (){
               Navigator.pushNamed(context, CartScreen.routeName);
             },
-              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.black))),
+              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.black, isTab: isTab))),
           SizedBox(
             width: getProportionateScreenWidth(10),
           )
@@ -92,7 +91,7 @@ class SearchProductList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(result.name,style: TextStyle(
+                                Text(result.productName.toString(),style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: getProportionateScreenWidth(14)
                                 ),maxLines: 2,),
@@ -102,7 +101,7 @@ class SearchProductList extends StatelessWidget {
                                     children: <TextSpan>[
                                       TextSpan(
                                           text: "10% ${CommonData.takaSign}",style: const TextStyle(color: Colors.black)),
-                                      TextSpan(text: '${result.oldPrice}',style: const TextStyle(
+                                      TextSpan(text: result.regularPrice.toString(),style: const TextStyle(
                                           decoration: TextDecoration.lineThrough,color: Colors.black
                                       )),
                                     ],

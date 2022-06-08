@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:chardike/Service/ApiService/api_service.dart';
-import 'package:chardike/screens/HomePage/model/flash_sale_model.dart';
-import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
+import 'package:chardike/screens/SearchPage/model/search_product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../size_config.dart';
+import '../../CategoryPage/controller/category_controller.dart';
+import '../../CategoryPage/model/category_model.dart';
 
 class HomeController extends GetxController{
 
@@ -29,9 +30,6 @@ class HomeController extends GetxController{
   ScrollController scrollController = ScrollController();
 
 
-
-   var isCategoryDataLoading =false.obs;
-   List<SliderModel> categoryList = List<SliderModel>.empty(growable:true).obs;
   //
   // var isProductDataLoading =false.obs;
   // List<ProductModel> productList = List<ProductModel>.empty(growable:true).obs;
@@ -39,15 +37,22 @@ class HomeController extends GetxController{
   var isApiProductLoading = false.obs;
   List<ProductModel> apiProductList = List<ProductModel>.empty(growable: true).obs;
 
+  var isQueryProductLoading = false.obs;
+  List<QueryProductModel> queryProductList = List<QueryProductModel>.empty(growable: true).obs;
+
+  var isCategoryDataLoading =false.obs;
+  List<CategoryModel> categoryList = List<CategoryModel>.empty(growable: true).obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
     getSliderItem();
     getProductType();
-    getCategoryData();
     getApiProduct();
     checkYourDiscount();
     openDiscountBanner();
+    getQueryProduct();
+    getCategoryProduct();
     super.onInit();
   }
 
@@ -147,10 +152,7 @@ class HomeController extends GetxController{
       isApiProductLoading(false);
       Fluttertoast.showToast(msg: "Product fetch error");
     }else{
-      ProductResult myData = data;
-      myData.results.forEach((element) {
-        apiProductList.add(element);
-      });
+      apiProductList = data;
       isApiProductLoading(false);
     }
   }
@@ -190,25 +192,28 @@ class HomeController extends GetxController{
     isProdctTypeDataLoading(false);
   }
 
-  getCategoryData(){
+  getQueryProduct()async{
+    isQueryProductLoading(true);
+    var data = await ApiService.fetchQueryProducts();
+    if(data.runtimeType == int){
+      isQueryProductLoading(false);
+      Fluttertoast.showToast(msg: "Query Product fetch error");
+    }else{
+      queryProductList = data;
+      isQueryProductLoading(false);
+    }
+  }
+
+  getCategoryProduct()async{
     isCategoryDataLoading(true);
-    var list = [
-      SliderModel(type: "Skin Cream", image: "asset/images/catImage/cat_image5.png"),
-      SliderModel(type: "Hair Oil", image: "asset/images/catImage/cat_image4.png"),
-      SliderModel(type: "Hair Care", image: "asset/images/catImage/hair_care.png"),
-      SliderModel(type: "Skin Care", image: "asset/images/catImage/cat_image5.png"),
-      SliderModel(type: "Beauty Cosmetics", image: "asset/images/catImage/beauty_cosmetic.jpeg"),
-      SliderModel(type: "Body Care", image: "asset/images/catImage/body_care.png"),
-      SliderModel(type: "Herbal Body Care", image: "asset/images/catImage/cat_image9.png"),
-      SliderModel(type: "Cosmetic Raw Material", image: "asset/images/catImage/cat_image6.png"),
-      SliderModel(type: "Lip Cosmetics", image: "asset/images/catImage/cat_image7.png"),
-      SliderModel(type: "Body Cream", image: "asset/images/catImage/cat_image5.png"),
-      SliderModel(type: "Body Lotions", image: "asset/images/catImage/body_lotion.jpeg"),
-      SliderModel(type: "Hair Wig", image: "asset/images/catImage/cat_image9.png"),
-      SliderModel(type: "Nail Cosmetics", image: "asset/images/catImage/cat_image8.png"),
-    ];
-    categoryList = list;
-    isCategoryDataLoading(false);
+    var data = await ApiService.fetchCategories();
+    if(data.runtimeType == int){
+      isCategoryDataLoading(false);
+      Fluttertoast.showToast(msg: "Category fetch Error");
+    }else{
+      categoryList = data;
+      isCategoryDataLoading(false);
+    }
   }
 
 }

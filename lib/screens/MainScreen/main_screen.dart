@@ -2,7 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/MainScreen/controller/main_controller.dart';
-import 'package:chardike/screens/SearchPage/screen/search_screen.dart';
+import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +18,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    bool isTab = SizeConfig.screenWidth > 768;
 
 
 
@@ -29,23 +30,23 @@ class MainScreen extends StatelessWidget {
           backgroundColor: AllColors.mainColor,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: CommonData.bottomIcon(icon: "asset/icons/newspaper.png", color: _mainController.tapIndex.value == 0?Colors.white:Colors.black.withOpacity(0.6)),
+              icon: CommonData.bottomIcon(icon: "asset/icons/newspaper.png", color: _mainController.tapIndex.value == 0?Colors.white:Colors.black.withOpacity(0.6),isTab: isTab),
               label: 'Feed',
             ),
             BottomNavigationBarItem(
-              icon: CommonData.bottomIcon(icon: "asset/icons/search_icon.png", color: _mainController.tapIndex.value == 1?Colors.white:Colors.black.withOpacity(0.6)),
+              icon: CommonData.bottomIcon(icon: "asset/icons/search_icon.png", color: _mainController.tapIndex.value == 1?Colors.white:Colors.black.withOpacity(0.6),isTab: isTab),
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: CommonData.bottomIcon(icon: "asset/icons/home.png", color: _mainController.tapIndex.value == 2?Colors.white:Colors.black.withOpacity(0.6)),
+              icon: CommonData.bottomIcon(icon: "asset/icons/home.png", color: _mainController.tapIndex.value == 2?Colors.white:Colors.black.withOpacity(0.6),isTab: isTab),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: CommonData.bottomIcon(icon: "asset/icons/user.png", color: _mainController.tapIndex.value == 3?Colors.white:Colors.black.withOpacity(0.6)),
+              icon: CommonData.bottomIcon(icon: "asset/icons/user.png", color: _mainController.tapIndex.value == 3?Colors.white:Colors.black.withOpacity(0.6),isTab: isTab),
               label: 'User',
             ),
             BottomNavigationBarItem(
-              icon: CommonData.bottomIcon(icon: "asset/icons/cart.png", color: _mainController.tapIndex.value == 4?Colors.white:Colors.black.withOpacity(0.6)),
+              icon: CommonData.bottomIcon(icon: "asset/icons/cart.png", color: _mainController.tapIndex.value == 4?Colors.white:Colors.black.withOpacity(0.6),isTab: isTab),
               label: 'Cart',
             ),
           ],

@@ -4,11 +4,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CategoryPage/category_page.dart';
+import 'package:chardike/screens/FeatureProduct/screens/feature_products.dart';
 import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
-import 'package:chardike/screens/SearchPage/screen/single_search.dart';
+import 'package:chardike/screens/SearchPage/screen/sub_search_screen.dart';
 import 'package:chardike/screens/SliderDetails/screen/slider_details.dart';
+import 'package:chardike/screens/TopProduct/screens/top_product_main.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_page.dart';
 import 'package:chardike/screens/WheelPage/screen/wheel_screen.dart';
 import 'package:chardike/size_config.dart';
@@ -118,8 +120,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _aspectRatio;
 
+    bool isTab = SizeConfig.screenWidth > 768;
+
+    print(" Size : ${SizeConfig.screenHeight} , ${SizeConfig.screenWidth} , $isTab" );
+
+    var _aspectRatio;
     double aspt(double height) {
       var _crossAxisSpacing = 8;
       var _screenWidth = MediaQuery.of(context).size.width;
@@ -146,14 +152,14 @@ class HomeScreen extends StatelessWidget {
                       child: Text(
                         "CHARDIKE",
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(15),
+                            fontSize: isTab?getProportionateScreenWidth(25):getProportionateScreenWidth(15),
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
                     ),
                   ),
                   CommonData.icon(
-                      icon: "asset/icons/notification.png", color: Colors.black),
+                      icon: "asset/icons/notification.png", color: Colors.black , isTab: isTab),
                   SizedBox(
                     width: getProportionateScreenWidth(10),
                   )
@@ -168,7 +174,7 @@ class HomeScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => SingleSearchScreen()));
+                            MaterialPageRoute(builder: (_) => SubSearchScreen()));
                       },
                       child: Container(
                           height: getProportionateScreenWidth(45),
@@ -186,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                             children: <Widget>[
                               CommonData.bottomIcon(
                                   icon: "asset/icons/search_icon.png",
-                                  color: Colors.grey),
+                                  color: Colors.grey,isTab: isTab),
                               SizedBox(
                                 width: getProportionateScreenWidth(10),
                               ),
@@ -257,7 +263,7 @@ class HomeScreen extends StatelessWidget {
                               onPageChanged: (value, reason) {
                                 _homeController.dotIndex.value = value;
                               },
-                              height: getProportionateScreenHeight(170),
+                              height: isTab?getProportionateScreenHeight(250):getProportionateScreenHeight(170),
                               aspectRatio: 16 / 9,
                               viewportFraction: 1.0,
                               initialPage: 0,
@@ -309,7 +315,7 @@ class HomeScreen extends StatelessWidget {
                       return Column(
                         children: [
                           SizedBox(
-                            height: getProportionateScreenHeight(150),
+                            height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(150),
                             child: GridView.builder(
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
@@ -333,10 +339,9 @@ class HomeScreen extends StatelessWidget {
                                           title: Image.asset(
                                             _homeController
                                                 .productTypeList[index].image,
-                                            height:
-                                                getProportionateScreenWidth(35),
+                                            height: isTab?getProportionateScreenWidth(50):getProportionateScreenWidth(35),
                                             width:
-                                                getProportionateScreenWidth(30),
+                                            isTab?getProportionateScreenWidth(40):getProportionateScreenWidth(30),
                                             fit: BoxFit.contain,
                                           ),
                                           subtitle: Text(
@@ -347,7 +352,7 @@ class HomeScreen extends StatelessWidget {
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize:
-                                                  getProportionateScreenWidth(10),
+                                              isTab?getProportionateScreenWidth(13):getProportionateScreenWidth(10),
                                             ),
                                           ),
                                         );
@@ -378,7 +383,7 @@ class HomeScreen extends StatelessWidget {
 
                   ///banner section
                   Container(
-                    height: getProportionateScreenHeight(100),
+                    height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(100),
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
@@ -540,7 +545,9 @@ class HomeScreen extends StatelessWidget {
                   }),
 
                   ///related product
-                  sectionTitle(title: "Top Product", onTap: () {}),
+                  sectionTitle(title: "Top Product", onTap: () {
+                    Navigator.pushNamed(context, TopProductMain.routeName);
+                  }),
                   Divider(),
                   SizedBox(
                     height: getProportionateScreenHeight(10),
@@ -701,29 +708,30 @@ class HomeScreen extends StatelessWidget {
                       );
                     } else {
                       return SizedBox(
-                        height: getProportionateScreenHeight(250),
+                        height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(250),
                         child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
+                                    crossAxisCount: isTab?1:2,
                                     childAspectRatio:
-                                        aspt(getProportionateScreenWidth(170)),
+                                    isTab?aspt(getProportionateScreenHeight(370)):aspt(getProportionateScreenWidth(170)),
                                     mainAxisSpacing:
                                         getProportionateScreenWidth(10),
                                     crossAxisSpacing:
                                         getProportionateScreenHeight(10)),
                             scrollDirection: Axis.horizontal,
-                            itemCount: _homeController.apiProductList.length,
+                            itemCount: _homeController.categoryList.length,
                             itemBuilder: (context, index) {
-                              var result = _homeController.apiProductList[index];
+                              var result = _homeController.categoryList[index];
                               return Container(
+                                  padding: isTab?EdgeInsets.all(8.0):EdgeInsets.all(0.0),
                                   color: Colors.grey.withOpacity(0.05),
                                   child: Column(
                                     children: <Widget>[
-                                      Expanded(child: Image.network(result.featureImage)),
+                                      Expanded(child: ClipRRect(borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),child: Image.network(result.image.toString(),fit: BoxFit.fill,)),),
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("Demo"),
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(result.categoryName.toString(),style: TextStyle(fontSize: getProportionateScreenWidth(14)),maxLines: 2,),
                                       ),
                                     ],
                                   ));
@@ -737,7 +745,7 @@ class HomeScreen extends StatelessWidget {
 
                   ///banner section
                   Container(
-                    height: getProportionateScreenHeight(100),
+                    height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(100),
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
@@ -751,7 +759,9 @@ class HomeScreen extends StatelessWidget {
                   ),
 
                   ///Feature product section
-                  sectionTitle(title: "Feature Product", onTap: () {}),
+                  sectionTitle(title: "Feature Product", onTap: () {
+                    Navigator.pushNamed(context, FeatureProduct.routeName);
+                  }),
                   SizedBox(
                     height: getProportionateScreenHeight(10),
                   ),
@@ -767,7 +777,7 @@ class HomeScreen extends StatelessWidget {
                       );
                     } else {
                       return SizedBox(
-                          height: getProportionateScreenHeight(170),
+                          height: isTab?getProportionateScreenHeight(220):getProportionateScreenHeight(170),
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: _homeController.apiProductList.length,
@@ -785,74 +795,78 @@ class HomeScreen extends StatelessWidget {
                                     padding: EdgeInsets.only(
                                         right: getProportionateScreenWidth(7)),
                                     child: SizedBox(
-                                      height: getProportionateScreenHeight(170),
-                                      width: getProportionateScreenWidth(110),
+                                      height: isTab?getProportionateScreenHeight(220):getProportionateScreenHeight(170),
+                                      width: isTab?getProportionateScreenWidth(160):getProportionateScreenWidth(110),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(
-                                                      getProportionateScreenWidth(
-                                                          7)),
-                                                  border: Border.all(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.3))),
-                                              child: ClipRRect(
+                                          Container(
+                                            height: isTab?getProportionateScreenHeight(150):getProportionateScreenHeight(110),
+                                            width: isTab?getProportionateScreenWidth(150):getProportionateScreenHeight(110),
+                                            decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(
                                                     getProportionateScreenWidth(
                                                         7)),
-                                                child: Stack(
-                                                  children: <Widget>[
-                                                    Image.network(
+                                                border: Border.all(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.3))),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                  getProportionateScreenWidth(
+                                                      7)),
+                                              child: Stack(
+                                                children: <Widget>[
+                                                  Center(
+                                                    child: Image.network(
                                                       result.featureImage,
-                                                      fit: BoxFit.contain,
+                                                      fit: BoxFit.cover,
+                                                      height: isTab?getProportionateScreenHeight(145):getProportionateScreenHeight(105),
+                                                      width: isTab?getProportionateScreenWidth(145):getProportionateScreenHeight(105),
                                                     ),
-                                                    Positioned(
+                                                  ),
+                                                  Positioned(
+                                                      height:
+                                                          getProportionateScreenWidth(
+                                                              20),
+                                                      width:
+                                                          getProportionateScreenWidth(
+                                                              45),
+                                                      right: 0,
+                                                      child: Container(
                                                         height:
                                                             getProportionateScreenWidth(
                                                                 20),
                                                         width:
                                                             getProportionateScreenWidth(
                                                                 45),
-                                                        right: 0,
-                                                        child: Container(
-                                                          height:
-                                                              getProportionateScreenWidth(
-                                                                  20),
-                                                          width:
-                                                              getProportionateScreenWidth(
-                                                                  45),
-                                                          decoration: BoxDecoration(
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                Colors.orange,
+                                                            borderRadius: BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        getProportionateScreenWidth(
+                                                                            10)),
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        getProportionateScreenWidth(
+                                                                            10)))),
+                                                        child: Center(
+                                                            child: Text(
+                                                          "-10%",
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  getProportionateScreenWidth(
+                                                                      10),
                                                               color:
-                                                                  Colors.orange,
-                                                              borderRadius: BorderRadius.only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          getProportionateScreenWidth(
-                                                                              10)),
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          getProportionateScreenWidth(
-                                                                              10)))),
-                                                          child: Center(
-                                                              child: Text(
-                                                            "-10%",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    getProportionateScreenWidth(
-                                                                        10),
-                                                                color:
-                                                                    Colors.white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )),
-                                                        ))
-                                                  ],
-                                                ),
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )),
+                                                      ))
+                                                ],
                                               ),
                                             ),
                                           ),
@@ -864,12 +878,13 @@ class HomeScreen extends StatelessWidget {
                                             width:
                                                 getProportionateScreenWidth(110),
                                             child: Text(
-                                              result.name,
+                                              result.productName.toString(),
                                               maxLines: 2,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                   fontSize:
-                                                      getProportionateScreenWidth(
+                                                      isTab?getProportionateScreenWidth(
+                                                          15):getProportionateScreenWidth(
                                                           12),
                                                   overflow:
                                                       TextOverflow.ellipsis),
@@ -890,7 +905,7 @@ class HomeScreen extends StatelessWidget {
                                                   text: " ",
                                                 ),
                                                 TextSpan(
-                                                  text: "₺" + result.oldPrice,
+                                                  text: "₺" + result.regularPrice.toString(),
                                                   style: TextStyle(
                                                       decoration: TextDecoration
                                                           .lineThrough,
@@ -921,21 +936,32 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Obx(() {
                     if (_homeController.isApiProductLoading.value) {
-                      return Shimmer.fromColors(
-                        baseColor: Colors.grey.withOpacity(0.1),
-                        highlightColor: Colors.grey.withOpacity(0.5),
-                        child: Container(
-                          height: getProportionateScreenHeight(170),
-                          color: Colors.yellow,
-                        ),
-                      );
+                      return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isTab?4:3,
+                            crossAxisSpacing: getProportionateScreenWidth(5),
+                            mainAxisSpacing: getProportionateScreenWidth(5)
+                      ),
+                          itemBuilder: (context , index){
+                            return Shimmer.fromColors(
+                              baseColor: Colors.grey.withOpacity(0.1),
+                              highlightColor: Colors.grey.withOpacity(0.5),
+                              child: Container(
+                                height: getProportionateScreenHeight(170),
+                                color: Colors.yellow,
+                              ),
+                            );
+                          });
                     } else {
                       return GridView.builder(
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount: isTab?4:3,
                             crossAxisSpacing: getProportionateScreenWidth(5),
                             mainAxisSpacing: getProportionateScreenWidth(5),
-                            childAspectRatio: aspt(300),
+                            childAspectRatio: isTab?aspt(getProportionateScreenWidth(420)):aspt(getProportionateScreenWidth(300)),
                           ),
                           itemCount: _homeController.apiProductList.length,
                           shrinkWrap: true,
@@ -959,57 +985,63 @@ class HomeScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey
-                                                    .withOpacity(0.3))),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Image.network(
-                                              result.featureImage,
-                                              fit: BoxFit.fill,
-                                            ),
-                                            Positioned(
-                                                right: 0,
-                                                child: Container(
-                                                  height:
-                                                      getProportionateScreenWidth(
-                                                          20),
-                                                  width:
-                                                      getProportionateScreenWidth(
-                                                          45),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.orange,
-                                                      borderRadius: BorderRadius.only(
-                                                          topLeft: Radius.circular(
-                                                              getProportionateScreenWidth(
-                                                                  10)),
-                                                          bottomLeft: Radius.circular(
-                                                              getProportionateScreenWidth(
-                                                                  10)))),
-                                                  child: Center(
-                                                      child: Text(
-                                                    "-10%",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            getProportionateScreenWidth(
-                                                                10),
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )),
-                                                ))
-                                          ],
-                                        ),
+                                    Container(
+                                      height: isTab?getProportionateScreenWidth(110):getProportionateScreenWidth(90),
+                                      width: isTab?getProportionateScreenWidth(110):getProportionateScreenWidth(90),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey
+                                                  .withOpacity(0.3))
                                       ),
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Center(
+                                            child: Image.network(
+                                              result.featureImage,
+                                              fit: BoxFit.cover,
+                                              height: isTab?getProportionateScreenWidth(105):getProportionateScreenWidth(85),
+                                              width: isTab?getProportionateScreenWidth(105):getProportionateScreenWidth(85),
+                                            ),
+                                          ),
+                                          Positioned(
+                                              right: 0,
+                                              child: Container(
+                                                height:
+                                                    getProportionateScreenWidth(
+                                                        20),
+                                                width:
+                                                    getProportionateScreenWidth(
+                                                        45),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.orange,
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(
+                                                            getProportionateScreenWidth(
+                                                                10)),
+                                                        bottomLeft: Radius.circular(
+                                                            getProportionateScreenWidth(
+                                                                10)))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "-10%",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenWidth(
+                                                              10),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                              ))
+                                        ],
+                                      ),
+
                                     ),
                                     SizedBox(
                                       height: getProportionateScreenHeight(10),
                                     ),
                                     Text(
-                                      result.name,
+                                      result.productName.toString(),
                                       maxLines: 2,
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
@@ -1069,7 +1101,7 @@ class HomeScreen extends StatelessWidget {
         ),
         floatingActionButton: Obx(() {
           if (_homeController.perDayDiscountItem.value > 10) {
-            return SizedBox();
+            return const SizedBox();
           } else {
             return InkWell(
               onTap: () {
@@ -1079,7 +1111,7 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 height: getProportionateScreenHeight(50),
                 width: getProportionateScreenHeight(50),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         image: AssetImage("asset/icons/wheel_icon.gif"))),

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 class CategoryScreen extends StatelessWidget {
   CategoryScreen({Key? key}) : super(key: key);
   final CategoryController _categoryController = Get.put(CategoryController());
+  bool isTab = SizeConfig.screenWidth > 768;
 
   @override
   Widget build(BuildContext context) {
@@ -78,18 +79,18 @@ class CategoryScreen extends StatelessWidget {
   Widget gridView({required var list}){
     return GridView.builder(
         itemCount: list.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isTab?4:3
         ), itemBuilder: (context , index){
-          CategoryModel result = list[index];
+      CategoryItemModel result = list[index];
       return Padding(
         padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10)),
         child: ListTile(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (_)=>AllProduct(type: result.title,)));
           },
-          title: Image.asset(result.icon,height: getProportionateScreenHeight(40),width: getProportionateScreenWidth(40),),
-          subtitle: Text(result.title,textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(13)),),
+          title: Image.asset(result.icon,height: isTab?getProportionateScreenHeight(80):getProportionateScreenHeight(40),width: isTab?getProportionateScreenHeight(80):getProportionateScreenHeight(40),),
+          subtitle: Text(result.title,textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontSize: isTab?getProportionateScreenWidth(16):getProportionateScreenWidth(13)),),
         ),
       );
     });

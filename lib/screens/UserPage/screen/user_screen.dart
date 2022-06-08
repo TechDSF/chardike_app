@@ -1,6 +1,7 @@
 import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
@@ -17,6 +18,7 @@ class UserScreen extends StatelessWidget {
   UserScreen({Key? key}) : super(key: key);
   final UserController userController = Get.put(UserController());
   final CommonController _commonController = Get.put(CommonController());
+  final UserDataController _userDataController = Get.put(UserDataController());
 
 
 
@@ -44,6 +46,7 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTab = SizeConfig.screenWidth > 768;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -63,15 +66,15 @@ class UserScreen extends StatelessWidget {
                           onTap: (){
                             Navigator.pushNamed(context, AccountSetting.routeName);
                           }
-                          ,child: CommonData.icon(icon: "asset/icons/settings.png", color: Colors.white)),
+                          ,child: CommonData.icon(icon: "asset/icons/settings.png", color: Colors.white, isTab: isTab)),
                       SizedBox(width: getProportionateScreenWidth(15),),
                       InkWell(onTap: (){
                         Navigator.pushNamed(context, CartScreen.routeName);
-                      },child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.white)),
+                      },child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.white , isTab: isTab)),
                       SizedBox(width: getProportionateScreenWidth(15),),
                       InkWell(onTap: (){
                         Navigator.pushNamed(context, CartScreen.routeName);
-                      },child: CommonData.icon(icon: "asset/icons/messenger.png", color: Colors.white)),
+                      },child: CommonData.icon(icon: "asset/icons/messenger.png", color: Colors.white , isTab: isTab)),
                       SizedBox(width: getProportionateScreenWidth(10),)
                     ],
                   ),
@@ -100,7 +103,7 @@ class UserScreen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Obx(()=>Text(_commonController.userName.value,style: TextStyle(
+                                  Obx(()=>Text(_userDataController.fullName.value,style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: getProportionateScreenWidth(15)
@@ -156,18 +159,13 @@ class UserScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: Row(
                           children: <Widget>[
-                            InkWell(
-                              onTap:(){
-                                Navigator.pushNamed(context, EditProfile.routeName);
-                              },
-                              child: Container(
-                                height: getProportionateScreenWidth(50),
-                                width: getProportionateScreenWidth(50),
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,color: Colors.white
-                                ),
-                                child: Icon(Icons.person,color: AllColors.mainColor,size: getProportionateScreenWidth(25),),
+                            Container(
+                              height: getProportionateScreenWidth(50),
+                              width: getProportionateScreenWidth(50),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,color: Colors.white
                               ),
+                              child: Icon(Icons.person,color: AllColors.mainColor,size: getProportionateScreenWidth(25),),
                             ),
                             Expanded(child: Row(
                               children: <Widget>[
@@ -249,7 +247,7 @@ class UserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, LoginScreen.routeName);
                 }
               },
-              leading: CommonData.icon(icon: "asset/icons/writing.png", color: Colors.blue),
+              leading: CommonData.icon(icon: "asset/icons/writing.png", color: Colors.blue , isTab: isTab),
               title: const Text("My Purchases",style: TextStyle(color: Colors.black),),
               trailing: Text("View Purchase History >",style: TextStyle(color: Colors.black.withOpacity(0.7),fontSize: getProportionateScreenWidth(10)),),
             ),
@@ -264,7 +262,7 @@ class UserScreen extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: ListTile(
-                              title: CommonData.icon(icon: "asset/icons/wallet.png", color: Colors.black),
+                              title: CommonData.icon(icon: "asset/icons/wallet.png", color: Colors.black , isTab: isTab),
                               subtitle: Center(child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text("To Pay",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
@@ -273,7 +271,7 @@ class UserScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: ListTile(
-                              title: CommonData.icon(icon: "asset/icons/postbox.png", color: Colors.black),
+                              title: CommonData.icon(icon: "asset/icons/postbox.png", color: Colors.black , isTab: isTab),
                               subtitle: Center(child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text("To Ship",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
@@ -282,7 +280,7 @@ class UserScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: ListTile(
-                              title: CommonData.icon(icon: "asset/icons/wallet.png", color: Colors.black),
+                              title: CommonData.icon(icon: "asset/icons/wallet.png", color: Colors.black , isTab: isTab),
                               subtitle: Center(child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text("To Recive",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
@@ -291,7 +289,7 @@ class UserScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: ListTile(
-                              title: CommonData.icon(icon: "asset/icons/rate.png", color: Colors.black),
+                              title: CommonData.icon(icon: "asset/icons/rate.png", color: Colors.black , isTab: isTab),
                               subtitle: Center(child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text("To Rate",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
@@ -311,7 +309,7 @@ class UserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, LoginScreen.routeName);
                 }
               },
-              leading: CommonData.icon(icon: "asset/icons/smartphone.png", color: Colors.green),
+              leading: CommonData.icon(icon: "asset/icons/smartphone.png", color: Colors.green , isTab: isTab),
               title: const Text("Digital Purchases",style: TextStyle(color: Colors.black),),
               trailing: const Icon(Icons.arrow_forward_ios_outlined),
             ),

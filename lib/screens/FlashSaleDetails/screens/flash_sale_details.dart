@@ -15,9 +15,26 @@ class FlashSaleDetails extends StatelessWidget {
   static const String routeName = "/flashSaleDetails";
   final HomeController _homeController = Get.put(HomeController());
 
+  bool isTab = SizeConfig.screenWidth > 768;
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    var _aspectRatio;
+
+    double aspt(double height) {
+      var _crossAxisSpacing = 8;
+      var _screenWidth = MediaQuery.of(context).size.width;
+      var _crossAxisCount = 2;
+      var _width =
+          (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+              _crossAxisCount;
+      var cellHeight = height;
+      return _aspectRatio = _width / cellHeight;
+    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -60,7 +77,7 @@ class FlashSaleDetails extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Image.asset("asset/images/category/flash_deal.jpg",height: getProportionateScreenHeight(100),width: double.infinity,fit: BoxFit.fill,),
+                  Image.asset("asset/images/category/flash_deal.jpg",height: isTab?getProportionateScreenHeight(220):getProportionateScreenHeight(120),width: double.infinity,fit: BoxFit.fill,),
                   SizedBox(height: getProportionateScreenHeight(5),),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -82,6 +99,80 @@ class FlashSaleDetails extends StatelessWidget {
                       )
                     ],
                   ),
+                  SizedBox(height: getProportionateScreenHeight(10),),
+                  isTab?GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: _homeController.apiProductList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: getProportionateScreenWidth(10),
+                          mainAxisSpacing: getProportionateScreenWidth(10),
+                        childAspectRatio: aspt(getProportionateScreenWidth(140))
+                      ), itemBuilder: (context , index){
+                    var result = _homeController.apiProductList[index];
+                    return InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, ProductDetails.routeName, arguments: result);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.withOpacity(0.2))
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              height: getProportionateScreenHeight(120),
+                              width: getProportionateScreenHeight(120),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                                  image: DecorationImage(
+                                      image: NetworkImage(result.featureImage)
+                                  )
+                              ),
+                            ),
+                            SizedBox(width: getProportionateScreenWidth(10),),
+                            Expanded(child: Column(
+                              children: <Widget>[
+                                const Text("Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
+                                Text(CommonData.takaSign+result.regularPrice.toString(),style: TextStyle(decoration: TextDecoration.lineThrough),),
+                                Text(CommonData.takaSign+" "+result.newPrice.toString(),style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(15),fontWeight: FontWeight.bold,color: AllColors.mainColor
+                                ),),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: LinearPercentIndicator(
+                                        lineHeight: 8.0,
+                                        percent: double.parse(
+                                            (23 / 100)
+                                                .toStringAsFixed(1)),
+                                        progressColor: Colors.orange,
+                                      ),
+                                    ),
+                                    Expanded(flex: 1,child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: AllColors.mainColor),
+                                          shape: BoxShape.circle
+                                      ),
+                                      child: Center(child: Padding(
+                                        padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+                                        child: Text("Buy",style: TextStyle(fontSize: getProportionateScreenWidth(12)),),
+                                      )),
+                                    ),)
+                                  ],
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }):
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -111,7 +202,7 @@ class FlashSaleDetails extends StatelessWidget {
                                   Expanded(child: Column(
                                     children: <Widget>[
                                       const Text("Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
-                                      Text(CommonData.takaSign+result.oldPrice.toString(),style: TextStyle(decoration: TextDecoration.lineThrough),),
+                                      Text(CommonData.takaSign+result.regularPrice.toString(),style: TextStyle(decoration: TextDecoration.lineThrough),),
                                       Text(CommonData.takaSign+" "+result.newPrice.toString(),style: TextStyle(
                                         fontSize: getProportionateScreenWidth(15),fontWeight: FontWeight.bold,color: AllColors.mainColor
                                       ),),
@@ -151,7 +242,8 @@ class FlashSaleDetails extends StatelessWidget {
                           ],
                         ),
                       );
-                  })
+                  }),
+
                 ],
               ),
             ),

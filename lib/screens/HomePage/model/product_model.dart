@@ -1,261 +1,124 @@
 // To parse this JSON data, do
 //
 //     final productModel = productModelFromJson(jsonString);
-
 import 'dart:convert';
 
-ProductResult productModelFromJson(String str) => ProductResult.fromJson(json.decode(str));
+List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(json.decode(str).map((x) => ProductModel.fromJson(x)));
 
-String productModelToJson(ProductResult data) => json.encode(data.toJson());
-
-class ProductResult {
-  ProductResult({
-    required this.count,
-    this.next,
-    this.previous,
-    required this.results,
-  });
-
-  int count;
-  dynamic next;
-  dynamic previous;
-  List<ProductModel> results;
-
-  factory ProductResult.fromJson(Map<String, dynamic> json) => ProductResult(
-    count: json["count"],
-    next: json["next"],
-    previous: json["previous"],
-    results: List<ProductModel>.from(json["results"].map((x) => ProductModel.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "count": count,
-    "next": next,
-    "previous": previous,
-    "results": List<dynamic>.from(results.map((x) => x.toJson())),
-  };
-}
+String productModelToJson(List<ProductModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProductModel {
   ProductModel({
     required this.id,
-    required this.brand,
-    required this.country,
-    required this.name,
-    required this.slug,
-    required this.meta,
-    required this.descriptions,
-    this.alterText,
-    required this.featureImage,
-    required this.oldPrice,
-    required this.newPrice,
-    required this.isActive,
+    required this.productImage,
     required this.createdAt,
     required this.updatedAt,
+    required this.isActive,
+    required this.productName,
+    required this.slug,
+    required this.meta,
+    required this.shortDescriptions,
+    required this.longDescription,
+    required this.alterText,
+    required this.sku,
+    required this.upc,
+    required this.featureImage,
+    required this.regularPrice,
+    required this.newPrice,
+    required this.inventory,
+    required this.isStock,
+    required this.brand,
+    required this.country,
+    required this.category,
+    required this.subCategory,
   });
 
   int id;
-  int brand;
-  int country;
-  String name;
-  String slug;
-  String meta;
-  String descriptions;
-  dynamic alterText;
-  String featureImage;
-  String oldPrice;
-  String newPrice;
-  bool isActive;
+  List<ProductImage> productImage;
   DateTime createdAt;
   DateTime updatedAt;
+  bool isActive;
+  String productName;
+  String slug;
+  dynamic meta;
+  dynamic shortDescriptions;
+  dynamic longDescription;
+  dynamic alterText;
+  String sku;
+  String upc;
+  String featureImage;
+  String regularPrice;
+  String newPrice;
+  int inventory;
+  bool isStock;
+  int brand;
+  int country;
+  List<int> category;
+  List<int> subCategory;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
     id: json["id"],
-    brand: json["brand"],
-    country: json["country"],
-    name: json["name"],
-    slug: json["slug"],
-    meta: json["meta"],
-    descriptions: json["descriptions"],
-    alterText: json["alter_text"],
-    featureImage: json["feature_image"],
-    oldPrice: json["old_price"],
-    newPrice: json["New_price"],
-    isActive: json["is_active"],
+    productImage: List<ProductImage>.from(json["product_image"].map((x) => ProductImage.fromJson(x))),
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    isActive: json["is_active"]??false,
+    productName: json["product_name"],
+    slug: json["slug"]??"",
+    meta: json["meta"]??"",
+    shortDescriptions: json["short_descriptions"]??"",
+    longDescription: json["long_description"]??"",
+    alterText: json["alter_text"]??"",
+    sku: json["sku"]??"",
+    upc: json["upc"]??"",
+    featureImage: json["feature_image"],
+    regularPrice: json["regular_price"]??"",
+    newPrice: json["new_price"]??"",
+    inventory: json["inventory"]??0,
+    isStock: json["is_stock"]??false,
+    brand: json["brand"]??0,
+    country: json["country"],
+    category: List<int>.from(json["category"].map((x) => x)),
+    subCategory: List<int>.from(json["sub_category"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "brand": brand,
-    "country": country,
-    "name": name,
+    "product_image": List<dynamic>.from(productImage.map((x) => x.toJson())),
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "is_active": isActive,
+    "product_name": productName,
     "slug": slug,
     "meta": meta,
-    "descriptions": descriptions,
+    "short_descriptions": shortDescriptions,
+    "long_description": longDescription,
     "alter_text": alterText,
+    "sku": sku,
+    "upc": upc,
     "feature_image": featureImage,
-    "old_price": oldPrice,
-    "New_price": newPrice,
-    "is_active": isActive,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+    "regular_price": regularPrice,
+    "new_price": newPrice,
+    "inventory": inventory,
+    "is_stock": isStock,
+    "brand": brand,
+    "country": country,
+    "category": List<dynamic>.from(category.map((x) => x)),
+    "sub_category": List<dynamic>.from(subCategory.map((x) => x)),
   };
 }
 
-class ProductBrand {
-  ProductBrand({
-    required this.id,
-    required this.name,
-    required this.brandWebsite,
-    required this.description,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  int id;
-  String name;
-  String brandWebsite;
-  String description;
-  DateTime createdAt;
-  DateTime updatedAt;
-
-  factory ProductBrand.fromJson(Map<String, dynamic> json) => ProductBrand(
-    id: json["id"],
-    name: json["name"],
-    brandWebsite: json["brand_website"],
-    description: json["description"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "brand_website": brandWebsite,
-    "description": description,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-  };
-}
-
-class ProductCategory {
-  ProductCategory({
-    required this.id,
-    required this.categoryName,
-    required this.slug,
+class ProductImage {
+  ProductImage({
     required this.image,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.categoryCode,
-    required this.isActive,
   });
 
-  int id;
-  String categoryName;
-  String slug;
   String image;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String categoryCode;
-  bool isActive;
 
-  factory ProductCategory.fromJson(Map<String, dynamic> json) => ProductCategory(
-    id: json["id"],
-    categoryName: json["category_name"],
-    slug: json["slug"],
+  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
     image: json["image"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    categoryCode: json["category_code"],
-    isActive: json["is_active"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "category_name": categoryName,
-    "slug": slug,
     "image": image,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "category_code": categoryCode,
-    "is_active": isActive,
   };
 }
-
-
-
-
-class ProductCountry {
-  ProductCountry({
-    required this.id,
-    required this.name,
-    required this.description,
-  });
-
-  int id;
-  String name;
-  String description;
-
-  factory ProductCountry.fromJson(Map<String, dynamic> json) => ProductCountry(
-    id: json["id"],
-    name: json["name"],
-    description: json["description"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "description": description,
-  };
-}
-
-class SubCategory {
-  SubCategory({
-    required this.id,
-    required this.subCategoryName,
-    required this.slug,
-    required this.image,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.description,
-    required this.isActive,
-    required this.category,
-  });
-
-  int id;
-  String subCategoryName;
-  String slug;
-  String image;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String description;
-  bool isActive;
-  ProductCategory category;
-
-  factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
-    id: json["id"],
-    subCategoryName: json["sub_category_name"],
-    slug: json["slug"],
-    image: json["image"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    description: json["description"],
-    isActive: json["is_active"],
-    category: ProductCategory.fromJson(json["category"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "sub_category_name": subCategoryName,
-    "slug": slug,
-    "image": image,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "description": description,
-    "is_active": isActive,
-    "category": category.toJson(),
-  };
-}
-
