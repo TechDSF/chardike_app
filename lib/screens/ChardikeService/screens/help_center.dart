@@ -42,6 +42,19 @@ class HelpCenter extends StatelessWidget {
                 )
               ],
             ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10),),
+          ListTile(
+            leading: Icon(Icons.location_on_rounded,color: AllColors.mainColor,),
+            title: const Text("Sahara Tropical Centre, Bata Signal, New Elephant Road Dhaka."),
+          ),
+          ListTile(
+            leading: Icon(Icons.email_outlined,color: AllColors.mainColor,),
+            title: const Text("Email: support@chardike.com"),
+          ),
+          ListTile(
+            leading: Icon(Icons.phone,color: AllColors.mainColor,),
+            title: const Text("Support: 01790-270066"),
           )
         ],
       ),

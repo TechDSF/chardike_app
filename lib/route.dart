@@ -17,24 +17,37 @@ import 'package:chardike/screens/PaymentMethodPage/screen/payment_screen.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
+import 'package:chardike/screens/SplashScreen/splash_screen.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_main.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_page.dart';
+import 'package:chardike/screens/UserPage/components/MyAddress/add_new_address.dart';
+import 'package:chardike/screens/UserPage/components/MyAddress/my_address.dart';
+import 'package:chardike/screens/UserPage/components/MyLikes/my_likes.dart';
+import 'package:chardike/screens/UserPage/components/WelcomePackage/free_deals.dart';
+import 'package:chardike/screens/UserPage/components/WelcomePackage/free_gifts.dart';
+import 'package:chardike/screens/UserPage/components/WelcomePackage/free_money.dart';
+import 'package:chardike/screens/UserPage/components/WelcomePackage/free_vouchers.dart';
+import 'package:chardike/screens/UserPage/components/about_us.dart';
 import 'package:chardike/screens/UserPage/components/edit_phone_page.dart';
 import 'package:chardike/screens/UserPage/components/link_social_media.dart';
+import 'package:chardike/screens/UserPage/components/MyPurchases/my_purchases.dart';
+import 'package:chardike/screens/UserPage/components/return_policy.dart';
 import 'package:chardike/screens/UserPage/screen/account_setting.dart';
 import 'package:chardike/screens/UserPage/screen/edit_profile.dart';
 import 'package:chardike/screens/UserPage/screen/inputbox_page.dart';
 import 'package:chardike/screens/WheelPage/screen/wheel_screen.dart';
+import 'package:chardike/test.dart';
 import 'package:flutter/cupertino.dart';
 
 var routes = <String, WidgetBuilder>{
+  SplashScreen.routeName: (context) => SplashScreen(),
   MainScreen.routeName: (context)=> MainScreen(),
   FlashSaleDetails.routeName: (context) => FlashSaleDetails(),
   ProductDetails.routeName: (context) => ProductDetails(),
   TopProductPage.routeName: (context) => TopProductPage(),
   CartScreen.routeName: (context) => CartScreen(),
   SearchScreen.routeName: (context) => SearchScreen(),
-  AccountSetting.routeName: (contetxt) => AccountSetting(),
+  AccountSetting.routeName: (context) => AccountSetting(),
   EditProfile.routeName: (context) => EditProfile(),
   InputBoxPage.routeName: (context) => InputBoxPage(),
   CheckOutPage.routeName: (context) => CheckOutPage(),
@@ -53,5 +66,16 @@ var routes = <String, WidgetBuilder>{
   ChardikePolicy.routeName: (context) => ChardikePolicy(),
   AboutChardike.routeName: (context) => AboutChardike(),
   TopProductMain.routeName: (context) => TopProductMain(),
-  FeatureProduct.routeName: (context) => FeatureProduct()
+  FeatureProduct.routeName: (context) => FeatureProduct(),
+  MyLikes.routeName: (context) => MyLikes(),
+  FreeVouchers.routeName: (context) => FreeVouchers(),
+  FreeGifts.routeName: (context) => FreeGifts(),
+  FreeMoney.routeName: (context) => FreeMoney(),
+  FreeDeals.routeName: (context) => FreeDeals(),
+  MyPurchases.routeName: (context) => MyPurchases(),
+  MyAddress.routeName: (context) => MyAddress(),
+  AddNewAddress.routeName: (context) => AddNewAddress(),
+  AboutUs.routeName: (context)=> AboutUs(),
+  ReturnPolicy.routeName: (context) => ReturnPolicy(),
+  Test.routeName: (context) => Test()
 };

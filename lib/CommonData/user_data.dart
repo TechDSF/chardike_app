@@ -21,9 +21,6 @@ class UserDataController extends GetxController{
     userObjId.value = preferences.getString(CommonData.userObjId)??"";
     profileId.value = preferences.getString(CommonData.userProfileId)??"";
     userName.value = preferences.getString(CommonData.userName)??"";
-
-
-    print("work $fullName{}");
   }
 
 

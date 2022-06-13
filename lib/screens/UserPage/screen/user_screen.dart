@@ -5,6 +5,10 @@ import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
+import 'package:chardike/screens/ChardikeService/screens/help_center.dart';
+import 'package:chardike/screens/UserPage/components/MyLikes/my_likes.dart';
+import 'package:chardike/screens/UserPage/components/MyPurchases/my_purchases.dart';
+import 'package:chardike/screens/UserPage/controller/purchase_controller.dart';
 import 'package:chardike/screens/UserPage/controller/user_controller.dart';
 import 'package:chardike/screens/UserPage/screen/account_setting.dart';
 import 'package:chardike/screens/UserPage/screen/edit_profile.dart';
@@ -19,6 +23,7 @@ class UserScreen extends StatelessWidget {
   final UserController userController = Get.put(UserController());
   final CommonController _commonController = Get.put(CommonController());
   final UserDataController _userDataController = Get.put(UserDataController());
+  final PurchaseController _purchaseController = Get.put(PurchaseController());
 
 
 
@@ -40,6 +45,10 @@ class UserScreen extends StatelessWidget {
         ),textAlign: TextAlign.center,)
       ],
     );
+  }
+
+  Widget SocialMediaIcon({required String image , required VoidCallback onTap}){
+    return InkWell(onTap: onTap,child: Image.asset(image,height: getProportionateScreenWidth(50),width: getProportionateScreenWidth(50),fit: BoxFit.fill,));
   }
 
 
@@ -245,6 +254,9 @@ class UserScreen extends StatelessWidget {
               onTap: (){
                 if(!_commonController.isLogin.value){
                   Navigator.pushNamed(context, LoginScreen.routeName);
+                }else{
+                  _purchaseController.tabIndex.value = 2;
+                  Navigator.pushNamed(context, MyPurchases.routeName);
                 }
               },
               leading: CommonData.icon(icon: "asset/icons/writing.png", color: Colors.blue , isTab: isTab),
@@ -266,7 +278,11 @@ class UserScreen extends StatelessWidget {
                               subtitle: Center(child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text("To Pay",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
-                              ))
+                              )),
+                            onTap: (){
+                              _purchaseController.tabIndex.value = 0;
+                              Navigator.pushNamed(context, MyPurchases.routeName);
+                            },
                           ),
                         ),
                         Expanded(
@@ -275,7 +291,11 @@ class UserScreen extends StatelessWidget {
                               subtitle: Center(child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text("To Ship",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
-                              ))
+                              )),
+                            onTap: (){
+                              _purchaseController.tabIndex.value = 1;
+                              Navigator.pushNamed(context, MyPurchases.routeName);
+                            },
                           ),
                         ),
                         Expanded(
@@ -284,7 +304,11 @@ class UserScreen extends StatelessWidget {
                               subtitle: Center(child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text("To Recive",style: TextStyle(color: Colors.black,fontSize: getProportionateScreenWidth(10)),),
-                              ))
+                              )),
+                            onTap: (){
+                              _purchaseController.tabIndex.value = 2;
+                              Navigator.pushNamed(context, MyPurchases.routeName);
+                            },
                           ),
                         ),
                         Expanded(
@@ -303,32 +327,34 @@ class UserScreen extends StatelessWidget {
                 );
               }
             }),
+            // ListTile(
+            //   onTap: (){
+            //     if(!_commonController.isLogin.value){
+            //       Navigator.pushNamed(context, LoginScreen.routeName);
+            //     }
+            //   },
+            //   leading: CommonData.icon(icon: "asset/icons/smartphone.png", color: Colors.green , isTab: isTab),
+            //   title: const Text("Digital Purchases",style: TextStyle(color: Colors.black),),
+            //   trailing: const Icon(Icons.arrow_forward_ios_outlined),
+            // ),
+            // Divider(color: Colors.grey.withOpacity(0.5),),
+            // ListTile(
+            //   onTap: (){
+            //     if(!_commonController.isLogin.value){
+            //       Navigator.pushNamed(context, LoginScreen.routeName);
+            //     }
+            //   },
+            //   leading: Icon(Icons.wallet_giftcard,color: AllColors.mainColor,),
+            //   title: const Text("Chardike Loyality",style: TextStyle(color: Colors.black),),
+            //   trailing: const Icon(Icons.arrow_forward_ios_outlined),
+            // ),
+            //Divider(color: Colors.grey.withOpacity(0.5),),
             ListTile(
               onTap: (){
                 if(!_commonController.isLogin.value){
                   Navigator.pushNamed(context, LoginScreen.routeName);
-                }
-              },
-              leading: CommonData.icon(icon: "asset/icons/smartphone.png", color: Colors.green , isTab: isTab),
-              title: const Text("Digital Purchases",style: TextStyle(color: Colors.black),),
-              trailing: const Icon(Icons.arrow_forward_ios_outlined),
-            ),
-            Divider(color: Colors.grey.withOpacity(0.5),),
-            ListTile(
-              onTap: (){
-                if(!_commonController.isLogin.value){
-                  Navigator.pushNamed(context, LoginScreen.routeName);
-                }
-              },
-              leading: Icon(Icons.wallet_giftcard,color: AllColors.mainColor,),
-              title: const Text("Chardike Loyality",style: TextStyle(color: Colors.black),),
-              trailing: const Icon(Icons.arrow_forward_ios_outlined),
-            ),
-            Divider(color: Colors.grey.withOpacity(0.5),),
-            ListTile(
-              onTap: (){
-                if(!_commonController.isLogin.value){
-                  Navigator.pushNamed(context, LoginScreen.routeName);
+                }else{
+                  Navigator.pushNamed(context, MyLikes.routeName);
                 }
               },
               leading: Icon(Icons.favorite_border,color: AllColors.mainColor,),
@@ -371,10 +397,13 @@ class UserScreen extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios_outlined),
             ),
             Divider(color: Colors.grey.withOpacity(0.5),),
-            const ListTile(
-              leading: Icon(Icons.help_outline,color: Colors.green,),
-              title: Text("Help Centre",style: TextStyle(color: Colors.black),),
-              trailing: Icon(Icons.arrow_forward_ios_outlined),
+            ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, HelpCenter.routeName);
+              },
+              leading: const Icon(Icons.help_outline,color: Colors.green,),
+              title: const Text("Help Centre",style: TextStyle(color: Colors.black),),
+              trailing: const Icon(Icons.arrow_forward_ios_outlined),
             ),
             Divider(color: Colors.grey.withOpacity(0.5),),
             const ListTile(
@@ -382,6 +411,46 @@ class UserScreen extends StatelessWidget {
               title: Text("Chat With Chardike",style: TextStyle(color: Colors.black),),
               trailing: Icon(Icons.arrow_forward_ios_outlined),
             ),
+            SizedBox(height: getProportionateScreenHeight(20),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SocialMediaIcon(image: "asset/icons/social/facebook.png", onTap: (){}),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                SocialMediaIcon(image: "asset/icons/social/instagram.png", onTap: (){}),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                SocialMediaIcon(image: "asset/icons/social/twitter.png", onTap: (){})
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Term of Use",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,fontSize: getProportionateScreenWidth(10)),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Container(height: getProportionateScreenWidth(5),width: getProportionateScreenWidth(5),decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Text("Term of Sale",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,fontSize: getProportionateScreenWidth(10)),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Container(height: getProportionateScreenWidth(5),width: getProportionateScreenWidth(5),decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Text("Privacy Policy",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,fontSize: getProportionateScreenWidth(10)),),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Warranty Policy",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,fontSize: getProportionateScreenWidth(10)),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Container(height: getProportionateScreenWidth(5),width: getProportionateScreenWidth(5),decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey),),
+                SizedBox(width: getProportionateScreenWidth(10),),
+                Text("Return Policy",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,fontSize: getProportionateScreenWidth(10)),),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(10),),
+            const Text("Version 1.0.1",style: TextStyle(color: Colors.grey),),
+            SizedBox(height: getProportionateScreenHeight(10),),
           ],
         ),
       ),

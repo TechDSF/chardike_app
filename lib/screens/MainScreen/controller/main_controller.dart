@@ -12,16 +12,10 @@ import 'package:get/get.dart';
 class MainController extends GetxController{
   var isLoading = false.obs;
   var tapIndex = 2.obs;
+  var index = 2.obs;
   final CommonController _commonController = Get.put(CommonController());
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-  }
-
-
-  var pageList = [
+  var list = [
     FeedPage(),
     SearchScreen(),
     HomeScreen(),

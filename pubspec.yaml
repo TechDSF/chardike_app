@@ -102,6 +102,7 @@ flutter:
     - asset/images/
     - asset/icons/
     - asset/icons/auth/
+    - asset/icons/social/
     - asset/images/category/
     - asset/images/category/subCategory/
   #   - images/a_dot_ham.jpeg

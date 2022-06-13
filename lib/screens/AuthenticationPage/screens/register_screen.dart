@@ -71,32 +71,6 @@ class RegisterScreen extends StatelessWidget {
                         children: <Widget>[
                           SizedBox(
                               height: height * 0.050,
-                              child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.phone_android,color: Colors.grey,size: height * 0.030,))),
-                          SizedBox(width: getProportionateScreenWidth(20),),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _loginController.registerMobileTextController,
-                              keyboardType: TextInputType.number,
-                              validator: (value){
-                                if(value!.isEmpty){
-                                  return "Mobile is required!";
-                                }else if(value.length > 11 || value.length < 11){
-                                  return "Please enter valid mobile number!";
-                                }
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: "01********"
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: height * 0.030,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                              height: height * 0.050,
                               child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.alternate_email,color: Colors.grey,size: height * 0.030,))),
                           SizedBox(width: getProportionateScreenWidth(20),),
                           Expanded(
@@ -138,6 +112,35 @@ class RegisterScreen extends StatelessWidget {
                                 },
                                 decoration: InputDecoration(
                                     hintText: "Password",
+                                    suffixIcon: !_loginController.isVisible.value?InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility_off),):InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility),)
+                                ),
+                              ),)
+                          )
+                        ],
+                      ),
+                      SizedBox(height: height * 0.030,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                              height: height * 0.050,
+                              child: Align(alignment: Alignment.bottomCenter,child: Icon(Icons.security,color: Colors.grey,size: height * 0.030,))),
+                          SizedBox(width: getProportionateScreenWidth(20),),
+                          Expanded(
+                              child: Obx(()=>TextFormField(
+                                controller: _loginController.registerConfirmPasswordTextController,
+                                obscureText: _loginController.isVisible.value,
+                                validator: (value){
+                                  if(value!.isEmpty){
+                                    return "Confirm Password is required!";
+                                  }else if(value.length < 6){
+                                    return "Password length at least 6 required!";
+                                  }else if(value != _loginController.registerPasswordTextController.text){
+                                    return "Password not match!";
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                    hintText: " Confirm Password",
                                     suffixIcon: !_loginController.isVisible.value?InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility_off),):InkWell(onTap: (){_loginController.isVisible.value = !_loginController.isVisible.value;},child: Icon(Icons.visibility),)
                                 ),
                               ),)

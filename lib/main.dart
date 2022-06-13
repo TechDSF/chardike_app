@@ -1,17 +1,20 @@
+import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/route.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
+import 'package:chardike/screens/SplashScreen/splash_screen.dart';
 import 'package:chardike/size_config.dart';
+import 'package:chardike/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
-void main() {
-  runApp(const MyApp());
+Future main() async{
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       routes: routes,
-      initialRoute: MainScreen.routeName,
+      initialRoute: SplashScreen.routeName,
     );
   }
 }

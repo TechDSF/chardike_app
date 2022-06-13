@@ -21,6 +21,7 @@ class LoginController extends GetxController{
   TextEditingController registerEmailTextController = TextEditingController();
   TextEditingController registerMobileTextController = TextEditingController();
   TextEditingController registerPasswordTextController = TextEditingController();
+  TextEditingController registerConfirmPasswordTextController = TextEditingController();
   ///login screen
   TextEditingController loginEmailTextController = TextEditingController();
   TextEditingController loginPasswordTextController = TextEditingController();
@@ -71,7 +72,12 @@ class LoginController extends GetxController{
           Fluttertoast.showToast(msg: "${jsonData['Error']}",toastLength: Toast.LENGTH_LONG);
           isSingUpLoading(false);
           context.loaderOverlay.hide();
-        }else{
+        }else if(jsonData['Error'] != null){
+          Fluttertoast.showToast(msg: "${jsonData['Error']}",toastLength: Toast.LENGTH_LONG);
+          isSingUpLoading(false);
+          context.loaderOverlay.hide();
+        }
+        else{
           loginPasswordTextController.clear();
           loginEmailTextController.clear();
           print("user name = ${jsonData['username']}");
@@ -112,8 +118,7 @@ class LoginController extends GetxController{
 
     var body = json.encode({
       "full_name": fullName,
-      "email": email,
-      "phone":mobile,
+      "phone":email,
       "password":password,
       "confirm_password":password
     });

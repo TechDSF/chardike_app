@@ -20,13 +20,13 @@ class CommonController extends GetxController{
 
   getLoginData()async{
     preferences = await SharedPreferences.getInstance();
-    var data = preferences.getBool("isLogin");
-    isLogin.value = data!;
+    bool data = preferences.getBool("isLogin")??false;
+    isLogin.value = data;
     print("login data $data");
     if(data){
       _userDataController.getData();
-      email.value = preferences.getString("email")!;
-      userName.value = preferences.getString("username")!;
+      email.value = preferences.getString("email")??"";
+      userName.value = preferences.getString("username")??"";
     }
   }
 
