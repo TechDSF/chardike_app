@@ -2,23 +2,20 @@ import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../CommonData/all_colors.dart';
-import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
 import '../../ProductDetails/product_details.dart';
 
 class FeatureProduct extends StatelessWidget {
   FeatureProduct({Key? key}) : super(key: key);
-  static const String routeName ="/feature_product";
+  static const String routeName = "/feature_product";
   final HomeController _homeController = Get.put(HomeController());
   bool isTab = SizeConfig.screenWidth > 768;
 
   @override
   Widget build(BuildContext context) {
-
     var _aspectRatio;
     double aspt(double height) {
       var _crossAxisSpacing = 8;
@@ -47,55 +44,53 @@ class FeatureProduct extends StatelessWidget {
                 color: Colors.yellow,
               ),
             );
-          }
-          else {
+          } else {
             return GridView.builder(
-                gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isTab?3:2,
-                  childAspectRatio: isTab?aspt(getProportionateScreenWidth(500)):aspt(getProportionateScreenWidth(300)),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isTab ? 3 : 2,
+                  childAspectRatio: isTab
+                      ? aspt(getProportionateScreenWidth(500))
+                      : aspt(getProportionateScreenWidth(300)),
                 ),
                 itemCount: _homeController.apiProductList.length,
                 itemBuilder: (context, index) {
-                  var result = _homeController.apiProductList[(_homeController.apiProductList.length-1) - index];
+                  var result = _homeController.apiProductList[
+                      (_homeController.apiProductList.length - 1) - index];
                   return InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, ProductDetails.routeName,arguments: result);
+                    onTap: () {
+                      Navigator.pushNamed(context, ProductDetails.routeName,
+                          arguments: result);
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border(
-                            top: const BorderSide(color: Colors.grey,width: 0.5),
-                            left: index%2==0?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
-                            right: index%2==0?const BorderSide(color: Colors.grey,width: 0):const BorderSide(color: Colors.grey,width: 0.5),
-                            bottom: index == _homeController.apiProductList.length-1 || index == _homeController.apiProductList.length-2?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
-                          )
-                      ),
+                          // border: Border(
+                          //   top: const BorderSide(color: Colors.grey,width: 0.5),
+                          //   left: index%2==0?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
+                          //   right: index%2==0?const BorderSide(color: Colors.grey,width: 0):const BorderSide(color: Colors.grey,width: 0.5),
+                          //   bottom: index == _homeController.apiProductList.length-1 || index == _homeController.apiProductList.length-2?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
+                          // )
+                          ),
                       padding: EdgeInsets.all(getProportionateScreenWidth(8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            height:
-                            isTab?getProportionateScreenWidth(
-                                220):getProportionateScreenWidth(
-                                180),
+                            height: isTab
+                                ? getProportionateScreenWidth(220)
+                                : getProportionateScreenWidth(180),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.withOpacity(0.2)),image: DecorationImage(
-                                image: NetworkImage(result.featureImage),fit: BoxFit.fill
-                            )
-                            ),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.2)),
+                                image: DecorationImage(
+                                    image: NetworkImage(result.featureImage),
+                                    fit: BoxFit.fill)),
                             child: Stack(
                               children: <Widget>[
                                 Positioned(
                                     right: 0,
                                     child: Container(
-                                      height:
-                                      getProportionateScreenWidth(
-                                          20),
-                                      width:
-                                      getProportionateScreenWidth(
-                                          45),
+                                      height: getProportionateScreenWidth(20),
+                                      width: getProportionateScreenWidth(45),
                                       decoration: BoxDecoration(
                                           color: Colors.orange,
                                           borderRadius: BorderRadius.only(
@@ -107,15 +102,13 @@ class FeatureProduct extends StatelessWidget {
                                                       10)))),
                                       child: Center(
                                           child: Text(
-                                            "-10%",
-                                            style: TextStyle(
-                                                fontSize:
-                                                getProportionateScreenWidth(
-                                                    10),
-                                                color: Colors.white,
-                                                fontWeight:
-                                                FontWeight.bold),
-                                          )),
+                                        "-10%",
+                                        style: TextStyle(
+                                            fontSize:
+                                                getProportionateScreenWidth(10),
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      )),
                                     ))
                               ],
                             ),
@@ -123,29 +116,33 @@ class FeatureProduct extends StatelessWidget {
                           SizedBox(
                             height: getProportionateScreenHeight(10),
                           ),
-                          Text(result.productName.toString(),maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12)
-                          ),),
+                          Text(
+                            result.productName.toString(),
+                            maxLines: 2,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(12)),
+                          ),
                           SizedBox(
                             height: getProportionateScreenHeight(5),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal:
-                                getProportionateScreenWidth(5)),
+                                horizontal: getProportionateScreenWidth(5)),
                             child: Row(
                               children: [
                                 Text(
-                                  "₺ " + result.newPrice.toString()+" ",
-                                  style: TextStyle(
-                                      color: AllColors.mainColor),
+                                  "₺ " + result.newPrice.toString() + " ",
+                                  style: TextStyle(color: AllColors.mainColor),
                                   maxLines: 1,
                                 ),
                                 Text(
                                   "₺" + result.regularPrice.toString(),
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
-                                      color: Colors.grey,fontSize: getProportionateScreenWidth(10)),
+                                      color: Colors.grey,
+                                      fontSize:
+                                          getProportionateScreenWidth(10)),
                                 ),
                               ],
                             ),
@@ -165,9 +162,11 @@ class FeatureProduct extends StatelessWidget {
                                 itemSize: getProportionateScreenWidth(10),
                                 direction: Axis.horizontal,
                               ),
-                              Text("(5)",style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(10)
-                              ),)
+                              Text(
+                                "(5)",
+                                style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(10)),
+                              )
                             ],
                           ),
                         ],

@@ -3,6 +3,8 @@ import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/components/widgets/fappbar.dart';
 import 'package:chardike/screens/ProductDetails/controller/product_details_controller.dart';
+import 'package:chardike/screens/UserPage/controller/favourite_controller.dart';
+import 'package:chardike/screens/UserPage/model/favourite_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,7 +19,6 @@ import '../../size_config.dart';
 import '../CartPage/model/cart_model.dart';
 import '../CartPage/screen/cart_screen.dart';
 import '../HomePage/model/product_model.dart';
-
 
 class ProductDetails extends StatefulWidget {
   static const String routeName = "/product_details";
@@ -34,6 +35,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
       Get.put(ProductDetailsController());
   final HomeController _homeController = Get.put(HomeController());
   final CartController _cartController = Get.put(CartController());
+  final FavouriteController _favouriteController =
+      Get.put(FavouriteController());
 
   final listViewKey = RectGetter.createGlobalKey();
   Map<int, dynamic> itemKeys = {};
@@ -106,6 +109,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
   Widget build(BuildContext context) {
     final productModel =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
+    _favouriteController.isFavourite.value =
+        _favouriteController.checkDataExitOrNot(id: productModel.id.toString());
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -117,13 +122,45 @@ class _ProductDetailsScreenState extends State<ProductDetails>
         ),
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-            Border(top: BorderSide(color: Colors.black.withOpacity(0.4), width: 0.5))),
+            border: Border(
+                top: BorderSide(
+                    color: Colors.black.withOpacity(0.4), width: 0.5))),
         child: Row(
           children: <Widget>[
-            const Expanded(
+            Expanded(
               flex: 1,
-              child: Center(child: FaIcon(FontAwesomeIcons.heart,color: Colors.grey,)),
+              child: Center(child: Obx(() {
+                if (_favouriteController.isFavourite.value) {
+                  return InkWell(
+                      onTap: () {
+                        _favouriteController.deleteData(
+                            id: productModel.id.toString());
+                        _favouriteController.isFavourite.value = false;
+                      },
+                      child: const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ));
+                } else {
+                  return InkWell(
+                    onTap: () {
+                      var model = FavouriteModel(
+                          id: productModel.id.toString(),
+                          slug: productModel.slug,
+                          image: productModel.featureImage,
+                          name: productModel.productName,
+                          newPrice: productModel.newPrice,
+                          oldPrice: productModel.regularPrice);
+                      _favouriteController.addProduct(model: model);
+                      _favouriteController.isFavourite.value = true;
+                    },
+                    child: const FaIcon(
+                      FontAwesomeIcons.heart,
+                      color: Colors.grey,
+                    ),
+                  );
+                }
+              })),
             ),
             Expanded(
                 flex: 4,
@@ -133,19 +170,18 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                       _cartController.cartList.add(CartModel(
                           title: productModel.productName.toString(),
                           image: productModel.featureImage,
-                          quantity:
-                          _detailsController.quantityItem.value,
+                          quantity: _detailsController.quantityItem.value,
                           price: int.parse(productModel.newPrice),
-                          totalPrice:
-                          _detailsController.quantityItem.value *
+                          totalPrice: _detailsController.quantityItem.value *
                               int.parse(productModel.newPrice)));
                     } finally {
                       // TODO
-                      _detailsController
-                          .isHaveCart.value = _cartController.cartList
-                          .where((element) =>
-                      element.title == productModel.productName.toString())
-                          .isEmpty
+                      _detailsController.isHaveCart.value = _cartController
+                              .cartList
+                              .where((element) =>
+                                  element.title ==
+                                  productModel.productName.toString())
+                              .isEmpty
                           ? false
                           : true;
                       Fluttertoast.showToast(
@@ -154,20 +190,22 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                     }
                   },
                   child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3),vertical: getProportionateScreenWidth(7)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(3),
+                          vertical: getProportionateScreenWidth(7)),
                       margin: EdgeInsets.symmetric(
                           horizontal: getProportionateScreenWidth(5)),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(
                               getProportionateScreenWidth(5)),
-                          border:
-                          Border.all(color: AllColors.mainColor)),
+                          border: Border.all(color: AllColors.mainColor)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           CommonData.icon(
                               icon: "asset/icons/cart.png",
-                              color: Colors.blue,isTab: isTab),
+                              color: Colors.blue,
+                              isTab: isTab),
                           SizedBox(
                             width: getProportionateScreenWidth(5),
                           ),
@@ -175,13 +213,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                             "Add to cart",
                             style: TextStyle(
                                 color: Colors.blue,
-                                fontSize:
-                                getProportionateScreenWidth(13)),
+                                fontSize: getProportionateScreenWidth(13)),
                           )
                         ],
                       )),
-                )
-            ),
+                )),
             Expanded(
                 flex: 3,
                 child: Container(
@@ -195,11 +231,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                         border: Border.all(color: AllColors.mainColor)),
                     child: Center(
                         child: Text(
-                          "BUY NOW",
-                          style: TextStyle(
-                              fontSize: getProportionateScreenWidth(13),
-                              color: Colors.white),
-                        ))))
+                      "BUY NOW",
+                      style: TextStyle(
+                          fontSize: getProportionateScreenWidth(13),
+                          color: Colors.white),
+                    ))))
           ],
         ),
       ),
@@ -221,7 +257,9 @@ class _ProductDetailsScreenState extends State<ProductDetails>
       slivers: [
         SliverAppBar(
           automaticallyImplyLeading: true,
-          expandedHeight: isTab?getProportionateScreenHeight(450 + kToolbarHeight):getProportionateScreenHeight(320 + kToolbarHeight),
+          expandedHeight: isTab
+              ? getProportionateScreenHeight(450 + kToolbarHeight)
+              : getProportionateScreenHeight(320 + kToolbarHeight),
           flexibleSpace: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -232,13 +270,12 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           right: getProportionateScreenWidth(20)),
                       child: Center(
                           child: InkWell(
-                            onTap: (){
-
-                            },
-                            child: CommonData.icon(
-                                icon: "asset/icons/home.png",
-                                color: Colors.grey,isTab: isTab),
-                          )),
+                        onTap: () {},
+                        child: CommonData.icon(
+                            icon: "asset/icons/home.png",
+                            color: Colors.grey,
+                            isTab: isTab),
+                      )),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -251,12 +288,15 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               },
                               child: CommonData.icon(
                                   icon: "asset/icons/cart.png",
-                                  color: Colors.grey, isTab: isTab))),
+                                  color: Colors.grey,
+                                  isTab: isTab))),
                     ),
                   ],
                 ),
                 Container(
-                  height: isTab?getProportionateScreenHeight(440):getProportionateScreenHeight(310),
+                  height: isTab
+                      ? getProportionateScreenHeight(440)
+                      : getProportionateScreenHeight(310),
                   margin: EdgeInsets.symmetric(
                       horizontal: getProportionateScreenWidth(10)),
                   decoration: BoxDecoration(
@@ -267,12 +307,13 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                       CarouselSlider.builder(
                         itemCount: 1,
                         options: CarouselOptions(
-                          height: isTab?getProportionateScreenHeight(430):getProportionateScreenHeight(300),
+                          height: isTab
+                              ? getProportionateScreenHeight(430)
+                              : getProportionateScreenHeight(300),
                           viewportFraction: 1,
                           initialPage: 0,
                           onPageChanged: (value, reason) {
-                            _detailsController.imageIndex.value =
-                                value + 1;
+                            _detailsController.imageIndex.value = value + 1;
                           },
                           enableInfiniteScroll: true,
                           reverse: false,
@@ -280,18 +321,18 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           enlargeCenterPage: true,
                           scrollDirection: Axis.horizontal,
                         ),
-                        itemBuilder: (BuildContext context,
-                            int itemIndex, int pageViewIndex) =>
+                        itemBuilder: (BuildContext context, int itemIndex,
+                                int pageViewIndex) =>
                             Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      getProportionateScreenWidth(10)),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          productModel.featureImage),
-                                      fit: BoxFit.fill)),
-                              width: double.infinity,
-                            ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  getProportionateScreenWidth(10)),
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage(productModel.featureImage),
+                                  fit: BoxFit.fill)),
+                          width: double.infinity,
+                        ),
                       ),
                       Positioned(
                         bottom: 0,
@@ -299,26 +340,19 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                         right: 0,
                         child: SizedBox(
                           child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width:
-                                getProportionateScreenWidth(50),
-                                height:
-                                getProportionateScreenWidth(20),
+                                width: getProportionateScreenWidth(50),
+                                height: getProportionateScreenWidth(20),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                    getProportionateScreenWidth(
-                                        5)),
+                                    horizontal: getProportionateScreenWidth(5)),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(
-                                            10)),
+                                        getProportionateScreenWidth(10)),
                                     color: Colors.grey),
                                 child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Obx(() => Text(_detailsController
                                         .imageIndex.value
@@ -402,17 +436,15 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: CommonData.takaSign +
-                                            productModel.regularPrice.toString(),
+                                            productModel.regularPrice
+                                                .toString(),
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough,
                                             color:
                                                 Colors.black.withOpacity(0.6)),
                                       ),
-                                      const TextSpan(
-                                          text: "  -" +
-                                              "10" +
-                                              "%"),
+                                      const TextSpan(text: "  -" + "10" + "%"),
                                     ],
                                   ),
                                 ),
@@ -826,7 +858,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                         decoration: BoxDecoration(
                                                             image: DecorationImage(
                                                                 image: NetworkImage(
-                                                                    result.featureImage),
+                                                                    result
+                                                                        .featureImage),
                                                                 fit: BoxFit
                                                                     .fill),
                                                             borderRadius:
@@ -842,7 +875,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                               5),
                                                     ),
                                                     Text(
-                                                      result.productName.toString(),
+                                                      result.productName
+                                                          .toString(),
                                                       maxLines: 2,
                                                       textAlign:
                                                           TextAlign.start,
@@ -869,7 +903,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                         ),
                                                         Text(
                                                           "₺" +
-                                                              result.regularPrice
+                                                              result
+                                                                  .regularPrice
                                                                   .toString(),
                                                           style: TextStyle(
                                                               decoration:

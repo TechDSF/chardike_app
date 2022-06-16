@@ -4,17 +4,11 @@ import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
-import 'package:chardike/screens/ChardikeService/screens/about_chardike.dart';
-import 'package:chardike/screens/ChardikeService/screens/chardike_policy.dart';
-import 'package:chardike/screens/ChardikeService/screens/community_rulse.dart';
-import 'package:chardike/screens/ChardikeService/screens/help_center.dart';
-import 'package:chardike/screens/ChardikeService/screens/tips_tricks_screen.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
 import 'package:chardike/screens/FeatureProduct/screens/feature_products.dart';
 import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/screens/PaymentMethodPage/screen/payment_screen.dart';
-import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
 import 'package:chardike/screens/SplashScreen/splash_screen.dart';
@@ -39,9 +33,11 @@ import 'package:chardike/screens/WheelPage/screen/wheel_screen.dart';
 import 'package:chardike/test.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'screens/UserPage/components/help_center.dart';
+
 var routes = <String, WidgetBuilder>{
   SplashScreen.routeName: (context) => SplashScreen(),
-  MainScreen.routeName: (context)=> MainScreen(),
+  MainScreen.routeName: (context) => MainScreen(),
   FlashSaleDetails.routeName: (context) => FlashSaleDetails(),
   ProductDetails.routeName: (context) => ProductDetails(),
   TopProductPage.routeName: (context) => TopProductPage(),
@@ -59,12 +55,8 @@ var routes = <String, WidgetBuilder>{
   WheelScreen.routeName: (context) => WheelScreen(),
   ForgotPassword.routeName: (context) => ForgotPassword(),
   OtpScreen.routeName: (context) => OtpScreen(),
-  ChangePasswordScreen.routeName:(context) => ChangePasswordScreen(),
+  ChangePasswordScreen.routeName: (context) => ChangePasswordScreen(),
   HelpCenter.routeName: (context) => HelpCenter(),
-  TipsTricksScreen.routeName: (context) => TipsTricksScreen(),
-  CommunityRules.routeName: (context) => CommunityRules(),
-  ChardikePolicy.routeName: (context) => ChardikePolicy(),
-  AboutChardike.routeName: (context) => AboutChardike(),
   TopProductMain.routeName: (context) => TopProductMain(),
   FeatureProduct.routeName: (context) => FeatureProduct(),
   MyLikes.routeName: (context) => MyLikes(),
@@ -75,7 +67,7 @@ var routes = <String, WidgetBuilder>{
   MyPurchases.routeName: (context) => MyPurchases(),
   MyAddress.routeName: (context) => MyAddress(),
   AddNewAddress.routeName: (context) => AddNewAddress(),
-  AboutUs.routeName: (context)=> AboutUs(),
+  AboutUs.routeName: (context) => AboutUs(),
   ReturnPolicy.routeName: (context) => ReturnPolicy(),
   Test.routeName: (context) => Test()
 };

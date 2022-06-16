@@ -14,7 +14,6 @@ class CategorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var _aspectRatio;
     double aspt(double height) {
       var _crossAxisSpacing = 8;
@@ -28,12 +27,14 @@ class CategorySection extends StatelessWidget {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ///category section
-        SectionTitle(title: "Category",
+        SectionTitle(
+            title: "Category",
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => CategoryScreen()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => CategoryScreen()));
             }),
         Divider(),
         SizedBox(
@@ -51,33 +52,37 @@ class CategorySection extends StatelessWidget {
             );
           } else {
             return SizedBox(
-              height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(250),
-              child: GridView.builder(
-                  gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isTab?1:2,
-                      childAspectRatio:
-                      isTab?aspt(getProportionateScreenHeight(370)):aspt(getProportionateScreenWidth(170)),
-                      mainAxisSpacing:
-                      getProportionateScreenWidth(10),
-                      crossAxisSpacing:
-                      getProportionateScreenHeight(10)),
-                  scrollDirection: Axis.horizontal,
+              height: getProportionateScreenHeight(120),
+              child: ListView.builder(
                   itemCount: _homeController.categoryList.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     var result = _homeController.categoryList[index];
-                    return Container(
-                        padding: isTab?EdgeInsets.all(8.0):EdgeInsets.all(0.0),
-                        color: Colors.grey.withOpacity(0.05),
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(child: ClipRRect(borderRadius: BorderRadius.circular(getProportionateScreenWidth(5)),child: Image.network(result.image.toString(),fit: BoxFit.fill,)),),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(result.categoryName.toString(),style: TextStyle(fontSize: getProportionateScreenWidth(14)),maxLines: 2,),
-                            ),
-                          ],
-                        ));
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: getProportionateScreenWidth(70),
+                            width: getProportionateScreenWidth(70),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    getProportionateScreenHeight(5)),
+                                image: DecorationImage(
+                                    image: NetworkImage(result.image),
+                                    fit: BoxFit.fill)),
+                          ),
+                          Expanded(
+                              child: Center(
+                                  child: Text(
+                            result.categoryName,
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(12)),
+                          )))
+                        ],
+                      ),
+                    );
                   }),
             );
           }

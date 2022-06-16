@@ -8,29 +8,28 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-enum Status {
-  showBrand,
-  showProduct
-}
+enum Status { showBrand, showProduct }
 
-class SearchController extends GetxController{
+class SearchController extends GetxController {
   var isLoading = false.obs;
   var subSearchTextController = TextEditingController().obs;
   var mainSearchTextController = TextEditingController().obs;
   Rx<List<String>> suggestionList = Rx<List<String>>([]);
-  List<CategoryModel> categoryList = List<CategoryModel>.empty(growable: true).obs;
+  List<CategoryModel> categoryList =
+      List<CategoryModel>.empty(growable: true).obs;
   List<BrandModel> brandList = List<BrandModel>.empty(growable: true).obs;
   List<CountryModel> countryList = List<CountryModel>.empty(growable: true).obs;
   var showType = false.obs;
   var isTextEmpty = true.obs;
+  var firstitemOfCategory = "".obs;
 
   var isCategoryLoading = false.obs;
   var isCountryLoading = false.obs;
 
   var mainSearchShowType = false.obs;
   final HomeController _homeController = Get.put(HomeController());
-  Rx<List<QueryProductModel>> filterProductList = Rx<List<QueryProductModel>>([]);
-
+  Rx<List<QueryProductModel>> filterProductList =
+      Rx<List<QueryProductModel>>([]);
 
   @override
   void onInit() {
@@ -41,51 +40,56 @@ class SearchController extends GetxController{
     super.onInit();
   }
 
-  getCategoryList()async{
+  getCategoryList() async {
     isCategoryLoading(true);
     var data = await ApiService.fetchCategories();
-    if(data.runtimeType == int){
+    if (data.runtimeType == int) {
       isCategoryLoading(false);
       Fluttertoast.showToast(msg: "Category fetch Error");
-    }else{
+    } else {
       categoryList = data;
+      firstitemOfCategory.value = categoryList[0].categoryName;
       isCategoryLoading(false);
     }
   }
 
-  getBrandList()async{
+  getBrandList() async {
     isCategoryLoading(true);
     print("work here");
     var data = await ApiService.fetchBrands();
-    if(data.runtimeType == int){
+    if (data.runtimeType == int) {
       isCategoryLoading(false);
       print("Brand fetch Error");
       Fluttertoast.showToast(msg: "Brand fetch Error");
-    }else{
+    } else {
       brandList = data;
       isCategoryLoading(false);
     }
   }
 
-  getCountryList()async{
+  getCountryList() async {
     isCountryLoading(true);
     var data = await ApiService.fetchCountry();
-    if(data.runtimeType == int){
+    if (data.runtimeType == int) {
       isCountryLoading(false);
       print("Country fetch Error");
       Fluttertoast.showToast(msg: "Country fetch Error");
-    }else{
+    } else {
       countryList = data;
       isCountryLoading(false);
     }
   }
 
-  filterProduct(String value){
+  filterProduct(String value) {
     List<QueryProductModel> results = [];
-    if(value.isEmpty){
+    if (value.isEmpty) {
       results = _homeController.queryProductList;
-    }else{
-      results = _homeController.queryProductList.where((element) => element.productName.toLowerCase().contains(value.toLowerCase())).toList();    }
+    } else {
+      results = _homeController.queryProductList
+          .where((element) =>
+              element.productName.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
     filterProductList.value = results;
   }
 
@@ -134,8 +138,8 @@ class SearchController extends GetxController{
     "Soothing Gel",
     "Suncreen",
     "Toner",
-    "Wash of Mask"];
-
+    "Wash of Mask"
+  ];
 
   List<String> searchBrandList = [
     "THE FACE SHOP",
@@ -147,8 +151,7 @@ class SearchController extends GetxController{
     "HTS"
   ];
 
-
-  getSearchSuggestionList(String suggestion){
+  getSearchSuggestionList(String suggestion) {
     var list = [
       "Acne Patch",
       "All Products",
@@ -198,11 +201,14 @@ class SearchController extends GetxController{
     ];
 
     List<String> results = [];
-    if(suggestion.isEmpty){
+    if (suggestion.isEmpty) {
       results = list;
-    }else{
-      results = list.where((element) => element.toLowerCase().contains(suggestion.toLowerCase())).toList();    }
+    } else {
+      results = list
+          .where((element) =>
+              element.toLowerCase().contains(suggestion.toLowerCase()))
+          .toList();
+    }
     suggestionList.value = results;
   }
-
 }

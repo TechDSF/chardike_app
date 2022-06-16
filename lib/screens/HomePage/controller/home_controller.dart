@@ -43,9 +43,6 @@ class HomeController extends GetxController{
   var isCategoryDataLoading =false.obs;
   List<CategoryModel> categoryList = List<CategoryModel>.empty(growable: true).obs;
 
-  ///for my likes
-  var isMyLikeProductLoading = false.obs;
-  List<ProductModel> myLikesProductList = List<ProductModel>.empty(growable: true).obs;
 
   @override
   void onInit() {

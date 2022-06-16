@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MainController extends GetxController{
+class MainController extends GetxController {
   var isLoading = false.obs;
   var tapIndex = 2.obs;
   var index = 2.obs;
@@ -19,7 +19,7 @@ class MainController extends GetxController{
     FeedPage(),
     SearchScreen(),
     HomeScreen(),
+    CartScreen(),
     UserScreen(),
-    CartScreen()
   ];
 }

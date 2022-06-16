@@ -17,9 +17,6 @@ class SliderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(
-          height: getProportionateScreenHeight(10),
-        ),
         Obx(() {
           if (_homeController.isSliderDataLoading.value) {
             return Shimmer.fromColors(
@@ -35,12 +32,12 @@ class SliderWidget extends StatelessWidget {
               children: [
                 CarouselSlider.builder(
                   itemCount: _homeController.sliderList.length,
-                  itemBuilder: (BuildContext context, int itemIndex,
-                      int pageViewIndex) {
+                  itemBuilder:
+                      (BuildContext context, int itemIndex, int pageViewIndex) {
                     var result = _homeController.sliderList[itemIndex];
                     return ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          getProportionateScreenWidth(5)),
+                      borderRadius:
+                          BorderRadius.circular(getProportionateScreenWidth(5)),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -62,7 +59,9 @@ class SliderWidget extends StatelessWidget {
                     onPageChanged: (value, reason) {
                       _homeController.dotIndex.value = value;
                     },
-                    height: isTab?getProportionateScreenHeight(250):getProportionateScreenHeight(170),
+                    height: isTab
+                        ? getProportionateScreenHeight(280)
+                        : getProportionateScreenHeight(200),
                     aspectRatio: 16 / 9,
                     viewportFraction: 1.0,
                     initialPage: 0,
@@ -70,8 +69,7 @@ class SliderWidget extends StatelessWidget {
                     reverse: false,
                     autoPlay: true,
                     autoPlayInterval: Duration(seconds: 5),
-                    autoPlayAnimationDuration:
-                    Duration(milliseconds: 1000),
+                    autoPlayAnimationDuration: Duration(milliseconds: 1000),
                     autoPlayCurve: Curves.ease,
                     enlargeCenterPage: true,
                     scrollDirection: Axis.horizontal,
@@ -83,11 +81,9 @@ class SliderWidget extends StatelessWidget {
                     width: SizeConfig.screenWidth,
                     child: Center(
                       child: Obx(() => DotsIndicator(
-                        dotsCount:
-                        _homeController.sliderList.length,
-                        position: _homeController.dotIndex.value
-                            .toDouble(),
-                      )),
+                            dotsCount: _homeController.sliderList.length,
+                            position: _homeController.dotIndex.value.toDouble(),
+                          )),
                     ),
                   ),
                 ),

@@ -11,7 +11,6 @@ class ProductType extends StatelessWidget {
   final HomeController _homeController = Get.put(HomeController());
   bool isTab = SizeConfig.screenWidth > 768;
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,47 +30,46 @@ class ProductType extends StatelessWidget {
             return Column(
               children: [
                 SizedBox(
-                  height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(150),
+                  height: isTab
+                      ? getProportionateScreenHeight(100)
+                      : getProportionateScreenHeight(80),
                   child: GridView.builder(
-                      gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 6 / 7,
-                          mainAxisSpacing:
-                          getProportionateScreenWidth(10),
-                          crossAxisSpacing:
-                          getProportionateScreenHeight(10)),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          childAspectRatio: 5 / 5,
+                          mainAxisSpacing: getProportionateScreenWidth(5),
+                          crossAxisSpacing: getProportionateScreenHeight(5)),
                       controller: _homeController.scrollController,
                       scrollDirection: Axis.horizontal,
-                      itemCount:
-                      _homeController.productTypeList.length + 1,
+                      itemCount: _homeController.productTypeList.length + 1,
                       itemBuilder: (context, index) {
-                        return index ==
-                            _homeController.productTypeList.length
+                        return index == _homeController.productTypeList.length
                             ? const Center(
-                          child: Icon(Icons.more_horiz),
-                        )
+                                child: Icon(Icons.more_horiz),
+                              )
                             : ListTile(
-                          title: Image.asset(
-                            _homeController
-                                .productTypeList[index].image,
-                            height: isTab?getProportionateScreenWidth(50):getProportionateScreenWidth(35),
-                            width:
-                            isTab?getProportionateScreenWidth(40):getProportionateScreenWidth(30),
-                            fit: BoxFit.contain,
-                          ),
-                          subtitle: Text(
-                            _homeController
-                                .productTypeList[index].type,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                              isTab?getProportionateScreenWidth(13):getProportionateScreenWidth(10),
-                            ),
-                          ),
-                        );
+                                title: Image.asset(
+                                  _homeController.productTypeList[index].image,
+                                  height: isTab
+                                      ? getProportionateScreenWidth(50)
+                                      : getProportionateScreenWidth(35),
+                                  width: isTab
+                                      ? getProportionateScreenWidth(40)
+                                      : getProportionateScreenWidth(30),
+                                  fit: BoxFit.contain,
+                                ),
+                                subtitle: Text(
+                                  _homeController.productTypeList[index].type,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: isTab
+                                        ? getProportionateScreenWidth(13)
+                                        : getProportionateScreenWidth(10),
+                                  ),
+                                ),
+                              );
                       }),
                 ),
                 SizedBox(

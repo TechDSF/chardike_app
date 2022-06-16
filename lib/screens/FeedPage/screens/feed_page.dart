@@ -28,7 +28,9 @@ class FeedPage extends StatelessWidget {
                   Navigator.pushNamed(context, CartScreen.routeName);
                 },
                 child: CommonData.icon(
-                    icon: "asset/icons/cart.png", color: AllColors.mainColor, isTab: isTab)),
+                    icon: "asset/icons/cart.png",
+                    color: AllColors.mainColor,
+                    isTab: isTab)),
             SizedBox(
               width: getProportionateScreenWidth(15),
             ),
@@ -38,14 +40,15 @@ class FeedPage extends StatelessWidget {
                 },
                 child: CommonData.icon(
                     icon: "asset/icons/messenger.png",
-                    color: AllColors.mainColor,isTab: isTab)),
+                    color: AllColors.mainColor,
+                    isTab: isTab)),
             SizedBox(
               width: getProportionateScreenWidth(10),
             )
           ],
         ),
         body: DefaultTabController(
-            length: 5,
+            length: 3,
             child: Column(children: <Widget>[
               Container(
                 height: getProportionateScreenHeight(2),
@@ -56,10 +59,8 @@ class FeedPage extends StatelessWidget {
                   children: <Widget>[
                     TabBar(
                       indicatorColor: AllColors.mainColor,
-                      isScrollable: true,
-                      labelStyle: const TextStyle(
-                        fontWeight: FontWeight.normal
-                      ),
+                      labelStyle:
+                          const TextStyle(fontWeight: FontWeight.normal),
                       indicatorWeight: getProportionateScreenWidth(2),
                       labelColor: AllColors.mainColor,
                       unselectedLabelColor: Colors.grey,
@@ -68,17 +69,11 @@ class FeedPage extends StatelessWidget {
                           text: "Timeline",
                         ),
                         Tab(
-                          text: "Explore",
+                          text: "Chardike",
                         ),
                         Tab(
-                          text: "Vouchers",
+                          text: "Customer Review",
                         ),
-                        Tab(
-                          text: "Freebies",
-                        ),
-                        Tab(
-                          text: "4.4 Deals",
-                        )
                       ],
                     ),
                     Container(
@@ -90,8 +85,6 @@ class FeedPage extends StatelessWidget {
                         children: [
                           TimeLineScreen(),
                           Icon(Icons.directions_transit),
-                          Icon(Icons.directions_bike),
-                          Icon(Icons.directions_bike),
                           Icon(Icons.directions_bike),
                         ],
                       ),
