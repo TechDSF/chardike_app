@@ -57,7 +57,7 @@ class MyLikes extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Obx(() {
-              if (_favouriteController.favouriteList.isEmpty) {
+              if (_favouriteController.favouriteList.value.isEmpty) {
                 return Container(
                   height: SizeConfig.screenHeight * 0.3,
                   color: Colors.grey.withOpacity(0.07),
@@ -92,7 +92,7 @@ class MyLikes extends StatelessWidget {
                 return GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _favouriteController.favouriteList.length,
+                    itemCount: _favouriteController.favouriteList.value.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: isTab ? 3 : 2,
                         childAspectRatio:
@@ -100,7 +100,8 @@ class MyLikes extends StatelessWidget {
                         crossAxisSpacing: getProportionateScreenWidth(1),
                         mainAxisSpacing: getProportionateScreenWidth(1)),
                     itemBuilder: (context, index) {
-                      var result = _favouriteController.favouriteList[index];
+                      var result =
+                          _favouriteController.favouriteList.value[index];
                       return Container(
                         margin: EdgeInsets.all(getProportionateScreenWidth(3)),
                         padding: EdgeInsets.only(
@@ -212,9 +213,7 @@ class MyLikes extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var result = _homeController.apiProductList[
-                            (_homeController.apiProductList.length - 1) -
-                                index];
+                        var result = _homeController.apiProductList[index];
                         return InkWell(
                           onTap: () {
                             Navigator.pushNamed(

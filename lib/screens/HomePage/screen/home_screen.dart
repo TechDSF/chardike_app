@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     bool isTab = SizeConfig.screenWidth > 768;
+    //print("Work twice------------");
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _homeController.navigatorKey,
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ProductType(),
+                    ProductTType(),
                     BannerSection(
                         image: "asset/images/banner_1.png", onTap: () {}),
                     FlashDealSection(),

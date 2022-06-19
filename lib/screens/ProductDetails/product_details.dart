@@ -109,6 +109,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
   Widget build(BuildContext context) {
     final productModel =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
+
     _favouriteController.isFavourite.value =
         _favouriteController.checkDataExitOrNot(id: productModel.id.toString());
 
@@ -305,7 +306,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                   child: Stack(
                     children: [
                       CarouselSlider.builder(
-                        itemCount: 1,
+                        itemCount: productModel.productImage.length,
                         options: CarouselOptions(
                           height: isTab
                               ? getProportionateScreenHeight(430)
@@ -313,7 +314,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           viewportFraction: 1,
                           initialPage: 0,
                           onPageChanged: (value, reason) {
-                            _detailsController.imageIndex.value = value + 1;
+                            _detailsController.imageIndex.value = value;
                           },
                           enableInfiniteScroll: true,
                           reverse: false,
@@ -328,8 +329,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               borderRadius: BorderRadius.circular(
                                   getProportionateScreenWidth(10)),
                               image: DecorationImage(
-                                  image:
-                                      NetworkImage(productModel.featureImage),
+                                  image: NetworkImage(productModel
+                                      .productImage[itemIndex].image),
                                   fit: BoxFit.fill)),
                           width: double.infinity,
                         ),
@@ -358,7 +359,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                         .imageIndex.value
                                         .toString())),
                                     Text("/"),
-                                    Text("1")
+                                    Text(productModel.productImage.length
+                                        .toString())
                                   ],
                                 ),
                               ),

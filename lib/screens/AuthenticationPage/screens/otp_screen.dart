@@ -21,6 +21,7 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
+    String type = args["type"].toString();
     String phone = args['phone'].toString();
     String profileId = args['profile_ID'].toString();
     var height = MediaQuery.of(context).size.height;
@@ -111,6 +112,7 @@ class OtpScreen extends StatelessWidget {
 
                     _loginController.verifyOtp(
                         context: context,
+                        type: type,
                         otp: otpPasswordTextController.text,
                         profileId: profileId);
                   }

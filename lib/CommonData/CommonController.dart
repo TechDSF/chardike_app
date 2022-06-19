@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CommonController extends GetxController{
+class CommonController extends GetxController {
   var isLoading = false.obs;
   late SharedPreferences preferences;
   var isLogin = false.obs;
@@ -18,23 +18,21 @@ class CommonController extends GetxController{
     super.onInit();
   }
 
-  getLoginData()async{
+  getLoginData() async {
     preferences = await SharedPreferences.getInstance();
-    bool data = preferences.getBool("isLogin")??false;
+    bool data = preferences.getBool("isLogin") ?? false;
     isLogin.value = data;
     print("login data $data");
-    if(data){
+    if (data) {
       _userDataController.getData();
-      email.value = preferences.getString("email")??"";
-      userName.value = preferences.getString("username")??"";
+      email.value = preferences.getString("email") ?? "";
+      userName.value = preferences.getString("username") ?? "";
     }
   }
 
-  logOutOperation({required BuildContext context}){
+  logOutOperation({required BuildContext context}) {
     preferences.setBool("isLogin", false);
     isLogin.value = false;
     Navigator.pop(context);
   }
-
-
 }

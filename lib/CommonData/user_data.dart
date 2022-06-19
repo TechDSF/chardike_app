@@ -2,7 +2,7 @@ import 'package:chardike/CommonData/common_data.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserDataController extends GetxController{
+class UserDataController extends GetxController {
   var isLoading = false.obs;
 
   late SharedPreferences preferences;
@@ -13,18 +13,23 @@ class UserDataController extends GetxController{
   var phone = "".obs;
   var email = "".obs;
 
-  getData()async{
+  getData() async {
     preferences = await SharedPreferences.getInstance();
-    fullName.value = preferences.getString(CommonData.fullName)??"";
-    email.value = preferences.getString(CommonData.email)??"";
-    phone.value = preferences.getString(CommonData.phone)??"";
-    userObjId.value = preferences.getString(CommonData.userObjId)??"";
-    profileId.value = preferences.getString(CommonData.userProfileId)??"";
-    userName.value = preferences.getString(CommonData.userName)??"";
+    fullName.value = preferences.getString(CommonData.fullName) ?? "";
+    email.value = preferences.getString(CommonData.email) ?? "";
+    phone.value = preferences.getString(CommonData.phone) ?? "";
+    userObjId.value = preferences.getString(CommonData.userObjId) ?? "";
+    profileId.value = preferences.getString(CommonData.userProfileId) ?? "";
+    userName.value = preferences.getString(CommonData.userName) ?? "";
   }
 
-
-  setData({required String fullNameData, required String emailData, required String mobileData,required String userObjIdData , required String profileIdData, required String userNameData})async{
+  setData(
+      {required String fullNameData,
+      required String emailData,
+      required String mobileData,
+      required String userObjIdData,
+      required String profileIdData,
+      required String userNameData}) async {
     preferences = await SharedPreferences.getInstance();
     preferences.setString(CommonData.fullName, fullNameData);
     preferences.setString(CommonData.email, emailData);

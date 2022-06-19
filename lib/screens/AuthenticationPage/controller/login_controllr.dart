@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/CommonData/user_data.dart';
+import 'package:chardike/Service/ApiService/api_service.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/change_password_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -151,6 +152,7 @@ class LoginController extends GetxController {
           clearText();
           context.loaderOverlay.hide();
           Navigator.popAndPushNamed(context, OtpScreen.routeName, arguments: {
+            "type": "register",
             "phone": email,
             "profile_ID": jsonData['profile_ID'].toString()
           });
@@ -210,6 +212,7 @@ class LoginController extends GetxController {
 
   verifyOtp(
       {required BuildContext context,
+      required String type,
       required String otp,
       required String profileId}) async {
     isVerifyOtp(true);
@@ -229,7 +232,12 @@ class LoginController extends GetxController {
         if (jsonData["Success"] != null) {
           context.loaderOverlay.hide();
           isVerifyOtp(true);
-          Navigator.popAndPushNamed(context, LoginScreen.routeName);
+          if (type == "change_password") {
+            Navigator.popAndPushNamed(context, ChangePasswordScreen.routeName,
+                arguments: profileId);
+          } else {
+            Navigator.pop(context);
+          }
         } else {
           Fluttertoast.showToast(
               msg: "Please enter valid otp!", toastLength: Toast.LENGTH_LONG);
@@ -242,6 +250,37 @@ class LoginController extends GetxController {
       Fluttertoast.showToast(
           msg: "${e.toString()}", toastLength: Toast.LENGTH_LONG);
       isSingUpLoading(false);
+      context.loaderOverlay.hide();
+    }
+  }
+
+  ///send forgot password otp
+  sendForgotPasswordOtp(
+      {required String mobile, required BuildContext context}) async {
+    var result = await ApiService.forotPasswordMethod(number: mobile);
+    if (result == 0) {
+      context.loaderOverlay.hide();
+    } else {
+      context.loaderOverlay.hide();
+      Navigator.popAndPushNamed(context, OtpScreen.routeName, arguments: {
+        "type": "change_password",
+        "phone": mobile,
+        "profile_ID": result.toString()
+      });
+    }
+  }
+
+  ///update password
+  updatePassword(
+      {required String password,
+      required String profileId,
+      required BuildContext context}) async {
+    bool result = await ApiService.updatePassword(
+        password: password, profileId: profileId);
+    if (result) {
+      context.loaderOverlay.hide();
+      Navigator.pop(context);
+    } else {
       context.loaderOverlay.hide();
     }
   }

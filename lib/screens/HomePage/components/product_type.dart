@@ -6,8 +6,8 @@ import 'package:shimmer/shimmer.dart';
 import '../../../size_config.dart';
 import '../controller/home_controller.dart';
 
-class ProductType extends StatelessWidget {
-  ProductType({Key? key}) : super(key: key);
+class ProductTType extends StatelessWidget {
+  ProductTType({Key? key}) : super(key: key);
   final HomeController _homeController = Get.put(HomeController());
   bool isTab = SizeConfig.screenWidth > 768;
 

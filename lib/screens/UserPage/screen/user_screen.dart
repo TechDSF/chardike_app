@@ -523,11 +523,7 @@ class UserScreen extends StatelessWidget {
             //Divider(color: Colors.grey.withOpacity(0.5),),
             ListTile(
               onTap: () {
-                if (!_commonController.isLogin.value) {
-                  Navigator.pushNamed(context, LoginScreen.routeName);
-                } else {
-                  Navigator.pushNamed(context, MyLikes.routeName);
-                }
+                Navigator.pushNamed(context, MyLikes.routeName);
               },
               leading: Icon(
                 Icons.favorite_border,

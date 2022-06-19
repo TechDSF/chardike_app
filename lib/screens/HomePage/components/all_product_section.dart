@@ -70,8 +70,7 @@ class AllProductSection extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  ProductModel result = _homeController.apiProductList[
-                      (_homeController.apiProductList.length - 1) - index];
+                  ProductModel result = _homeController.apiProductList[index];
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, ProductDetails.routeName,

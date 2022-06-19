@@ -1,5 +1,4 @@
 import 'package:chardike/Service/database_helper.dart';
-import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/UserPage/model/favourite_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -9,8 +8,7 @@ class FavouriteController extends GetxController {
   var isFavouriteLoading = false.obs;
   var isFavourite = false.obs;
 
-  List<FavouriteModel> favouriteList =
-      List<FavouriteModel>.empty(growable: true).obs;
+  Rx<List<FavouriteModel>> favouriteList = Rx<List<FavouriteModel>>([]);
 
   @override
   void onInit() {
@@ -21,13 +19,13 @@ class FavouriteController extends GetxController {
   getFavouriteProduct() async {
     isFavouriteLoading(true);
     var db = DatabaseHelper();
-    favouriteList = await db.getFavouriteProduct();
-    print("Favourite length is ${favouriteList.length}");
+    favouriteList.value = await db.getFavouriteProduct();
+    print("Favourite length is ${favouriteList.value.length}");
     isFavouriteLoading(false);
   }
 
   bool checkDataExitOrNot({required String id}) {
-    var contain = favouriteList.where((element) => element.id == id);
+    var contain = favouriteList.value.where((element) => element.id == id);
     if (contain.isEmpty) {
       return false;
     } else {

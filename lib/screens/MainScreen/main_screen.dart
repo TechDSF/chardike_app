@@ -24,6 +24,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     bool isTab = SizeConfig.screenWidth > 768;
+    print("hello------");
 
     return Scaffold(
         body: Obx(() =>

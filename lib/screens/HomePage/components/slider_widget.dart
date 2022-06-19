@@ -49,8 +49,8 @@ class SliderWidget extends StatelessWidget {
                           width: double.infinity,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(result.image),
-                                  fit: BoxFit.cover)),
+                                  image: NetworkImage(result.sliderImage),
+                                  fit: BoxFit.fill)),
                         ),
                       ),
                     );
