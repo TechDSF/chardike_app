@@ -60,56 +60,57 @@ class CategoryScreen extends StatelessWidget {
                 SizedBox(
                   width: SizeConfig.screenWidth * 0.22,
                   child: Container(
-                    padding:
-                        EdgeInsets.only(top: getProportionateScreenHeight(10)),
-                    color: Colors.grey.withOpacity(0.2),
-                    child: Obx(() => ListView.builder(
-                        itemCount: _categoryController.categoryList.length,
-                        itemBuilder: ((context, index) {
-                          var result = _categoryController.categoryList[index];
-                          return InkWell(
-                            onTap: () {
-                              _categoryController.selectedTab.value = index;
-                              _categoryController.getSubCategoryListById(
-                                  id: _categoryController.categoryList[index].id
-                                      .toString());
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: getProportionateScreenHeight(20)),
-                              child: Column(
-                                children: <Widget>[
-                                  Image.network(
-                                    result.image.toString(),
-                                    height: SizeConfig.screenWidth * 0.15,
-                                    width: SizeConfig.screenWidth * 0.15,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  SizedBox(
-                                    height: getProportionateScreenHeight(5),
-                                  ),
-                                  Obx(() => Text(
-                                        result.categoryName.toString(),
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.screenWidth * 0.03,
-                                            color: _categoryController
-                                                        .selectedTab.value ==
-                                                    index
-                                                ? Colors.red
-                                                : Colors.black,
-                                            fontWeight: _categoryController
-                                                        .selectedTab.value ==
-                                                    index
-                                                ? FontWeight.bold
-                                                : FontWeight.normal),
-                                      ))
-                                ],
+                      padding: EdgeInsets.only(
+                          top: getProportionateScreenHeight(10)),
+                      color: Colors.grey.withOpacity(0.2),
+                      child: ListView.builder(
+                          itemCount: _categoryController.categoryList.length,
+                          itemBuilder: ((context, index) {
+                            var result =
+                                _categoryController.categoryList[index];
+                            return InkWell(
+                              onTap: () {
+                                _categoryController.selectedTab.value = index;
+                                _categoryController.getSubCategoryListById(
+                                    id: _categoryController
+                                        .categoryList[index].id
+                                        .toString());
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: getProportionateScreenHeight(20)),
+                                child: Column(
+                                  children: <Widget>[
+                                    Image.network(
+                                      result.image.toString(),
+                                      height: SizeConfig.screenWidth * 0.15,
+                                      width: SizeConfig.screenWidth * 0.15,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    SizedBox(
+                                      height: getProportionateScreenHeight(5),
+                                    ),
+                                    Obx(() => Text(
+                                          result.categoryName.toString(),
+                                          style: TextStyle(
+                                              fontSize:
+                                                  SizeConfig.screenWidth * 0.03,
+                                              color: _categoryController
+                                                          .selectedTab.value ==
+                                                      index
+                                                  ? Colors.red
+                                                  : Colors.black,
+                                              fontWeight: _categoryController
+                                                          .selectedTab.value ==
+                                                      index
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal),
+                                        ))
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        }))),
-                  ),
+                            );
+                          }))),
                 ),
                 Expanded(
                     child: Obx((() => gridView(

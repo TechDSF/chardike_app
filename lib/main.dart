@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/route.dart';
 import 'package:chardike/screens/SplashScreen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(
+          appBarTheme: AppBarTheme(
               titleSpacing: 0,
               backgroundColor: Colors.white,
               elevation: 0,
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
                   fontSize: 16),
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(color: AllColors.mainColor),
               centerTitle: true,
               systemOverlayStyle: SystemUiOverlayStyle.light)),
       routes: routes,

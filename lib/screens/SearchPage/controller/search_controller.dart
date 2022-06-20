@@ -1,6 +1,8 @@
 import 'package:chardike/Service/ApiService/api_service.dart';
+import 'package:chardike/screens/CategoryPage/controller/category_controller.dart';
 import 'package:chardike/screens/CategoryPage/model/brand_model.dart';
 import 'package:chardike/screens/CategoryPage/model/category_model.dart';
+import 'package:chardike/screens/CategoryPage/model/sub_category_model.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/SearchPage/model/country_model.dart';
 import 'package:chardike/screens/SearchPage/model/search_product_model.dart';
@@ -14,11 +16,12 @@ class SearchController extends GetxController {
   var isLoading = false.obs;
   var subSearchTextController = TextEditingController().obs;
   var mainSearchTextController = TextEditingController().obs;
-  Rx<List<String>> suggestionList = Rx<List<String>>([]);
+  Rx<List<SubCategoryModel>> suggestionList = Rx<List<SubCategoryModel>>([]);
   List<CategoryModel> categoryList =
       List<CategoryModel>.empty(growable: true).obs;
   List<BrandModel> brandList = List<BrandModel>.empty(growable: true).obs;
   List<CountryModel> countryList = List<CountryModel>.empty(growable: true).obs;
+  List<String> searchHistoryList = List<String>.empty(growable: true).obs;
   var showType = false.obs;
   var isTextEmpty = true.obs;
   var firstitemOfCategory = "".obs;
@@ -28,6 +31,7 @@ class SearchController extends GetxController {
 
   var mainSearchShowType = false.obs;
   final HomeController _homeController = Get.put(HomeController());
+  final CategoryController _categoryController = Get.put(CategoryController());
   Rx<List<QueryProductModel>> filterProductList =
       Rx<List<QueryProductModel>>([]);
 
@@ -93,120 +97,23 @@ class SearchController extends GetxController {
     filterProductList.value = results;
   }
 
-  List<String> searchCategoryList = [
-    "Acne Patch",
-    "All Products",
-    "Ampoule",
-    "BB Cream",
-    "Blush",
-    "Body Care",
-    "Body Lotion",
-    "Body Lotion",
-    "Body Wash",
-    "Clay Mask",
-    "Cleansing Bar",
-    "Cleansing Foam",
-    "Cleansing Oil",
-    "Cleansing Tissue",
-    "Cream",
-    "Essence",
-    "Exfoliator",
-    "Eye Cream",
-    "Eye Look",
-    "Foot Care",
-    "Foot Peeling Pack",
-    "Foundation",
-    "Hair Care",
-    "Hair Serum",
-    "Hair Treatment",
-    "Hand Cream",
-    "Kit",
-    "Lip Balm",
-    "Lip Scrub",
-    "Lip Sleeping Mask",
-    "Lip Tint",
-    "Loose Powder",
-    "Make Up",
-    "Moisturizer",
-    "Peeling Gel",
-    "Serum",
-    "Shampoo",
-    "Sheet Mask",
-    "Skin Care",
-    "Skincare Set",
-    "Sleeping Mask",
-    "Soothing Gel",
-    "Suncreen",
-    "Toner",
-    "Wash of Mask"
-  ];
-
-  List<String> searchBrandList = [
-    "THE FACE SHOP",
-    "Beaute",
-    "SKINFOOD",
-    "Nella",
-    "RIRE",
-    "purito",
-    "HTS"
-  ];
+  addToSearchHistory({required String value}) {
+    if (searchHistoryList.contains(value)) {
+    } else {
+      searchHistoryList.add(value);
+    }
+  }
 
   getSearchSuggestionList(String suggestion) {
-    var list = [
-      "Acne Patch",
-      "All Products",
-      "Ampoule",
-      "BB Cream",
-      "Blush",
-      "Body Care",
-      "Body Lotion",
-      "Body Lotion",
-      "Body Wash",
-      "Clay Mask",
-      "Cleansing Bar",
-      "Cleansing Foam",
-      "Cleansing Oil",
-      "Cleansing Tissue",
-      "Cream",
-      "Essence",
-      "Exfoliator",
-      "Eye Cream",
-      "Eye Look",
-      "Foot Care",
-      "Foot Peeling Pack",
-      "Foundation",
-      "Hair Care",
-      "Hair Serum",
-      "Hair Treatment",
-      "Hand Cream",
-      "Kit",
-      "Lip Balm",
-      "Lip Scrub",
-      "Lip Sleeping Mask",
-      "Lip Tint",
-      "Loose Powder",
-      "Make Up",
-      "Moisturizer",
-      "Peeling Gel",
-      "Serum",
-      "Shampoo",
-      "Sheet Mask",
-      "Skin Care",
-      "Skincare Set",
-      "Sleeping Mask",
-      "Soothing Gel",
-      "Suncreen",
-      "Toner",
-      "Wash of Mask",
-    ];
-
-    List<String> results = [];
+    var list = _categoryController.subCategoryList;
+    List<SubCategoryModel> results = [];
     if (suggestion.isEmpty) {
       results = list;
     } else {
       results = list
-          .where((element) =>
-              element.toLowerCase().contains(suggestion.toLowerCase()))
+          .where((element) => element.subCategoryName
+              .toLowerCase()
+              .contains(suggestion.toLowerCase()))
           .toList();
     }
     suggestionList.value = results;

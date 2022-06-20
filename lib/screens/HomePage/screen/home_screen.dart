@@ -101,8 +101,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => SubSearchScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => SubSearchScreen(
+                                searchType: _searchController
+                                        .firstitemOfCategory.value.isNotEmpty
+                                    ? _searchController
+                                        .firstitemOfCategory.value
+                                    : "Search your product",
+                              )));
                 },
                 child: Container(
                     height: getProportionateScreenHeight(30),

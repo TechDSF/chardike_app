@@ -40,8 +40,11 @@ class CategoryController extends GetxController {
     _homeController.categoryList.forEach((element) {
       categoryList.add(element);
     });
-    getSubCategoryListById(id: categoryList[0].id.toString());
-    isCategoryGetLoading(false);
+    categoryList = _homeController.categoryList;
+    Future.delayed(Duration(seconds: 2), () {
+      getSubCategoryListById(id: _homeController.categoryList[0].id.toString());
+      isCategoryGetLoading(false);
+    });
   }
 
   getAllListData() async {
