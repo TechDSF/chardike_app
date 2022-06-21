@@ -113,6 +113,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
     _favouriteController.isFavourite.value =
         _favouriteController.checkDataExitOrNot(id: productModel.id.toString());
 
+    _detailsController.imageIndex.value = 1;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -314,7 +316,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           viewportFraction: 1,
                           initialPage: 0,
                           onPageChanged: (value, reason) {
-                            _detailsController.imageIndex.value = value;
+                            _detailsController.imageIndex.value = value + 1;
                           },
                           enableInfiniteScroll: true,
                           reverse: false,
