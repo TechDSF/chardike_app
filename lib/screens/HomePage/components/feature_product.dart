@@ -1,6 +1,7 @@
 import 'package:chardike/screens/HomePage/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../CommonData/all_colors.dart';
@@ -16,179 +17,193 @@ class FeatureProductSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ///Feature product section
-        SectionTitle(title: "Feature Product", onTap: () {
-          Navigator.pushNamed(context, FeatureProduct.routeName);
-        }),
-        SizedBox(
-          height: getProportionateScreenHeight(10),
-        ),
-        Obx(() {
-          if (_homeController.isApiProductLoading.value) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey.withOpacity(0.1),
-              highlightColor: Colors.grey.withOpacity(0.5),
-              child: Container(
-                height: getProportionateScreenHeight(170),
-                color: Colors.yellow,
-              ),
-            );
-          } else {
-            return SizedBox(
-                height: isTab?getProportionateScreenHeight(220):getProportionateScreenHeight(170),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _homeController.apiProductList.length,
-                    itemBuilder: (context, index) {
-                      var result =
-                      _homeController.apiProductList[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, ProductDetails.routeName,
-                              arguments:
-                              _homeController.apiProductList[index]);
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: getProportionateScreenWidth(7)),
-                          child: SizedBox(
-                            height: isTab?getProportionateScreenHeight(220):getProportionateScreenHeight(170),
-                            width: isTab?getProportionateScreenWidth(160):getProportionateScreenWidth(110),
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  height: isTab?getProportionateScreenHeight(150):getProportionateScreenHeight(110),
-                                  width: isTab?getProportionateScreenWidth(150):getProportionateScreenHeight(110),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          getProportionateScreenWidth(
-                                              7)),
-                                      border: Border.all(
-                                          color: Colors.grey
-                                              .withOpacity(0.3))),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(
-                                            7)),
-                                    child: Stack(
+    return Container(
+      color: Color(0xFFDEFCF8),
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.screenWidth * 0.03,
+          vertical: SizeConfig.screenWidth * 0.02),
+      child: Column(
+        children: <Widget>[
+          ///Feature product section
+          SectionTitle(
+              title: "Feature Product",
+              onTap: () {
+                Navigator.pushNamed(context, FeatureProduct.routeName);
+              }),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
+          Obx(() {
+            if (_homeController.isApiProductLoading.value) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(0.1),
+                highlightColor: Colors.grey.withOpacity(0.5),
+                child: Container(
+                  height: getProportionateScreenHeight(170),
+                  color: Colors.yellow,
+                ),
+              );
+            } else {
+              return SizedBox(
+                  height: isTab
+                      ? getProportionateScreenHeight(220)
+                      : SizeConfig.screenWidth * 0.32,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _homeController.allProductList.length,
+                      itemBuilder: (context, index) {
+                        var result = _homeController.allProductList[index];
+                        return InkWell(
+                            onTap: () {
+                              // Navigator.pushNamed(
+                              //     context, ProductDetails.routeName,
+                              //     arguments:
+                              //         _homeController.allProductList[index]);
+                            },
+                            child: Container(
+                              height: SizeConfig.screenWidth * 0.32,
+                              width: SizeConfig.screenWidth * 0.25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.screenWidth * 0.02),
+                                color: Colors.white,
+                              ),
+                              margin: EdgeInsets.only(
+                                  right: SizeConfig.screenWidth * 0.02),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: SizeConfig.screenWidth * 0.22,
+                                    width: SizeConfig.screenWidth * 0.25,
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.screenWidth * 0.01),
+                                    decoration: BoxDecoration(
+                                        color: Colors.green.withOpacity(0.2),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(
+                                                SizeConfig.screenWidth * 0.02),
+                                            topRight: Radius.circular(
+                                                SizeConfig.screenWidth * 0.02)),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                result.featureImage),
+                                            fit: BoxFit.fill)),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Center(
-                                          child: Image.network(
-                                            result.featureImage,
-                                            fit: BoxFit.cover,
-                                            height: isTab?getProportionateScreenHeight(145):getProportionateScreenHeight(105),
-                                            width: isTab?getProportionateScreenWidth(145):getProportionateScreenHeight(105),
+                                        Container(
+                                          padding: EdgeInsets.all(
+                                              SizeConfig.screenWidth * 0.001),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      SizeConfig.screenWidth *
+                                                          0.006),
+                                              color:
+                                                  Colors.grey.withOpacity(0.3)),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                size: SizeConfig.screenWidth *
+                                                    0.02,
+                                                color: Colors.orange,
+                                              ),
+                                              SizedBox(
+                                                width: SizeConfig.screenWidth *
+                                                    0.005,
+                                              ),
+                                              Text(
+                                                "4.9",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        SizeConfig.screenWidth *
+                                                            0.02),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Positioned(
-                                            height:
-                                            getProportionateScreenWidth(
-                                                20),
-                                            width:
-                                            getProportionateScreenWidth(
-                                                45),
-                                            right: 0,
-                                            child: Container(
-                                              height:
-                                              getProportionateScreenWidth(
-                                                  20),
-                                              width:
-                                              getProportionateScreenWidth(
-                                                  45),
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                  Colors.orange,
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius
-                                                          .circular(
-                                                          getProportionateScreenWidth(
-                                                              10)),
-                                                      bottomLeft: Radius
-                                                          .circular(
-                                                          getProportionateScreenWidth(
-                                                              10)))),
-                                              child: Center(
-                                                  child: Text(
-                                                    "-10%",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                        getProportionateScreenWidth(
-                                                            10),
-                                                        color:
-                                                        Colors.white,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .bold),
-                                                  )),
-                                            ))
+                                        Container(
+                                          height: SizeConfig.screenWidth * 0.05,
+                                          width: SizeConfig.screenWidth * 0.05,
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: Colors.orange,
+                                            size: SizeConfig.screenWidth * 0.03,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color:
+                                                  Colors.grey.withOpacity(0.3)),
+                                        )
                                       ],
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height:
-                                  getProportionateScreenHeight(10),
-                                ),
-                                SizedBox(
-                                  width:
-                                  getProportionateScreenWidth(110),
-                                  child: Text(
-                                    result.productName.toString(),
-                                    maxLines: 2,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontSize:
-                                        isTab?getProportionateScreenWidth(
-                                            15):getProportionateScreenWidth(
-                                            12),
-                                        overflow:
-                                        TextOverflow.ellipsis),
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "₺" + result.newPrice,
-                                        style: TextStyle(
-                                            color: AllColors.mainColor,
-                                            fontSize:
-                                            getProportionateScreenWidth(
-                                                12)),
-                                      ),
-                                      TextSpan(
-                                        text: " ",
-                                      ),
-                                      TextSpan(
-                                        text: "₺" + result.regularPrice.toString(),
-                                        style: TextStyle(
-                                            decoration: TextDecoration
-                                                .lineThrough,
-                                            color: Colors.grey,
-                                            fontSize:
-                                            getProportionateScreenWidth(
-                                                10)),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }));
-          }
-        }),
-        SizedBox(
-          height: getProportionateScreenHeight(15),
-        ),
-      ],
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                          result.productName,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize:
+                                                  SizeConfig.screenWidth * 0.02,
+                                              overflow: TextOverflow.ellipsis),
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              SizeConfig.screenWidth * 0.003,
+                                        ),
+                                        RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.025),
+                                              text: "₺" +
+                                                  result.variant[0].sellingPrice
+                                                      .toString()),
+                                          TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.015),
+                                              text: " ₺" +
+                                                  result.variant[0].regularPrice
+                                                      .toString())
+                                        ])),
+                                        SizedBox(
+                                          height:
+                                              SizeConfig.screenWidth * 0.005,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ));
+                      }));
+            }
+          }),
+          SizedBox(
+            height: getProportionateScreenHeight(15),
+          ),
+        ],
+      ),
     );
   }
 }

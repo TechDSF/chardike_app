@@ -2,6 +2,7 @@ import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/FeedPage/screens/feed_page.dart';
 import 'package:chardike/screens/HomePage/screen/home_screen.dart';
+import 'package:chardike/screens/NewHome/new_home.dart';
 import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
 import 'package:chardike/screens/UserPage/screen/user_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,8 @@ class MainController extends GetxController {
   var list = [
     FeedPage(),
     SearchScreen(),
-    HomeScreen(),
+    NewHome(),
+    //HomeScreen(),
     CartScreen(),
     UserScreen(),
   ];

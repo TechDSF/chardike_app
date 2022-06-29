@@ -63,7 +63,7 @@ class ApiService {
     };
     var response = await client.get(Uri.parse(productUrl), headers: headers);
     if (response.statusCode == 200) {
-      return productModelFromJson(response.body);
+      return productModelFromMap(response.body);
     } else {
       return response.statusCode;
     }

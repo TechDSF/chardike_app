@@ -17,9 +17,11 @@ class TopProduct extends StatelessWidget {
     return Column(
       children: <Widget>[
         ///related product
-        SectionTitle(title: "Top Product", onTap: () {
-          Navigator.pushNamed(context, TopProductMain.routeName);
-        }),
+        SectionTitle(
+            title: "Top Product",
+            onTap: () {
+              Navigator.pushNamed(context, TopProductMain.routeName);
+            }),
         Divider(),
         SizedBox(
           height: getProportionateScreenHeight(10),
@@ -38,13 +40,11 @@ class TopProduct extends StatelessWidget {
             return SizedBox(
                 height: getProportionateScreenHeight(220),
                 child: ListView.builder(
-                    itemCount:
-                    _homeController.apiProductList.length,
+                    itemCount: _homeController.allProductList.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      var result =
-                      _homeController.apiProductList[index];
+                      var result = _homeController.allProductList[index];
                       return Padding(
                         padding: EdgeInsets.only(
                             right: getProportionateScreenWidth(10)),
@@ -58,93 +58,77 @@ class TopProduct extends StatelessWidget {
                             height: getProportionateScreenHeight(220),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color:
-                                    Colors.grey.withOpacity(0.2))),
+                                    color: Colors.grey.withOpacity(0.2))),
                             child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Stack(
                                   children: <Widget>[
                                     Image.network(
                                       result.featureImage,
-                                      width:
-                                      getProportionateScreenHeight(
-                                          150),
-                                      height:
-                                      getProportionateScreenHeight(
-                                          150),
+                                      width: getProportionateScreenHeight(150),
+                                      height: getProportionateScreenHeight(150),
                                       fit: BoxFit.fill,
                                     ),
                                     Positioned(
                                         child: Container(
-                                          height:
-                                          getProportionateScreenWidth(
-                                              30),
-                                          width:
-                                          getProportionateScreenWidth(
-                                              25),
-                                          decoration: BoxDecoration(
-                                              color: Colors.orange,
-                                              borderRadius: BorderRadius.only(
-                                                  bottomRight: Radius.circular(
-                                                      getProportionateScreenWidth(
-                                                          10)),
-                                                  bottomLeft: Radius.circular(
-                                                      getProportionateScreenWidth(
-                                                          10)))),
-                                          child: Center(
-                                              child: Text(
-                                                "Top",
-                                                style: TextStyle(
-                                                    fontSize:
-                                                    getProportionateScreenWidth(
-                                                        8),
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                    FontWeight.bold),
-                                              )),
-                                        ))
+                                      height: getProportionateScreenWidth(30),
+                                      width: getProportionateScreenWidth(25),
+                                      decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius: BorderRadius.only(
+                                              bottomRight: Radius.circular(
+                                                  getProportionateScreenWidth(
+                                                      10)),
+                                              bottomLeft: Radius.circular(
+                                                  getProportionateScreenWidth(
+                                                      10)))),
+                                      child: Center(
+                                          child: Text(
+                                        "Top",
+                                        style: TextStyle(
+                                            fontSize:
+                                                getProportionateScreenWidth(8),
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                    ))
                                   ],
                                 ),
                                 Expanded(
                                     child: Container(
-                                      color: Colors.grey.withOpacity(0.05),
-                                      width: double.infinity,
-                                      padding: EdgeInsets.all(
-                                          getProportionateScreenWidth(5)),
-                                      child: Column(
-                                        mainAxisAlignment:
+                                  color: Colors.grey.withOpacity(0.05),
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(
+                                      getProportionateScreenWidth(5)),
+                                  child: Column(
+                                    mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
+                                    crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            "Cleansing Oil",
-                                            style: TextStyle(
-                                                overflow:
-                                                TextOverflow.ellipsis,
-                                                fontSize:
-                                                getProportionateScreenWidth(
-                                                    12),
-                                                color: Colors.black),
-                                            maxLines: 2,
-                                          ),
-                                          Text(
-                                            "16k+ sold",
-                                            style: TextStyle(
-                                                fontSize:
-                                                getProportionateScreenWidth(
-                                                    11),
-                                                color: Colors.black
-                                                    .withOpacity(0.7),
-                                                overflow:
-                                                TextOverflow.ellipsis),
-                                            maxLines: 1,
-                                          ),
-                                        ],
+                                    children: <Widget>[
+                                      Text(
+                                        "Cleansing Oil",
+                                        style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize:
+                                                getProportionateScreenWidth(12),
+                                            color: Colors.black),
+                                        maxLines: 2,
                                       ),
-                                    ))
+                                      Text(
+                                        "16k+ sold",
+                                        style: TextStyle(
+                                            fontSize:
+                                                getProportionateScreenWidth(11),
+                                            color:
+                                                Colors.black.withOpacity(0.7),
+                                            overflow: TextOverflow.ellipsis),
+                                        maxLines: 1,
+                                      ),
+                                    ],
+                                  ),
+                                ))
                               ],
                             ),
                           ),

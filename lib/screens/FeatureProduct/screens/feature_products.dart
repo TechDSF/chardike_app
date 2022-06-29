@@ -52,10 +52,10 @@ class FeatureProduct extends StatelessWidget {
                       ? aspt(getProportionateScreenWidth(500))
                       : aspt(getProportionateScreenWidth(300)),
                 ),
-                itemCount: _homeController.apiProductList.length,
+                itemCount: _homeController.allProductList.length,
                 itemBuilder: (context, index) {
-                  var result = _homeController.apiProductList[
-                      (_homeController.apiProductList.length - 1) - index];
+                  var result = _homeController.allProductList[
+                      (_homeController.allProductList.length - 1) - index];
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, ProductDetails.routeName,
@@ -132,12 +132,16 @@ class FeatureProduct extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  "₺ " + result.newPrice.toString() + " ",
+                                  "₺ " +
+                                      result.variant[0].sellingPrice
+                                          .toString() +
+                                      " ",
                                   style: TextStyle(color: AllColors.mainColor),
                                   maxLines: 1,
                                 ),
                                 Text(
-                                  "₺" + result.regularPrice.toString(),
+                                  "₺" +
+                                      result.variant[0].regularPrice.toString(),
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       color: Colors.grey,

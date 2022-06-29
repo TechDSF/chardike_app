@@ -68,7 +68,7 @@ class UserScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               width: double.infinity,
-              decoration: BoxDecoration(color: AllColors.mainColor),
+              decoration: BoxDecoration(color: Color(0xFFB6CAEF)),
               child: Column(
                 children: <Widget>[
                   SizedBox(
@@ -84,7 +84,7 @@ class UserScreen extends StatelessWidget {
                           },
                           child: CommonData.icon(
                               icon: "asset/icons/settings.png",
-                              color: Colors.white,
+                              color: Colors.black,
                               isTab: isTab)),
                       SizedBox(
                         width: getProportionateScreenWidth(15),
@@ -95,7 +95,7 @@ class UserScreen extends StatelessWidget {
                           },
                           child: CommonData.icon(
                               icon: "asset/icons/cart.png",
-                              color: Colors.white,
+                              color: Colors.black,
                               isTab: isTab)),
                       SizedBox(
                         width: getProportionateScreenWidth(15),
@@ -106,7 +106,7 @@ class UserScreen extends StatelessWidget {
                           },
                           child: CommonData.icon(
                               icon: "asset/icons/messenger.png",
-                              color: Colors.white,
+                              color: Colors.black,
                               isTab: isTab)),
                       SizedBox(
                         width: getProportionateScreenWidth(10),
@@ -152,7 +152,7 @@ class UserScreen extends StatelessWidget {
                                     () => Text(
                                       _userDataController.fullName.value,
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize:
                                               getProportionateScreenWidth(15)),
@@ -186,6 +186,7 @@ class UserScreen extends StatelessWidget {
                                           text: TextSpan(
                                               text: "Follower ",
                                               style: TextStyle(
+                                                  color: Colors.black,
                                                   fontSize:
                                                       getProportionateScreenWidth(
                                                           13)),
@@ -212,6 +213,7 @@ class UserScreen extends StatelessWidget {
                                           text: TextSpan(
                                               text: "Following ",
                                               style: TextStyle(
+                                                  color: Colors.black,
                                                   fontSize:
                                                       getProportionateScreenWidth(
                                                           13)),
@@ -288,7 +290,7 @@ class UserScreen extends StatelessWidget {
                                       "Sign Up",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     ),
                                     padding: EdgeInsets.symmetric(
                                         horizontal:
@@ -296,11 +298,11 @@ class UserScreen extends StatelessWidget {
                                         vertical:
                                             getProportionateScreenWidth(8)),
                                     decoration: BoxDecoration(
-                                        color: AllColors.mainColor,
+                                        color: Color(0xFFB6CAEF),
                                         borderRadius: BorderRadius.circular(
                                             getProportionateScreenWidth(2)),
                                         border:
-                                            Border.all(color: Colors.white)),
+                                            Border.all(color: Colors.black)),
                                   ),
                                 ),
                               ],

@@ -61,7 +61,7 @@ class SliderWidget extends StatelessWidget {
                     },
                     height: isTab
                         ? getProportionateScreenHeight(280)
-                        : getProportionateScreenHeight(200),
+                        : getProportionateScreenHeight(170),
                     aspectRatio: 16 / 9,
                     viewportFraction: 1.0,
                     initialPage: 0,

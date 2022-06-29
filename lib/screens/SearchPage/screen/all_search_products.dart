@@ -113,11 +113,11 @@ class AllSearchProducts extends StatelessWidget {
                         ? aspt(getProportionateScreenHeight(350))
                         : aspt(getProportionateScreenHeight(260)),
                   ),
-                  itemCount: _homeController.apiProductList.length,
+                  itemCount: _homeController.allProductList.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    var result = _homeController.apiProductList[
-                        (_homeController.apiProductList.length - 1) - index];
+                    var result = _homeController.allProductList[
+                        (_homeController.allProductList.length - 1) - index];
                     return InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, ProductDetails.routeName,
@@ -135,10 +135,10 @@ class AllSearchProducts extends StatelessWidget {
                               : const BorderSide(
                                   color: Colors.grey, width: 0.5),
                           bottom: index ==
-                                      _homeController.apiProductList.length -
+                                      _homeController.allProductList.length -
                                           1 ||
                                   index ==
-                                      _homeController.apiProductList.length - 2
+                                      _homeController.allProductList.length - 2
                               ? const BorderSide(color: Colors.grey, width: 0.5)
                               : const BorderSide(color: Colors.grey, width: 0),
                         )),
@@ -206,12 +206,17 @@ class AllSearchProducts extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Text(
-                                    "₺ " + result.newPrice.toString() + " ",
+                                    "₺ " +
+                                        result.variant[0].sellingPrice
+                                            .toString() +
+                                        " ",
                                     style:
                                         TextStyle(color: AllColors.mainColor),
                                   ),
                                   Text(
-                                    "₺" + result.regularPrice.toString(),
+                                    "₺" +
+                                        result.variant[0].regularPrice
+                                            .toString(),
                                     style: TextStyle(
                                         decoration: TextDecoration.lineThrough,
                                         color: Colors.grey,

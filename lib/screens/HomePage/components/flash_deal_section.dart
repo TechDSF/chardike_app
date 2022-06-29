@@ -14,166 +14,233 @@ class FlashDealSection extends StatelessWidget {
   FlashDealSection({Key? key}) : super(key: key);
   final HomeController _homeController = Get.put(HomeController());
 
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ///flash deal product
-        FlashDealSectionTitle(onTap: () {
-          Navigator.pushNamed(context, FlashSaleDetails.routeName);
-        }),
-        SizedBox(
-          height: getProportionateScreenHeight(10),
-        ),
-        Obx(() {
-          if (_homeController.isApiProductLoading.value) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey.withOpacity(0.1),
-              highlightColor: Colors.grey.withOpacity(0.5),
-              child: Container(
-                height: getProportionateScreenHeight(170),
-                color: Colors.yellow,
-              ),
-            );
-          } else {
-            return SizedBox(
-                height: getProportionateScreenHeight(170),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _homeController.apiProductList.length,
-                    itemBuilder: (context, index) {
-                      var result =
-                      _homeController.apiProductList[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, ProductDetails.routeName,
-                              arguments:
-                              _homeController.apiProductList[index]);
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: getProportionateScreenWidth(5)),
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height:
-                                getProportionateScreenHeight(110),
-                                width: getProportionateScreenWidth(110),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey
-                                            .withOpacity(0.2)),
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(7)),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(7)),
-                                    child: Stack(
+    return Container(
+      color: Color(0xFFF4F2F2),
+      padding:
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+      child: Column(
+        children: <Widget>[
+          ///flash deal product
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
+          FlashDealSectionTitle(onTap: () {
+            Navigator.pushNamed(context, FlashSaleDetails.routeName);
+          }),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
+          Obx(() {
+            if (_homeController.isApiProductLoading.value) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(0.1),
+                highlightColor: Colors.grey.withOpacity(0.5),
+                child: Container(
+                  height: getProportionateScreenHeight(170),
+                  color: Colors.yellow,
+                ),
+              );
+            } else {
+              return SizedBox(
+                  height: SizeConfig.screenWidth * 0.35,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _homeController.allProductList.length,
+                      itemBuilder: (context, index) {
+                        var result = _homeController.allProductList[index];
+                        return InkWell(
+                            onTap: () {
+                              // Navigator.pushNamed(
+                              //     context, ProductDetails.routeName,
+                              //     arguments:
+                              //         _homeController.allProductList[index]);
+                            },
+                            child: Container(
+                              height: SizeConfig.screenWidth * 0.35,
+                              width: SizeConfig.screenWidth * 0.25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.screenWidth * 0.02),
+                                color: Colors.white,
+                              ),
+                              margin: EdgeInsets.only(
+                                  right: SizeConfig.screenWidth * 0.02),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: SizeConfig.screenWidth * 0.22,
+                                    width: SizeConfig.screenWidth * 0.25,
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.screenWidth * 0.01),
+                                    decoration: BoxDecoration(
+                                        color: Colors.green.withOpacity(0.2),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(
+                                                SizeConfig.screenWidth * 0.02),
+                                            topRight: Radius.circular(
+                                                SizeConfig.screenWidth * 0.02)),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                result.featureImage),
+                                            fit: BoxFit.fill)),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        // FadeInImage.assetNetwork(placeholder: "asset/images/shopping_beg.png", image: result.featureImage,height:
-                                        // getProportionateScreenWidth(
-                                        //     110),
-                                        //   width:
-                                        //   getProportionateScreenWidth(
-                                        //       110),
-                                        //   fit: BoxFit.fill,),
-                                        Image.network(
-                                          result.featureImage,
-                                          height:
-                                          getProportionateScreenWidth(
-                                              110),
-                                          width:
-                                          getProportionateScreenWidth(
-                                              110),
-                                          fit: BoxFit.fill,
+                                        Container(
+                                          padding: EdgeInsets.all(
+                                              SizeConfig.screenWidth * 0.001),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      SizeConfig.screenWidth *
+                                                          0.006),
+                                              color:
+                                                  Colors.grey.withOpacity(0.3)),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                size: SizeConfig.screenWidth *
+                                                    0.02,
+                                                color: Colors.orange,
+                                              ),
+                                              SizedBox(
+                                                width: SizeConfig.screenWidth *
+                                                    0.005,
+                                              ),
+                                              Text(
+                                                "4.9",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        SizeConfig.screenWidth *
+                                                            0.02),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Positioned(
-                                            right: 0,
-                                            child: Container(
-                                              height:
-                                              getProportionateScreenWidth(
-                                                  20),
-                                              width:
-                                              getProportionateScreenWidth(
-                                                  45),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.orange,
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius
-                                                          .circular(
-                                                          getProportionateScreenWidth(
-                                                              10)),
-                                                      bottomLeft: Radius
-                                                          .circular(
-                                                          getProportionateScreenWidth(
-                                                              10)))),
-                                              child: Center(
-                                                  child: Text(
-                                                    "-10%",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                        getProportionateScreenWidth(
-                                                            10),
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .bold),
-                                                  )),
-                                            ))
+                                        Container(
+                                          height: SizeConfig.screenWidth * 0.05,
+                                          width: SizeConfig.screenWidth * 0.05,
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: Colors.orange,
+                                            size: SizeConfig.screenWidth * 0.03,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color:
+                                                  Colors.grey.withOpacity(0.3)),
+                                        )
                                       ],
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(
-                                height:
-                                getProportionateScreenHeight(10),
-                              ),
-                              Expanded(
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: getProportionateScreenHeight(
-                                            110),
-                                        child: LinearPercentIndicator(
-                                          lineHeight: 8.0,
-                                          percent: double.parse((50 / 100)
-                                              .toStringAsFixed(1)),
-                                          progressColor: Colors.orange,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                        getProportionateScreenHeight(
-                                            10),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                            getProportionateScreenWidth(
-                                                5)),
-                                        child: Text(
-                                          "₺ " + result.newPrice.toString(),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                          result.productName,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color: AllColors.mainColor),
+                                              color: Colors.black,
+                                              fontSize:
+                                                  SizeConfig.screenWidth * 0.02,
+                                              overflow: TextOverflow.ellipsis),
                                         ),
-                                      ),
-                                    ],
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                  ))
-                            ],
-                          ),
-                        ),
-                      );
-                    }));
-          }
-        }),
-      ],
+                                        SizedBox(
+                                          height:
+                                              SizeConfig.screenWidth * 0.003,
+                                        ),
+                                        RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.025),
+                                              text: "₺" +
+                                                  result.variant[0].sellingPrice
+                                                      .toString()),
+                                          TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.015),
+                                              text: " ₺" +
+                                                  result.variant[0].regularPrice
+                                                      .toString())
+                                        ])),
+                                        SizedBox(
+                                          height:
+                                              SizeConfig.screenWidth * 0.005,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width:
+                                                  SizeConfig.screenWidth * 0.12,
+                                              child: LinearPercentIndicator(
+                                                lineHeight: 4.0,
+                                                percent: double.parse((50 / 100)
+                                                    .toStringAsFixed(1)),
+                                                progressColor: Colors.red,
+                                              ),
+                                            ),
+                                            Container(
+                                                padding: EdgeInsets.all(
+                                                    SizeConfig.screenWidth *
+                                                        0.005),
+                                                margin: EdgeInsets.only(
+                                                    right:
+                                                        SizeConfig.screenWidth *
+                                                            0.01),
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius
+                                                        .circular(SizeConfig
+                                                                .screenWidth *
+                                                            0.006),
+                                                    color: Colors.grey
+                                                        .withOpacity(0.3)),
+                                                child: Text(
+                                                  "Shop Now",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: SizeConfig
+                                                              .screenWidth *
+                                                          0.015),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ));
+                      }));
+            }
+          }),
+          SizedBox(
+            height: getProportionateScreenHeight(15),
+          ),
+        ],
+      ),
     );
   }
 }

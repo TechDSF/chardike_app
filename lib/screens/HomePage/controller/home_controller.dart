@@ -34,7 +34,7 @@ class HomeController extends GetxController {
   // List<ProductModel> productList = List<ProductModel>.empty(growable:true).obs;
 
   var isApiProductLoading = false.obs;
-  List<ProductModel> apiProductList =
+  List<ProductModel> allProductList =
       List<ProductModel>.empty(growable: true).obs;
 
   var isQueryProductLoading = false.obs;
@@ -52,7 +52,7 @@ class HomeController extends GetxController {
     getProductType();
     getApiProduct();
     checkYourDiscount();
-    openDiscountBanner();
+    //openDiscountBanner();
     getQueryProduct();
     getCategoryProduct();
     super.onInit();
@@ -164,7 +164,7 @@ class HomeController extends GetxController {
       isApiProductLoading(false);
       Fluttertoast.showToast(msg: "Product fetch error");
     } else {
-      apiProductList = data;
+      allProductList = data;
       isApiProductLoading(false);
     }
   }
@@ -236,6 +236,18 @@ class HomeController extends GetxController {
     } else {
       categoryList = data;
       isCategoryDataLoading(false);
+    }
+  }
+
+  double calculateRating(List<Review> list) {
+    double rating = 0;
+    if (list.isEmpty) {
+      return 0;
+    } else {
+      list.forEach((element) {
+        rating = rating + element.starCount.toDouble();
+      });
+      return rating / list.length;
     }
   }
 }

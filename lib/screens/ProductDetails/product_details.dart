@@ -152,8 +152,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           slug: productModel.slug,
                           image: productModel.featureImage,
                           name: productModel.productName,
-                          newPrice: productModel.newPrice,
-                          oldPrice: productModel.regularPrice);
+                          newPrice:
+                              productModel.variant[0].sellingPrice.toString(),
+                          oldPrice:
+                              productModel.variant[0].regularPrice.toString());
                       _favouriteController.addProduct(model: model);
                       _favouriteController.isFavourite.value = true;
                     },
@@ -174,9 +176,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           title: productModel.productName.toString(),
                           image: productModel.featureImage,
                           quantity: _detailsController.quantityItem.value,
-                          price: int.parse(productModel.newPrice),
+                          price: int.parse(
+                              productModel.variant[0].sellingPrice.toString()),
                           totalPrice: _detailsController.quantityItem.value *
-                              int.parse(productModel.newPrice)));
+                              int.parse(productModel.variant[0].sellingPrice
+                                  .toString())));
                     } finally {
                       // TODO
                       _detailsController.isHaveCart.value = _cartController
@@ -428,7 +432,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 title: Text(
                                   CommonData.takaSign +
                                       " " +
-                                      productModel.newPrice.toString(),
+                                      productModel.variant[0].sellingPrice
+                                          .toString(),
                                   style: TextStyle(
                                       fontSize: getProportionateScreenWidth(16),
                                       fontWeight: FontWeight.bold),
@@ -440,7 +445,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: CommonData.takaSign +
-                                            productModel.regularPrice
+                                            productModel.variant[0].regularPrice
                                                 .toString(),
                                         style: TextStyle(
                                             decoration:
@@ -837,10 +842,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                           scrollDirection: Axis.horizontal,
                                           shrinkWrap: true,
                                           itemCount: _homeController
-                                              .apiProductList.length,
+                                              .allProductList.length,
                                           itemBuilder: (context, index) {
                                             var result = _homeController
-                                                .apiProductList[index];
+                                                .allProductList[index];
                                             return InkWell(
                                               onTap: () {},
                                               child: Container(
@@ -898,7 +903,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                       children: [
                                                         Text(
                                                           "₺ " +
-                                                              result.newPrice
+                                                              result.variant[0]
+                                                                  .sellingPrice
                                                                   .toString() +
                                                               " ",
                                                           style: TextStyle(
@@ -907,7 +913,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                         ),
                                                         Text(
                                                           "₺" +
-                                                              result
+                                                              result.variant[0]
                                                                   .regularPrice
                                                                   .toString(),
                                                           style: TextStyle(

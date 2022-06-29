@@ -209,17 +209,17 @@ class MyLikes extends StatelessWidget {
                             ? aspt(getProportionateScreenWidth(420))
                             : aspt(getProportionateScreenWidth(300)),
                       ),
-                      itemCount: _homeController.apiProductList.length,
+                      itemCount: _homeController.allProductList.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var result = _homeController.apiProductList[index];
+                        var result = _homeController.allProductList[index];
                         return InkWell(
                           onTap: () {
                             Navigator.pushNamed(
                                 context, ProductDetails.routeName,
                                 arguments:
-                                    _homeController.apiProductList[index]);
+                                    _homeController.allProductList[index]);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -298,7 +298,10 @@ class MyLikes extends StatelessWidget {
                                   height: getProportionateScreenHeight(5),
                                 ),
                                 Text(
-                                  "₺ " + result.newPrice.toString() + " ",
+                                  "₺ " +
+                                      result.variant[0].sellingPrice
+                                          .toString() +
+                                      " ",
                                   style: TextStyle(
                                       color: AllColors.mainColor,
                                       fontSize:

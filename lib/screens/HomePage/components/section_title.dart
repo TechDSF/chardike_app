@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 
 class SectionTitle extends StatelessWidget {
-  SectionTitle({Key? key,required this.title,required this.onTap}) : super(key: key);
+  SectionTitle({Key? key, required this.title, required this.onTap})
+      : super(key: key);
   String title;
   VoidCallback onTap;
 
@@ -20,24 +21,14 @@ class SectionTitle extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: onTap,
-          child: RichText(
-            text: TextSpan(
-                style: TextStyle(
-                    color: Colors.black.withOpacity(0.5),
-                    fontSize: getProportionateScreenWidth(12)),
-                children: [
-                  TextSpan(text: "See More"),
-                  WidgetSpan(
-                      child: Center(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: getProportionateScreenWidth(14),
-                            color: Colors.black.withOpacity(0.5),
-                          )))
-                ]),
-          ),
-        )
+            onTap: onTap,
+            child: Text(
+              "See More",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: SizeConfig.screenWidth * 0.02),
+            ))
       ],
     );
   }

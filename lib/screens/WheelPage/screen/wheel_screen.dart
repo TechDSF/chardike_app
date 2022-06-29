@@ -17,10 +17,8 @@ class WheelScreen extends StatelessWidget {
   var ran = Random();
   final HomeController _homeController = Get.put(HomeController());
 
-
   @override
   Widget build(BuildContext context) {
-
     var _aspectRatio;
 
     double aspt(double height) {
@@ -44,8 +42,12 @@ class WheelScreen extends StatelessWidget {
             Container(
               height: SizeConfig.screenHeight / 3.4,
               padding: EdgeInsets.all(getProportionateScreenWidth(10)),
-              margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-              decoration: BoxDecoration(color: Color(0xFFB5F1EC),borderRadius: BorderRadius.circular(getProportionateScreenWidth(10))),
+              margin: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(10)),
+              decoration: BoxDecoration(
+                  color: Color(0xFFB5F1EC),
+                  borderRadius:
+                      BorderRadius.circular(getProportionateScreenWidth(10))),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -56,18 +58,17 @@ class WheelScreen extends StatelessWidget {
                             alignment: Alignment.topCenter,
                             child: Container(
                               decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("asset/icons/wheel_detect_icon.png")
-                                )
-                              ),
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "asset/icons/wheel_detect_icon.png"))),
                               height: getProportionateScreenHeight(15),
                               width: getProportionateScreenHeight(15),
                             )),
                         FortuneIndicator(
                             alignment: Alignment.center,
                             child: Container(
-                              padding:
-                                  EdgeInsets.all(getProportionateScreenWidth(3)),
+                              padding: EdgeInsets.all(
+                                  getProportionateScreenWidth(3)),
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   gradient: LinearGradient(
@@ -78,7 +79,8 @@ class WheelScreen extends StatelessWidget {
                                 padding: EdgeInsets.all(
                                     getProportionateScreenWidth(1)),
                                 decoration: const BoxDecoration(
-                                    shape: BoxShape.circle, color: Colors.brown),
+                                    shape: BoxShape.circle,
+                                    color: Colors.brown),
                                 height: getProportionateScreenHeight(30),
                                 width: getProportionateScreenHeight(30),
                                 child: Container(
@@ -89,7 +91,15 @@ class WheelScreen extends StatelessWidget {
                                       color: Colors.white),
                                   height: getProportionateScreenHeight(30),
                                   width: getProportionateScreenHeight(30),
-                                  child: Center(child: Text("SPIN",textAlign: TextAlign.center,style: TextStyle(fontSize: getProportionateScreenWidth(7),fontWeight: FontWeight.bold),)),
+                                  child: Center(
+                                      child: Text(
+                                    "SPIN",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(7),
+                                        fontWeight: FontWeight.bold),
+                                  )),
                                 ),
                               ),
                             )),
@@ -101,7 +111,8 @@ class WheelScreen extends StatelessWidget {
                                 borderColor: AllColors.mainColor,
                                 textAlign: TextAlign.center),
                             child: Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
+                              padding: EdgeInsets.only(
+                                  left: getProportionateScreenWidth(10)),
                               child: Text(
                                 "70% ছাড়!",
                                 style: TextStyle(
@@ -115,7 +126,8 @@ class WheelScreen extends StatelessWidget {
                                 borderColor: Colors.orange,
                                 textAlign: TextAlign.center),
                             child: Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
+                              padding: EdgeInsets.only(
+                                  left: getProportionateScreenWidth(10)),
                               child: Text(
                                 "একটি কিনলে একটি ফ্রি",
                                 style: TextStyle(
@@ -129,7 +141,8 @@ class WheelScreen extends StatelessWidget {
                                 borderColor: AllColors.mainColor,
                                 textAlign: TextAlign.center),
                             child: Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
+                              padding: EdgeInsets.only(
+                                  left: getProportionateScreenWidth(10)),
                               child: Text(
                                 "60% ছাড়!",
                                 style: TextStyle(
@@ -143,7 +156,8 @@ class WheelScreen extends StatelessWidget {
                                 borderColor: Colors.orange,
                                 textAlign: TextAlign.center),
                             child: Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
+                              padding: EdgeInsets.only(
+                                  left: getProportionateScreenWidth(10)),
                               child: Text(
                                 "একটি কিনলে একটি ফ্রি",
                                 style: TextStyle(
@@ -157,7 +171,8 @@ class WheelScreen extends StatelessWidget {
                                 borderColor: AllColors.mainColor,
                                 textAlign: TextAlign.center),
                             child: Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
+                              padding: EdgeInsets.only(
+                                  left: getProportionateScreenWidth(10)),
                               child: Text(
                                 "50% ছাড়!",
                                 style: TextStyle(
@@ -171,7 +186,8 @@ class WheelScreen extends StatelessWidget {
                                 borderColor: Colors.orange,
                                 textAlign: TextAlign.center),
                             child: Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
+                              padding: EdgeInsets.only(
+                                  left: getProportionateScreenWidth(10)),
                               child: Text(
                                 "একটি কিনলে একটি ফ্রি",
                                 style: TextStyle(
@@ -184,58 +200,80 @@ class WheelScreen extends StatelessWidget {
                   ),
                   Expanded(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         "Play",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(22)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: getProportionateScreenWidth(22)),
                       ),
                       Text(
                         "&",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(22)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: getProportionateScreenWidth(22)),
                       ),
                       Text(
                         "Win",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(22)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: getProportionateScreenWidth(22)),
                       )
                     ],
                   ))
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10),),
+            SizedBox(
+              height: getProportionateScreenHeight(10),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset("asset/icons/three_line_icon.png",height: getProportionateScreenWidth(25),width: getProportionateScreenWidth(25),),
-                SizedBox(width: getProportionateScreenWidth(10),),
+                Image.asset(
+                  "asset/icons/three_line_icon.png",
+                  height: getProportionateScreenWidth(25),
+                  width: getProportionateScreenWidth(25),
+                ),
+                SizedBox(
+                  width: getProportionateScreenWidth(10),
+                ),
                 Text("Just For You"),
-                SizedBox(width: getProportionateScreenWidth(10),),
-                Image.asset("asset/icons/three_line_icon.png",height: getProportionateScreenWidth(25),width: getProportionateScreenWidth(25),)
+                SizedBox(
+                  width: getProportionateScreenWidth(10),
+                ),
+                Image.asset(
+                  "asset/icons/three_line_icon.png",
+                  height: getProportionateScreenWidth(25),
+                  width: getProportionateScreenWidth(25),
+                )
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(10),),
+            SizedBox(
+              height: getProportionateScreenHeight(10),
+            ),
             GridView.builder(
-                gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: getProportionateScreenWidth(5),
                   mainAxisSpacing: getProportionateScreenWidth(5),
                   childAspectRatio: aspt(300),
                 ),
-                itemCount: _homeController.apiProductList.length,
+                itemCount: _homeController.allProductList.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  var result = _homeController.apiProductList[(_homeController.apiProductList.length-1) - index];
+                  var result = _homeController.allProductList[
+                      (_homeController.allProductList.length - 1) - index];
                   return InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, ProductDetails.routeName, arguments: _homeController.apiProductList[index]);
+                    onTap: () {
+                      Navigator.pushNamed(context, ProductDetails.routeName,
+                          arguments: _homeController.allProductList[index]);
                     },
                     child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.05)
-                      ),
+                      decoration:
+                          BoxDecoration(color: Colors.grey.withOpacity(0.05)),
                       padding: EdgeInsets.all(getProportionateScreenWidth(8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,8 +281,8 @@ class WheelScreen extends StatelessWidget {
                           Expanded(
                             child: Container(
                               decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey.withOpacity(0.3))
-                              ),
+                                  border: Border.all(
+                                      color: Colors.grey.withOpacity(0.3))),
                               child: Stack(
                                 children: <Widget>[
                                   Image.network(
@@ -254,12 +292,8 @@ class WheelScreen extends StatelessWidget {
                                   Positioned(
                                       right: 0,
                                       child: Container(
-                                        height:
-                                        getProportionateScreenWidth(
-                                            20),
-                                        width:
-                                        getProportionateScreenWidth(
-                                            45),
+                                        height: getProportionateScreenWidth(20),
+                                        width: getProportionateScreenWidth(45),
                                         decoration: BoxDecoration(
                                             color: Colors.orange,
                                             borderRadius: BorderRadius.only(
@@ -271,15 +305,14 @@ class WheelScreen extends StatelessWidget {
                                                         10)))),
                                         child: Center(
                                             child: Text(
-                                              "-10%",
-                                              style: TextStyle(
-                                                  fontSize:
+                                          "-10%",
+                                          style: TextStyle(
+                                              fontSize:
                                                   getProportionateScreenWidth(
                                                       10),
-                                                  color: Colors.white,
-                                                  fontWeight:
-                                                  FontWeight.bold),
-                                            )),
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )),
                                       ))
                                 ],
                               ),
@@ -288,16 +321,23 @@ class WheelScreen extends StatelessWidget {
                           SizedBox(
                             height: getProportionateScreenHeight(10),
                           ),
-                          Text(result.productName.toString(),maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12)
-                          ),),
+                          Text(
+                            result.productName.toString(),
+                            maxLines: 2,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(12)),
+                          ),
                           SizedBox(
                             height: getProportionateScreenHeight(5),
                           ),
                           Text(
-                            "₺ " + result.newPrice.toString()+" ",
+                            "₺ " +
+                                result.variant[0].sellingPrice.toString() +
+                                " ",
                             style: TextStyle(
-                                color: AllColors.mainColor,fontSize: getProportionateScreenWidth(13)),
+                                color: AllColors.mainColor,
+                                fontSize: getProportionateScreenWidth(13)),
                           ),
                           SizedBox(
                             height: getProportionateScreenHeight(5),
@@ -314,9 +354,11 @@ class WheelScreen extends StatelessWidget {
                                 itemSize: getProportionateScreenWidth(10),
                                 direction: Axis.horizontal,
                               ),
-                              Text("(34)",style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(10)
-                              ),)
+                              Text(
+                                "(34)",
+                                style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(10)),
+                              )
                             ],
                           ),
                         ],

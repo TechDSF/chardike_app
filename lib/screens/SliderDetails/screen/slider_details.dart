@@ -15,44 +15,46 @@ class SliderDetails extends StatelessWidget {
   SliderDetails({Key? key}) : super(key: key);
   final HomeController _homeController = Get.put(HomeController());
 
-  Widget SectionTitle(String text, VoidCallback onTap){
+  Widget SectionTitle(String text, VoidCallback onTap) {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               RichText(
                   text: TextSpan(
-                      style: TextStyle(
-                          color: Colors.black
-                      ),
+                      style: TextStyle(color: Colors.black),
                       children: <TextSpan>[
-                        TextSpan(text: text+" ",style: TextStyle(
+                    TextSpan(
+                        text: text + " ",
+                        style: TextStyle(
                             fontSize: getProportionateScreenWidth(14),
-                            fontWeight: FontWeight.w600
-                        )),
-                        TextSpan(text: "SALE",style: TextStyle(
+                            fontWeight: FontWeight.w600)),
+                    TextSpan(
+                        text: "SALE",
+                        style: TextStyle(
                             fontSize: getProportionateScreenWidth(16),
-                            fontWeight: FontWeight.bold
-                        )),
-                      ]
-                  )
-
-              ),
-              InkWell(onTap: onTap,child: Text("See More",style: TextStyle(color: AllColors.mainColor)))
+                            fontWeight: FontWeight.bold)),
+                  ])),
+              InkWell(
+                  onTap: onTap,
+                  child: Text("See More",
+                      style: TextStyle(color: AllColors.mainColor)))
             ],
           ),
         ),
-        Divider(color: Colors.grey.withOpacity(0.5),)
+        Divider(
+          color: Colors.grey.withOpacity(0.5),
+        )
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
     var _aspectRatio;
     bool isTab = SizeConfig.screenWidth > 768;
 
@@ -73,28 +75,46 @@ class SliderDetails extends StatelessWidget {
         centerTitle: false,
         title: const Text("Hot Deal"),
         actions: <Widget>[
-          Center(child: InkWell(
-            onTap: (){
-              Navigator.pushNamed(context, CartScreen.routeName);
-            },
-              child: CommonData.icon(icon: "asset/icons/cart.png", color: Colors.grey,isTab: isTab))),
-          SizedBox(width: getProportionateScreenWidth(10),)
+          Center(
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, CartScreen.routeName);
+                  },
+                  child: CommonData.icon(
+                      icon: "asset/icons/cart.png",
+                      color: Colors.grey,
+                      isTab: isTab))),
+          SizedBox(
+            width: getProportionateScreenWidth(10),
+          )
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+        padding:
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Image.asset("asset/images/category/gift_vouchar.png",height: isTab?getProportionateScreenHeight(300):getProportionateScreenHeight(200),width: double.infinity,),
-              SizedBox(height: getProportionateScreenHeight(20),),
+              Image.asset(
+                "asset/images/category/gift_vouchar.png",
+                height: isTab
+                    ? getProportionateScreenHeight(300)
+                    : getProportionateScreenHeight(200),
+                width: double.infinity,
+              ),
+              SizedBox(
+                height: getProportionateScreenHeight(20),
+              ),
+
               ///banner section
               Container(
-                height: isTab?getProportionateScreenHeight(200):getProportionateScreenHeight(100),
+                height: isTab
+                    ? getProportionateScreenHeight(200)
+                    : getProportionateScreenHeight(100),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        getProportionateScreenWidth(10)),
+                    borderRadius:
+                        BorderRadius.circular(getProportionateScreenWidth(10)),
                     image: const DecorationImage(
                         image: AssetImage("asset/images/banner_1.png"),
                         fit: BoxFit.fill)),
@@ -102,6 +122,7 @@ class SliderDetails extends StatelessWidget {
               SizedBox(
                 height: getProportionateScreenHeight(10),
               ),
+
               ///all product
               Obx(() {
                 if (_homeController.isApiProductLoading.value) {
@@ -113,57 +134,80 @@ class SliderDetails extends StatelessWidget {
                       color: Colors.yellow,
                     ),
                   );
-                }
-                else {
+                } else {
                   return GridView.builder(
-                      gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isTab?3:2,
-                        childAspectRatio: isTab?aspt(getProportionateScreenWidth(500)):aspt(getProportionateScreenWidth(300)),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isTab ? 3 : 2,
+                        childAspectRatio: isTab
+                            ? aspt(getProportionateScreenWidth(500))
+                            : aspt(getProportionateScreenWidth(300)),
                       ),
-                      itemCount: _homeController.apiProductList.length,
+                      itemCount: _homeController.allProductList.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var result = _homeController.apiProductList[(_homeController.apiProductList.length-1) - index];
+                        var result = _homeController.allProductList[
+                            (_homeController.allProductList.length - 1) -
+                                index];
                         return InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, ProductDetails.routeName,arguments: result);
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, ProductDetails.routeName,
+                                arguments: result);
                           },
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                  top: const BorderSide(color: Colors.grey,width: 0.5),
-                                  left: index%2==0?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
-                                  right: index%2==0?const BorderSide(color: Colors.grey,width: 0):const BorderSide(color: Colors.grey,width: 0.5),
-                                  bottom: index == _homeController.apiProductList.length-1 || index == _homeController.apiProductList.length-2?const BorderSide(color: Colors.grey,width: 0.5):const BorderSide(color: Colors.grey,width: 0),
-                                )
-                            ),
-                            padding: EdgeInsets.all(getProportionateScreenWidth(8)),
+                              top: const BorderSide(
+                                  color: Colors.grey, width: 0.5),
+                              left: index % 2 == 0
+                                  ? const BorderSide(
+                                      color: Colors.grey, width: 0.5)
+                                  : const BorderSide(
+                                      color: Colors.grey, width: 0),
+                              right: index % 2 == 0
+                                  ? const BorderSide(
+                                      color: Colors.grey, width: 0)
+                                  : const BorderSide(
+                                      color: Colors.grey, width: 0.5),
+                              bottom: index ==
+                                          _homeController
+                                                  .allProductList.length -
+                                              1 ||
+                                      index ==
+                                          _homeController
+                                                  .allProductList.length -
+                                              2
+                                  ? const BorderSide(
+                                      color: Colors.grey, width: 0.5)
+                                  : const BorderSide(
+                                      color: Colors.grey, width: 0),
+                            )),
+                            padding:
+                                EdgeInsets.all(getProportionateScreenWidth(8)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  height:
-                                  isTab?getProportionateScreenWidth(
-                                      220):getProportionateScreenWidth(
-                                      180),
+                                  height: isTab
+                                      ? getProportionateScreenWidth(220)
+                                      : getProportionateScreenWidth(180),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey.withOpacity(0.2)),image: DecorationImage(
-                                    image: NetworkImage(result.featureImage),fit: BoxFit.fill
-                                  )
-                                  ),
+                                      border: Border.all(
+                                          color: Colors.grey.withOpacity(0.2)),
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage(result.featureImage),
+                                          fit: BoxFit.fill)),
                                   child: Stack(
                                     children: <Widget>[
                                       Positioned(
                                           right: 0,
                                           child: Container(
                                             height:
-                                            getProportionateScreenWidth(
-                                                20),
+                                                getProportionateScreenWidth(20),
                                             width:
-                                            getProportionateScreenWidth(
-                                                45),
+                                                getProportionateScreenWidth(45),
                                             decoration: BoxDecoration(
                                                 color: Colors.orange,
                                                 borderRadius: BorderRadius.only(
@@ -175,15 +219,14 @@ class SliderDetails extends StatelessWidget {
                                                             10)))),
                                             child: Center(
                                                 child: Text(
-                                                  "-10%",
-                                                  style: TextStyle(
-                                                      fontSize:
+                                              "-10%",
+                                              style: TextStyle(
+                                                  fontSize:
                                                       getProportionateScreenWidth(
                                                           10),
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                      FontWeight.bold),
-                                                )),
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
                                           ))
                                     ],
                                   ),
@@ -191,29 +234,43 @@ class SliderDetails extends StatelessWidget {
                                 SizedBox(
                                   height: getProportionateScreenHeight(10),
                                 ),
-                                Text(result.productName.toString(),maxLines: 2,textAlign: TextAlign.start,style: TextStyle(
-                                    fontSize: getProportionateScreenWidth(12)
-                                ),),
+                                Text(
+                                  result.productName.toString(),
+                                  maxLines: 2,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize:
+                                          getProportionateScreenWidth(12)),
+                                ),
                                 SizedBox(
                                   height: getProportionateScreenHeight(5),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal:
-                                      getProportionateScreenWidth(5)),
+                                          getProportionateScreenWidth(5)),
                                   child: Row(
                                     children: [
                                       Text(
-                                        "₺ " + result.newPrice.toString()+" ",
+                                        "₺ " +
+                                            result.variant[0].sellingPrice
+                                                .toString() +
+                                            " ",
                                         style: TextStyle(
                                             color: AllColors.mainColor),
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        "₺" + result.regularPrice.toString(),
+                                        "₺" +
+                                            result.variant[0].regularPrice
+                                                .toString(),
                                         style: TextStyle(
-                                            decoration: TextDecoration.lineThrough,
-                                            color: Colors.grey,fontSize: getProportionateScreenWidth(10)),
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color: Colors.grey,
+                                            fontSize:
+                                                getProportionateScreenWidth(
+                                                    10)),
                                       ),
                                     ],
                                   ),
@@ -225,7 +282,8 @@ class SliderDetails extends StatelessWidget {
                                   children: [
                                     RatingBarIndicator(
                                       rating: 3,
-                                      itemBuilder: (context, index) => const Icon(
+                                      itemBuilder: (context, index) =>
+                                          const Icon(
                                         Icons.star,
                                         color: Colors.amber,
                                       ),
@@ -233,9 +291,12 @@ class SliderDetails extends StatelessWidget {
                                       itemSize: getProportionateScreenWidth(10),
                                       direction: Axis.horizontal,
                                     ),
-                                    Text("(5)",style: TextStyle(
-                                        fontSize: getProportionateScreenWidth(10)
-                                    ),)
+                                    Text(
+                                      "(5)",
+                                      style: TextStyle(
+                                          fontSize:
+                                              getProportionateScreenWidth(10)),
+                                    )
                                   ],
                                 ),
                               ],

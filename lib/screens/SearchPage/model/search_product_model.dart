@@ -5,9 +5,12 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<QueryProductModel> queryProductModelFromJson(String str) => List<QueryProductModel>.from(json.decode(str).map((x) => QueryProductModel.fromJson(x)));
+List<QueryProductModel> queryProductModelFromJson(String str) =>
+    List<QueryProductModel>.from(
+        json.decode(str).map((x) => QueryProductModel.fromJson(x)));
 
-String queryProductModelToJson(List<QueryProductModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String queryProductModelToJson(List<QueryProductModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class QueryProductModel {
   QueryProductModel({
@@ -56,55 +59,52 @@ class QueryProductModel {
   int inventory;
   bool isStock;
 
-  factory QueryProductModel.fromJson(Map<String, dynamic> json) => QueryProductModel(
-    id: json["id"],
-    brand: json["brand"],
-    country: json["country"],
-    subCategory: json["sub_category"],
-    category: json["category"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    isActive: json["is_active"],
-    productName: json["product_name"],
-    slug: json["slug"],
-    meta: json["meta"],
-    shortDescriptions: json["short_descriptions"],
-    longDescription: json["long_description"],
-    alterText: json["alter_text"],
-    sku: json["sku"],
-    upc: json["upc"],
-    featureImage: json["feature_image"],
-    regularPrice: json["regular_price"],
-    newPrice: json["new_price"],
-    inventory: json["inventory"],
-    isStock: json["is_stock"],
-  );
+  factory QueryProductModel.fromJson(Map<String, dynamic> json) =>
+      QueryProductModel(
+        id: json["id"],
+        brand: json["brand"],
+        country: json["country"],
+        subCategory: json["sub_category"],
+        category: json["category"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        isActive: json["is_active"],
+        productName: json["product_name"],
+        slug: json["slug"],
+        meta: json["meta"],
+        shortDescriptions: json["short_descriptions"],
+        longDescription: json["long_description"],
+        alterText: json["alter_text"],
+        sku: json["sku"],
+        upc: json["upc"],
+        featureImage: json["feature_image"],
+        regularPrice: json["regular_price"],
+        newPrice: json["new_price"],
+        inventory: json["inventory"],
+        isStock: json["is_stock"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "brand": brand,
-    "country": country,
-    "sub_category": subCategory,
-    "category": category,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "is_active": isActive,
-    "product_name": productName,
-    "slug": slug,
-    "meta": meta,
-    "short_descriptions": shortDescriptions,
-    "long_description": longDescription,
-    "alter_text": alterText,
-    "sku": sku,
-    "upc": upc,
-    "feature_image": featureImage,
-    "regular_price": regularPrice,
-    "new_price": newPrice,
-    "inventory": inventory,
-    "is_stock": isStock,
-  };
+        "id": id,
+        "brand": brand,
+        "country": country,
+        "sub_category": subCategory,
+        "category": category,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "is_active": isActive,
+        "product_name": productName,
+        "slug": slug,
+        "meta": meta,
+        "short_descriptions": shortDescriptions,
+        "long_description": longDescription,
+        "alter_text": alterText,
+        "sku": sku,
+        "upc": upc,
+        "feature_image": featureImage,
+        "regular_price": regularPrice,
+        "new_price": newPrice,
+        "inventory": inventory,
+        "is_stock": isStock,
+      };
 }
-
-
-
-

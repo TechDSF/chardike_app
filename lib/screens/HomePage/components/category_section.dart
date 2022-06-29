@@ -28,82 +28,97 @@ class CategorySection extends StatelessWidget {
       return _aspectRatio = _width / cellHeight;
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ///category section
-        SectionTitle(
-            title: "Category",
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => CategoryScreen()));
-            }),
-        Divider(),
-        SizedBox(
-          height: getProportionateScreenHeight(10),
-        ),
-        Obx(() {
-          if (_homeController.isCategoryDataLoading.value) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey.withOpacity(0.1),
-              highlightColor: Colors.grey.withOpacity(0.5),
-              child: Container(
-                height: getProportionateScreenHeight(170),
-                color: Colors.yellow,
-              ),
-            );
-          } else {
-            return SizedBox(
-              height: getProportionateScreenHeight(120),
-              child: ListView.builder(
-                  itemCount: _homeController.categoryList.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    var result = _homeController.categoryList[index];
-                    return InkWell(
-                      onTap: () {
-                        _categoryController.selectedTab.value = index;
-                        _categoryController.getSubCategoryListById(
-                            id: result.id.toString());
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => CategoryScreen()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: getProportionateScreenWidth(70),
-                              width: getProportionateScreenWidth(70),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.03),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ///category section
+          SectionTitle(
+              title: "Category",
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => CategoryScreen()));
+              }),
+
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
+          Obx(() {
+            if (_homeController.isCategoryDataLoading.value) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(0.1),
+                highlightColor: Colors.grey.withOpacity(0.5),
+                child: Container(
+                  height: getProportionateScreenHeight(170),
+                  color: Colors.yellow,
+                ),
+              );
+            } else {
+              return SizedBox(
+                height: SizeConfig.screenWidth * 0.42,
+                child: GridView.builder(
+                    itemCount: 20,
+                    scrollDirection: Axis.horizontal,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: SizeConfig.screenWidth * 0.015,
+                        crossAxisSpacing: SizeConfig.screenWidth * 0.015),
+                    itemBuilder: ((context, index) {
+                      return Obx(() => InkWell(
+                            onTap: () {
+                              _categoryController.selectedCategoryItem.value =
+                                  index;
+                            },
+                            child: Container(
                               decoration: BoxDecoration(
+                                  color: _categoryController
+                                              .selectedCategoryItem.value ==
+                                          index
+                                      ? Color(0xFFFC7409)
+                                      : Color(0xFFF3F5F8),
                                   borderRadius: BorderRadius.circular(
-                                      getProportionateScreenHeight(5)),
-                                  image: DecorationImage(
-                                      image: NetworkImage(result.image),
-                                      fit: BoxFit.fill)),
+                                      SizeConfig.screenWidth * 0.015)),
+                              child: Column(children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: Obx((() => Icon(
+                                        Icons.settings,
+                                        color: _categoryController
+                                                    .selectedCategoryItem
+                                                    .value ==
+                                                index
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ))),
+                                ),
+                                Expanded(
+                                    flex: 1,
+                                    child: Obx(() => Text(
+                                          "Acne Path",
+                                          style: TextStyle(
+                                              color: _categoryController
+                                                          .selectedCategoryItem
+                                                          .value ==
+                                                      index
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: SizeConfig.screenWidth *
+                                                  0.025),
+                                        )))
+                              ]),
                             ),
-                            Expanded(
-                                child: Center(
-                                    child: Text(
-                              result.categoryName,
-                              style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(12)),
-                            )))
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-            );
-          }
-        }),
-        SizedBox(
-          height: getProportionateScreenHeight(10),
-        ),
-      ],
+                          ));
+                    })),
+              );
+            }
+          }),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
+        ],
+      ),
     );
   }
 }

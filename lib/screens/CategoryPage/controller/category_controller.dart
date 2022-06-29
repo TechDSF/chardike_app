@@ -12,6 +12,7 @@ import '../../HomePage/controller/home_controller.dart';
 class CategoryController extends GetxController {
   var isLoading = false.obs;
   var selectedTab = 0.obs;
+  var selectedCategoryItem = 1000000.obs;
   final HomeController _homeController = Get.put(HomeController());
   Rx<List<SubCategoryModel>> skinCareList = Rx<List<SubCategoryModel>>([]);
 

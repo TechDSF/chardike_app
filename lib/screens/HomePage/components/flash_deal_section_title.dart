@@ -4,7 +4,7 @@ import 'package:slide_countdown/slide_countdown.dart';
 import '../../../size_config.dart';
 
 class FlashDealSectionTitle extends StatelessWidget {
-  FlashDealSectionTitle({Key? key,required this.onTap}) : super(key: key);
+  FlashDealSectionTitle({Key? key, required this.onTap}) : super(key: key);
   VoidCallback onTap;
 
   @override
@@ -23,41 +23,41 @@ class FlashDealSectionTitle extends StatelessWidget {
               SizedBox(
                 width: getProportionateScreenWidth(5),
               ),
+              Text(
+                "Ending in",
+                style: TextStyle(
+                    fontSize: SizeConfig.screenWidth * 0.025,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                width: getProportionateScreenWidth(5),
+              ),
               SlideCountdownSeparated(
-                height: getProportionateScreenHeight(20),
-                width: getProportionateScreenHeight(20),
+                height: getProportionateScreenHeight(15),
+                width: getProportionateScreenHeight(15),
+                separatorStyle: TextStyle(color: Colors.deepOrange),
                 textStyle: TextStyle(
-                    fontSize: getProportionateScreenHeight(10),
+                    fontSize: getProportionateScreenHeight(8),
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
                 decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.deepOrange,
                     borderRadius:
-                    BorderRadius.circular(getProportionateScreenWidth(3))),
+                        BorderRadius.circular(getProportionateScreenWidth(3))),
                 duration: Duration(hours: 2, minutes: 29),
               )
             ],
           ),
         ),
         InkWell(
-          onTap: onTap,
-          child: RichText(
-            text: TextSpan(
-                style: TextStyle(
-                    color: Colors.black.withOpacity(0.5),
-                    fontSize: getProportionateScreenWidth(12)),
-                children: [
-                  TextSpan(text: "See More"),
-                  WidgetSpan(
-                      child: Center(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: getProportionateScreenWidth(14),
-                            color: Colors.black.withOpacity(0.5),
-                          )))
-                ]),
-          ),
-        )
+            onTap: onTap,
+            child: Text(
+              "See More",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: SizeConfig.screenWidth * 0.02),
+            ))
       ],
     );
   }
