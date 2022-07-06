@@ -32,7 +32,7 @@ class TopProductMain extends StatelessWidget {
         title: const Text("Top Products"),
       ),
       body: Obx(() {
-        if (_homeController.isApiProductLoading.value) {
+        if (_homeController.isPopularProductLoading.value) {
           return Shimmer.fromColors(
             baseColor: Colors.grey.withOpacity(0.1),
             highlightColor: Colors.grey.withOpacity(0.5),
@@ -45,7 +45,7 @@ class TopProductMain extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GridView.builder(
-                itemCount: _homeController.allProductList.length,
+                itemCount: _homeController.popularProductList.length,
                 gridDelegate: (SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: getProportionateScreenWidth(10),
                   crossAxisCount: isTab ? 3 : 2,
@@ -55,7 +55,7 @@ class TopProductMain extends StatelessWidget {
                   crossAxisSpacing: getProportionateScreenWidth(10),
                 )),
                 itemBuilder: (context, index) {
-                  var result = _homeController.allProductList[index];
+                  var result = _homeController.popularProductList[index];
                   return Padding(
                     padding:
                         EdgeInsets.only(right: getProportionateScreenWidth(10)),

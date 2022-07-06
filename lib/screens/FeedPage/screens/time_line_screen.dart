@@ -18,11 +18,11 @@ class TimeLineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: _homeController.allProductList.length + 1,
+        itemCount: _homeController.popularProductList.length + 1,
         itemBuilder: (context, index) {
           var result = index == 0
-              ? _homeController.allProductList[index]
-              : _homeController.allProductList[index - 1];
+              ? _homeController.popularProductList[index]
+              : _homeController.popularProductList[index - 1];
           return index == 0
               ? Padding(
                   padding: const EdgeInsets.all(8.0),

@@ -104,7 +104,8 @@ class TopProductPage extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: GridView.builder(
                             shrinkWrap: true,
-                            itemCount: _homeController.allProductList.length,
+                            itemCount: _homeController
+                                .popularProductList.length,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                     mainAxisSpacing:
@@ -116,7 +117,7 @@ class TopProductPage extends StatelessWidget {
                                         aspt(getProportionateScreenWidth(170))),
                             itemBuilder: (context, index) {
                               var result =
-                                  _homeController.allProductList[index];
+                                  _homeController.popularProductList[index];
                               return InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
@@ -228,9 +229,10 @@ class TopProductPage extends StatelessWidget {
                       )
                     : ListView.builder(
                         shrinkWrap: true,
-                        itemCount: _homeController.allProductList.length,
+                        itemCount: _homeController.popularProductList.length,
                         itemBuilder: (context, index) {
-                          var result = _homeController.allProductList[index];
+                          var result =
+                              _homeController.popularProductList[index];
                           return InkWell(
                             onTap: () {
                               Navigator.pushNamed(

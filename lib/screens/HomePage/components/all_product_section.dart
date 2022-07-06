@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../CommonData/all_colors.dart';
+import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
 import '../../ProductDetails/product_details.dart';
 import '../controller/home_controller.dart';
@@ -41,7 +42,7 @@ class AllProductSection extends StatelessWidget {
             height: getProportionateScreenHeight(10),
           ),
           Obx(() {
-            if (_homeController.isApiProductLoading.value) {
+            if (_homeController.isLatestProductLoading.value) {
               return GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -70,11 +71,12 @@ class AllProductSection extends StatelessWidget {
                         ? aspt(getProportionateScreenWidth(420))
                         : aspt(SizeConfig.screenWidth * 0.7),
                   ),
-                  itemCount: _homeController.allProductList.length,
+                  itemCount: _homeController.latestProductList.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    ProductModel result = _homeController.allProductList[index];
+                    ProductModel result =
+                        _homeController.latestProductList[index];
                     return InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, ProductDetails.routeName,
@@ -99,7 +101,8 @@ class AllProductSection extends StatelessWidget {
                                       SizeConfig.screenWidth * 0.02),
                                 ),
                                 image: DecorationImage(
-                                    image: NetworkImage(result.featureImage))),
+                                    image: NetworkImage(result.featureImage),
+                                    fit: BoxFit.fill)),
                             child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
@@ -176,30 +179,32 @@ class AllProductSection extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      RichText(
-                                          text: TextSpan(children: [
-                                        TextSpan(
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    SizeConfig.screenWidth *
-                                                        0.025),
-                                            text: "₺" +
-                                                result.variant[0].sellingPrice
-                                                    .toString()),
-                                        TextSpan(
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                                fontSize:
-                                                    SizeConfig.screenWidth *
-                                                        0.015),
-                                            text: " ₺" +
-                                                result.variant[0].regularPrice
-                                                    .toString())
-                                      ])),
+                                      Expanded(
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                          TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.025),
+                                              text: "₺" +
+                                                  result.variant[0].sellingPrice
+                                                      .toString()),
+                                          TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.015),
+                                              text: " ₺" +
+                                                  result.variant[0].regularPrice
+                                                      .toString())
+                                        ])),
+                                      ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -213,7 +218,7 @@ class AllProductSection extends StatelessWidget {
                                             color: Colors.orange,
                                           ),
                                           Text(
-                                            "${_homeController.calculateRating(result.reviews)}",
+                                            "${CommonData.calculateRating(result.reviews)}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: SizeConfig.screenWidth *

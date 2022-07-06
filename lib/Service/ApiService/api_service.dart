@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
-import 'package:chardike/screens/SearchPage/model/search_product_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,6 +9,7 @@ import '../../screens/CategoryPage/model/brand_model.dart';
 import '../../screens/CategoryPage/model/category_model.dart';
 import '../../screens/CategoryPage/model/sub_category_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
+import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
 
 class ApiService {
@@ -55,15 +55,31 @@ class ApiService {
     }
   }
 
-  ///fetch all products
-  static dynamic fetchProducts() async {
+  ///fetch popular products
+  static dynamic fetchPopularProducts() async {
     var headers = {
       'Cookie':
           'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
     };
-    var response = await client.get(Uri.parse(productUrl), headers: headers);
+    var response =
+        await client.get(Uri.parse(popularProductUrl), headers: headers);
     if (response.statusCode == 200) {
-      return productModelFromMap(response.body);
+      return productModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch latest products
+  static dynamic fetchLatestProducts() async {
+    var headers = {
+      'Cookie':
+          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
+    };
+    var response =
+        await client.get(Uri.parse(latestProductUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return productModelFromJson(response.body);
     } else {
       return response.statusCode;
     }
@@ -78,7 +94,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(queryProductUrl), headers: headers);
     if (response.statusCode == 200) {
-      return queryProductModelFromJson(response.body);
+      return productModelFromJson(response.body);
     } else {
       return response.statusCode;
     }
@@ -93,6 +109,23 @@ class ApiService {
     var response = await client.get(Uri.parse(countryUrl), headers: headers);
     if (response.statusCode == 200) {
       return countryModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch category product by id
+  static dynamic fetchCategoryProductById({required String id}) async {
+    var headers = {
+      'Cookie':
+          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
+    };
+    var response = await client.get(
+        Uri.parse(
+            "https://shark-app-gc4oe.ondigitalocean.app/queries/products/category/$id/"),
+        headers: headers);
+    if (response.statusCode == 200) {
+      return categoryProductModelFromJson(response.body);
     } else {
       return response.statusCode;
     }
@@ -211,6 +244,21 @@ class ApiService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  ///get single category , single brand, single country product
+  getProductByCategory({required String type, required String id}) async {
+    var headers = {
+      'Cookie':
+          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
+    };
+    var response =
+        await client.get(Uri.parse(queryProductUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return productModelFromJson(response.body);
+    } else {
+      return response.statusCode;
     }
   }
 }

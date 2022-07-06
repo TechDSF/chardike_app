@@ -6,6 +6,7 @@ import 'package:chardike/screens/ProductDetails/controller/product_details_contr
 import 'package:chardike/screens/UserPage/controller/favourite_controller.dart';
 import 'package:chardike/screens/UserPage/model/favourite_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -176,11 +177,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           title: productModel.productName.toString(),
                           image: productModel.featureImage,
                           quantity: _detailsController.quantityItem.value,
-                          price: int.parse(
-                              productModel.variant[0].sellingPrice.toString()),
-                          totalPrice: _detailsController.quantityItem.value *
-                              int.parse(productModel.variant[0].sellingPrice
-                                  .toString())));
+                          price:
+                              productModel.variant[0].sellingPrice.toDouble(),
+                          totalPrice: (_detailsController.quantityItem.value *
+                                  productModel.variant[0].sellingPrice)
+                              .toDouble()));
                     } finally {
                       // TODO
                       _detailsController.isHaveCart.value = _cartController
@@ -277,18 +278,6 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           right: getProportionateScreenWidth(20)),
                       child: Center(
                           child: InkWell(
-                        onTap: () {},
-                        child: CommonData.icon(
-                            icon: "asset/icons/home.png",
-                            color: Colors.grey,
-                            isTab: isTab),
-                      )),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          right: getProportionateScreenWidth(20)),
-                      child: Center(
-                          child: InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, CartScreen.routeName);
@@ -312,7 +301,9 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                   child: Stack(
                     children: [
                       CarouselSlider.builder(
-                        itemCount: productModel.productImage.length,
+                        itemCount: productModel.productImage.isEmpty
+                            ? 1
+                            : productModel.productImage.length,
                         options: CarouselOptions(
                           height: isTab
                               ? getProportionateScreenHeight(430)
@@ -335,8 +326,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               borderRadius: BorderRadius.circular(
                                   getProportionateScreenWidth(10)),
                               image: DecorationImage(
-                                  image: NetworkImage(productModel
-                                      .productImage[itemIndex].image),
+                                  image: productModel.productImage.isEmpty
+                                      ? NetworkImage(productModel.featureImage)
+                                      : NetworkImage(productModel
+                                          .productImage[itemIndex].image),
                                   fit: BoxFit.fill)),
                           width: double.infinity,
                         ),
@@ -365,8 +358,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                         .imageIndex.value
                                         .toString())),
                                     Text("/"),
-                                    Text(productModel.productImage.length
-                                        .toString())
+                                    productModel.productImage.isEmpty
+                                        ? Text("1")
+                                        : Text(productModel.productImage.length
+                                            .toString())
                                   ],
                                 ),
                               ),
@@ -429,20 +424,21 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               ListTile(
-                                title: Text(
-                                  CommonData.takaSign +
-                                      " " +
-                                      productModel.variant[0].sellingPrice
-                                          .toString(),
-                                  style: TextStyle(
-                                      fontSize: getProportionateScreenWidth(16),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: RichText(
+                                title: RichText(
                                   text: TextSpan(
                                     text: '',
                                     style: DefaultTextStyle.of(context).style,
                                     children: <TextSpan>[
+                                      TextSpan(
+                                        text: CommonData.takaSign +
+                                            productModel.variant[0].sellingPrice
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontSize:
+                                                getProportionateScreenWidth(16),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(text: " "),
                                       TextSpan(
                                         text: CommonData.takaSign +
                                             productModel.variant[0].regularPrice
@@ -453,7 +449,6 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                             color:
                                                 Colors.black.withOpacity(0.6)),
                                       ),
-                                      const TextSpan(text: "  -" + "10" + "%"),
                                     ],
                                   ),
                                 ),
@@ -468,66 +463,88 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               SizedBox(
                                 height: getProportionateScreenHeight(5),
                               ),
-                              Row(
-                                children: [
-                                  RatingBarIndicator(
-                                    rating: 3,
-                                    itemBuilder: (context, index) => const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
+                              productModel.reviews.isEmpty
+                                  ? SizedBox()
+                                  : Row(
+                                      children: [
+                                        RatingBarIndicator(
+                                          rating: 3,
+                                          itemBuilder: (context, index) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          itemCount: 5,
+                                          itemSize:
+                                              getProportionateScreenWidth(15),
+                                          direction: Axis.horizontal,
+                                        ),
+                                        SizedBox(
+                                          width: getProportionateScreenWidth(5),
+                                        ),
+                                        Text("${productModel.reviews.length}")
+                                      ],
                                     ),
-                                    itemCount: 5,
-                                    itemSize: getProportionateScreenWidth(15),
-                                    direction: Axis.horizontal,
-                                  ),
-                                  SizedBox(
-                                    width: getProportionateScreenWidth(5),
-                                  ),
-                                  Text("10")
-                                ],
-                              ),
                               SizedBox(
                                 height: getProportionateScreenHeight(20),
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text("Shipping"),
+                                  Text("Shipping From"),
                                   SizedBox(
-                                    width: getProportionateScreenWidth(15),
+                                    width: getProportionateScreenWidth(10),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Free Shipping"),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(5),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text("Shipping Form"),
-                                          SizedBox(
-                                            width:
-                                                getProportionateScreenWidth(15),
-                                          ),
-                                          Text("Mainland Korea")
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(5),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text("Shipping Fee"),
-                                          SizedBox(
-                                            width:
-                                                getProportionateScreenWidth(20),
-                                          ),
-                                          Text("90-120")
-                                        ],
-                                      )
-                                    ],
+                                  Text(
+                                    "Dhaka",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("Shipping Fee"),
+                                  SizedBox(
+                                    width: getProportionateScreenWidth(10),
+                                  ),
+                                  Text(
+                                    "80 TK",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text("Category"),
+                                  SizedBox(
+                                    width: getProportionateScreenWidth(10),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          productModel.category[0].categoryName,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(Icons.arrow_right),
+                                        Text(
+                                          productModel
+                                              .subCategory[0].subCategoryName,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
@@ -543,7 +560,14 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                   Row(
                                     children: <Widget>[
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          if (_detailsController
+                                                  .quantityItem.value >
+                                              1) {
+                                            _detailsController
+                                                .quantityItem.value--;
+                                          }
+                                        },
                                         child: Container(
                                           height:
                                               getProportionateScreenWidth(25),
@@ -570,10 +594,21 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                 horizontal: BorderSide(
                                           color: Colors.grey,
                                         ))),
-                                        child: Center(child: Text("dfjk")),
+                                        child: Center(
+                                            child: Obx(() => Text(
+                                                _detailsController
+                                                    .quantityItem.value
+                                                    .toString()))),
                                       ),
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          if (_detailsController
+                                                  .quantityItem.value <
+                                              5) {
+                                            _detailsController
+                                                .quantityItem.value++;
+                                          }
+                                        },
                                         child: Container(
                                           height:
                                               getProportionateScreenWidth(25),
@@ -593,9 +628,20 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                         ),
                                       )
                                     ],
-                                  )
+                                  ),
                                 ],
-                              )
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Text(
+                                productModel.shortDescriptions,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Html(data: productModel.longDescription)
                             ],
                           ),
                         ),
@@ -631,11 +677,9 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    itemCount:
-                                        _detailsController.reviewList.length,
+                                    itemCount: productModel.reviews.length,
                                     itemBuilder: (context, index) {
-                                      var result =
-                                          _detailsController.reviewList[index];
+                                      var result = productModel.reviews[index];
                                       return Padding(
                                         padding: EdgeInsets.symmetric(
                                             vertical:
@@ -665,20 +709,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                             Expanded(
                                                 child: Column(
                                               children: <Widget>[
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      result.name,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                        "${result.reviewDate.day}/${result.reviewDate.month}}/${result.reviewDate.year}")
-                                                  ],
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                Text(
+                                                  result.profile.toString(),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 SizedBox(
                                                   height:
@@ -686,8 +721,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                           3),
                                                 ),
                                                 RatingBarIndicator(
-                                                  rating:
-                                                      result.rating.toDouble(),
+                                                  rating: result.starCount
+                                                      .toDouble(),
                                                   itemBuilder:
                                                       (context, index) =>
                                                           const Icon(
@@ -705,7 +740,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                       getProportionateScreenHeight(
                                                           3),
                                                 ),
-                                                Text(result.reviewMessage)
+                                                Text(result.review)
                                               ],
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -842,10 +877,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                           scrollDirection: Axis.horizontal,
                                           shrinkWrap: true,
                                           itemCount: _homeController
-                                              .allProductList.length,
+                                              .popularProductList.length,
                                           itemBuilder: (context, index) {
                                             var result = _homeController
-                                                .allProductList[index];
+                                                .popularProductList[index];
                                             return InkWell(
                                               onTap: () {},
                                               child: Container(

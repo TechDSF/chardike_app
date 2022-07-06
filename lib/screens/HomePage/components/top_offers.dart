@@ -1,5 +1,5 @@
-import 'package:chardike/screens/NewHome/components/top_link_card.dart';
-import 'package:chardike/screens/NewHome/controller/new_home_controller.dart';
+import 'package:chardike/screens/HomePage/components/top_link_card.dart';
+import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +7,7 @@ import '../../../size_config.dart';
 
 class TopOffer extends StatelessWidget {
   TopOffer({Key? key}) : super(key: key);
-  final NewHomeController _newHomeController = Get.put(NewHomeController());
+  final HomeController _newHomeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {

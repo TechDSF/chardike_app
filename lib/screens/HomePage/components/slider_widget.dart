@@ -28,67 +28,71 @@ class SliderWidget extends StatelessWidget {
               ),
             );
           } else {
-            return Stack(
-              children: [
-                CarouselSlider.builder(
-                  itemCount: _homeController.sliderList.length,
-                  itemBuilder:
-                      (BuildContext context, int itemIndex, int pageViewIndex) {
-                    var result = _homeController.sliderList[itemIndex];
-                    return ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(getProportionateScreenWidth(5)),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => SliderDetails()));
+            return _homeController.sliderList.isEmpty
+                ? SizedBox()
+                : Stack(
+                    children: [
+                      CarouselSlider.builder(
+                        itemCount: _homeController.sliderList.length,
+                        itemBuilder: (BuildContext context, int itemIndex,
+                            int pageViewIndex) {
+                          var result = _homeController.sliderList[itemIndex];
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                getProportionateScreenWidth(5)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => SliderDetails()));
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(result.sliderImage),
+                                        fit: BoxFit.fill)),
+                              ),
+                            ),
+                          );
                         },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(result.sliderImage),
-                                  fit: BoxFit.fill)),
+                        options: CarouselOptions(
+                          onPageChanged: (value, reason) {
+                            _homeController.dotIndex.value = value;
+                          },
+                          height: isTab
+                              ? getProportionateScreenHeight(280)
+                              : getProportionateScreenHeight(170),
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 1.0,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          reverse: false,
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 5),
+                          autoPlayAnimationDuration:
+                              Duration(milliseconds: 1000),
+                          autoPlayCurve: Curves.ease,
+                          enlargeCenterPage: true,
+                          scrollDirection: Axis.horizontal,
                         ),
                       ),
-                    );
-                  },
-                  options: CarouselOptions(
-                    onPageChanged: (value, reason) {
-                      _homeController.dotIndex.value = value;
-                    },
-                    height: isTab
-                        ? getProportionateScreenHeight(280)
-                        : getProportionateScreenHeight(170),
-                    aspectRatio: 16 / 9,
-                    viewportFraction: 1.0,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 5),
-                    autoPlayAnimationDuration: Duration(milliseconds: 1000),
-                    autoPlayCurve: Curves.ease,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: SizeConfig.screenWidth,
-                    child: Center(
-                      child: Obx(() => DotsIndicator(
-                            dotsCount: _homeController.sliderList.length,
-                            position: _homeController.dotIndex.value.toDouble(),
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            );
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          width: SizeConfig.screenWidth,
+                          child: Center(
+                            child: Obx(() => DotsIndicator(
+                                  dotsCount: _homeController.sliderList.length,
+                                  position:
+                                      _homeController.dotIndex.value.toDouble(),
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
           }
         }),
         SizedBox(

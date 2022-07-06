@@ -180,7 +180,7 @@ class MyLikes extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(10)),
               child: Obx(() {
-                if (_homeController.isApiProductLoading.value) {
+                if (_homeController.isPopularProductLoading.value) {
                   return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -209,17 +209,17 @@ class MyLikes extends StatelessWidget {
                             ? aspt(getProportionateScreenWidth(420))
                             : aspt(getProportionateScreenWidth(300)),
                       ),
-                      itemCount: _homeController.allProductList.length,
+                      itemCount: _homeController.popularProductList.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var result = _homeController.allProductList[index];
+                        var result = _homeController.popularProductList[index];
                         return InkWell(
                           onTap: () {
                             Navigator.pushNamed(
                                 context, ProductDetails.routeName,
                                 arguments:
-                                    _homeController.allProductList[index]);
+                                    _homeController.popularProductList[index]);
                           },
                           child: Container(
                             decoration: BoxDecoration(

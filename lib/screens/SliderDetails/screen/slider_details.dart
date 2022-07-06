@@ -95,17 +95,6 @@ class SliderDetails extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Image.asset(
-                "asset/images/category/gift_vouchar.png",
-                height: isTab
-                    ? getProportionateScreenHeight(300)
-                    : getProportionateScreenHeight(200),
-                width: double.infinity,
-              ),
-              SizedBox(
-                height: getProportionateScreenHeight(20),
-              ),
-
               ///banner section
               Container(
                 height: isTab
@@ -125,7 +114,7 @@ class SliderDetails extends StatelessWidget {
 
               ///all product
               Obx(() {
-                if (_homeController.isApiProductLoading.value) {
+                if (_homeController.isPopularProductLoading.value) {
                   return Shimmer.fromColors(
                     baseColor: Colors.grey.withOpacity(0.1),
                     highlightColor: Colors.grey.withOpacity(0.5),
@@ -142,12 +131,12 @@ class SliderDetails extends StatelessWidget {
                             ? aspt(getProportionateScreenWidth(500))
                             : aspt(getProportionateScreenWidth(300)),
                       ),
-                      itemCount: _homeController.allProductList.length,
+                      itemCount: _homeController.popularProductList.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var result = _homeController.allProductList[
-                            (_homeController.allProductList.length - 1) -
+                        var result = _homeController.popularProductList[
+                            (_homeController.popularProductList.length - 1) -
                                 index];
                         return InkWell(
                           onTap: () {
@@ -172,11 +161,11 @@ class SliderDetails extends StatelessWidget {
                                       color: Colors.grey, width: 0.5),
                               bottom: index ==
                                           _homeController
-                                                  .allProductList.length -
+                                                  .popularProductList.length -
                                               1 ||
                                       index ==
                                           _homeController
-                                                  .allProductList.length -
+                                                  .popularProductList.length -
                                               2
                                   ? const BorderSide(
                                       color: Colors.grey, width: 0.5)

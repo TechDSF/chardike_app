@@ -37,8 +37,12 @@ class CategorySection extends StatelessWidget {
           SectionTitle(
               title: "Category",
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => CategoryScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => CategoryScreen(
+                              slug: _homeController.categoryList[0].slug,
+                            )));
               }),
 
           SizedBox(
@@ -58,17 +62,25 @@ class CategorySection extends StatelessWidget {
               return SizedBox(
                 height: SizeConfig.screenWidth * 0.42,
                 child: GridView.builder(
-                    itemCount: 20,
+                    itemCount: _homeController.categoryList.length,
                     scrollDirection: Axis.horizontal,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: SizeConfig.screenWidth * 0.015,
                         crossAxisSpacing: SizeConfig.screenWidth * 0.015),
                     itemBuilder: ((context, index) {
+                      var result = _homeController.categoryList[index];
                       return Obx(() => InkWell(
                             onTap: () {
                               _categoryController.selectedCategoryItem.value =
                                   index;
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => CategoryScreen(
+                                            slug: result.slug,
+                                          )));
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -82,20 +94,22 @@ class CategorySection extends StatelessWidget {
                               child: Column(children: <Widget>[
                                 Expanded(
                                   flex: 2,
-                                  child: Obx((() => Icon(
-                                        Icons.settings,
+                                  child: Obx((() => Image.network(
+                                        result.image,
                                         color: _categoryController
                                                     .selectedCategoryItem
                                                     .value ==
                                                 index
                                             ? Colors.white
                                             : Colors.black,
+                                        height: SizeConfig.screenWidth * 0.1,
+                                        width: SizeConfig.screenWidth * 0.1,
                                       ))),
                                 ),
                                 Expanded(
                                     flex: 1,
                                     child: Obx(() => Text(
-                                          "Acne Path",
+                                          result.categoryName,
                                           style: TextStyle(
                                               color: _categoryController
                                                           .selectedCategoryItem

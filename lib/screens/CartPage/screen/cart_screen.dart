@@ -244,7 +244,7 @@ class CartScreen extends StatelessWidget {
                       ],
                     ),
                     Obx(() {
-                      if (_homeController.isApiProductLoading.value) {
+                      if (_homeController.isPopularProductLoading.value) {
                         return Shimmer.fromColors(
                           baseColor: Colors.grey.withOpacity(0.1),
                           highlightColor: Colors.grey.withOpacity(0.5),
@@ -260,12 +260,14 @@ class CartScreen extends StatelessWidget {
                               crossAxisCount: 2,
                               childAspectRatio: aspt(300),
                             ),
-                            itemCount: _homeController.allProductList.length,
+                            itemCount:
+                                _homeController.popularProductList.length,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              var result = _homeController.allProductList[
-                                  (_homeController.allProductList.length - 1) -
+                              var result = _homeController.popularProductList[
+                                  (_homeController.popularProductList.length -
+                                          1) -
                                       index];
                               return InkWell(
                                 onTap: () {
@@ -290,11 +292,13 @@ class CartScreen extends StatelessWidget {
                                             color: Colors.grey, width: 0.5),
                                     bottom: index ==
                                                 _homeController
-                                                        .allProductList.length -
+                                                        .popularProductList
+                                                        .length -
                                                     1 ||
                                             index ==
                                                 _homeController
-                                                        .allProductList.length -
+                                                        .popularProductList
+                                                        .length -
                                                     2
                                         ? const BorderSide(
                                             color: Colors.grey, width: 0.5)
@@ -308,7 +312,7 @@ class CartScreen extends StatelessWidget {
                                       Expanded(
                                         child: Stack(
                                           children: <Widget>[
-                                            Image.asset(
+                                            Image.network(
                                               result.featureImage,
                                               fit: BoxFit.fill,
                                             ),

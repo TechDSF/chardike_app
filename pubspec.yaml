@@ -64,6 +64,7 @@ dependencies:
   animated_bottom_navigation_bar: ^0.3.2
   pin_code_fields: ^7.4.0
   sqflite: ^2.0.2+1
+  flutter_html: ^2.2.1
 
 
 flutter_native_splash:

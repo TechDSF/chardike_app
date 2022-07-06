@@ -7,25 +7,15 @@ import 'package:get/get.dart';
 import 'all_search_products.dart';
 
 class SubSearchScreen extends StatelessWidget {
-  SubSearchScreen({Key? key, required this.searchType}) : super(key: key);
+  SubSearchScreen({Key? key, required this.searchType, required this.id})
+      : super(key: key);
   final SearchController _searchController = Get.put(SearchController());
   String searchType;
+  String id;
 
   @override
   Widget build(BuildContext context) {
     bool isTab = SizeConfig.screenWidth > 768;
-
-    var _aspectRatio;
-    double aspt(double height) {
-      var _crossAxisSpacing = 8;
-      var _screenWidth = MediaQuery.of(context).size.width;
-      var _crossAxisCount = 2;
-      var _width =
-          (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
-              _crossAxisCount;
-      var cellHeight = height;
-      return _aspectRatio = _width / cellHeight;
-    }
 
     return Scaffold(
         appBar: AppBar(
@@ -69,21 +59,36 @@ class SubSearchScreen extends StatelessWidget {
               onTap: () {
                 if (_searchController
                     .subSearchTextController.value.text.isEmpty) {
-                  _searchController.addToSearchHistory(value: searchType);
+                  if (!_searchController.checkDataExitOrNotInSearch(
+                      id: searchType)) {
+                    _searchController.addToSearchHistory(
+                        value: searchType, id: id);
+                  }
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (_) => AllSearchProducts(
+                                productList: [],
+                                id: id,
                                 searchType: searchType,
                               )));
                 } else {
-                  _searchController.addToSearchHistory(
-                      value:
-                          _searchController.subSearchTextController.value.text);
+                  if (!_searchController.checkDataExitOrNotInSearch(
+                      id: _searchController
+                          .subSearchTextController.value.text)) {
+                    _searchController.addToSearchHistory(
+                        value: _searchController
+                            .subSearchTextController.value.text,
+                        id: "1");
+                  }
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (_) => AllSearchProducts(
+                                productList: [],
+                                id: "1",
                                 searchType: _searchController
                                     .subSearchTextController.value.text,
                               )));
@@ -124,19 +129,26 @@ class SubSearchScreen extends StatelessWidget {
                       var result = _searchController.searchHistoryList[index];
                       return ChoiceChip(
                         labelPadding: const EdgeInsets.all(2.0),
-                        label: Text(result,
+                        label: Text(result.name,
                             style: TextStyle(
                                 color: Colors.black.withOpacity(0.7),
                                 fontSize: getProportionateScreenWidth(13))),
                         selected: true,
                         selectedColor: Colors.grey.withOpacity(0.1),
                         onSelected: (value) {
-                          _searchController.addToSearchHistory(value: result);
+                          if (!_searchController.checkDataExitOrNotInSearch(
+                              id: result.name)) {
+                            _searchController.addToSearchHistory(
+                                id: result.id, value: result.name);
+                          }
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (_) => AllSearchProducts(
-                                        searchType: result,
+                                        productList: [],
+                                        id: result.id,
+                                        searchType: result.name,
                                       )));
                         },
                         // backgroundColor: color,
@@ -175,20 +187,26 @@ class SubSearchScreen extends StatelessWidget {
                               _searchController.searchHistoryList[index];
                           return ChoiceChip(
                             labelPadding: const EdgeInsets.all(2.0),
-                            label: Text(result,
+                            label: Text(result.name,
                                 style: TextStyle(
                                     color: Colors.black.withOpacity(0.7),
                                     fontSize: getProportionateScreenWidth(13))),
                             selected: true,
                             selectedColor: Colors.grey.withOpacity(0.1),
                             onSelected: (value) {
-                              _searchController.addToSearchHistory(
-                                  value: result);
+                              if (!_searchController.checkDataExitOrNotInSearch(
+                                  id: result.name)) {
+                                _searchController.addToSearchHistory(
+                                    value: result.name, id: result.id);
+                              }
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) => AllSearchProducts(
-                                            searchType: result,
+                                            productList: [],
+                                            id: result.id,
+                                            searchType: result.name,
                                           )));
                             },
                             // backgroundColor: color,
@@ -208,13 +226,25 @@ class SubSearchScreen extends StatelessWidget {
                           // _searchController.showType.value = true;
                           // _searchController.subSearchTextController.value.text =
                           //     _searchController.suggestionList.value[index];
-                          _searchController.addToSearchHistory(
-                              value: _searchController
-                                  .suggestionList.value[index].subCategoryName);
+                          if (!_searchController.checkDataExitOrNotInSearch(
+                              id: _searchController.suggestionList.value[index]
+                                  .subCategoryName)) {
+                            _searchController.addToSearchHistory(
+                                value: _searchController.suggestionList
+                                    .value[index].subCategoryName,
+                                id: _searchController
+                                    .suggestionList.value[index].id
+                                    .toString());
+                          }
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (_) => AllSearchProducts(
+                                      productList: [],
+                                      id: _searchController
+                                          .suggestionList.value[index].id
+                                          .toString(),
                                       searchType: _searchController
                                           .suggestionList
                                           .value[index]

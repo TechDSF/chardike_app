@@ -100,14 +100,6 @@ class FlashSaleDetails extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Image.asset(
-                        "asset/images/category/flash_deal.jpg",
-                        height: isTab
-                            ? getProportionateScreenHeight(220)
-                            : getProportionateScreenHeight(120),
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                      ),
                       SizedBox(
                         height: getProportionateScreenHeight(5),
                       ),
@@ -146,7 +138,8 @@ class FlashSaleDetails extends StatelessWidget {
                           ? GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: _homeController.allProductList.length,
+                              itemCount:
+                                  _homeController.popularProductList.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -158,7 +151,7 @@ class FlashSaleDetails extends StatelessWidget {
                                           getProportionateScreenWidth(140))),
                               itemBuilder: (context, index) {
                                 var result =
-                                    _homeController.allProductList[index];
+                                    _homeController.popularProductList[index];
                                 return InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
@@ -272,10 +265,11 @@ class FlashSaleDetails extends StatelessWidget {
                           : ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: _homeController.allProductList.length,
+                              itemCount:
+                                  _homeController.popularProductList.length,
                               itemBuilder: (context, index) {
                                 var result =
-                                    _homeController.allProductList[index];
+                                    _homeController.popularProductList[index];
                                 return InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(

@@ -27,7 +27,7 @@ class TopProduct extends StatelessWidget {
           height: getProportionateScreenHeight(10),
         ),
         Obx(() {
-          if (_homeController.isApiProductLoading.value) {
+          if (_homeController.isPopularProductLoading.value) {
             return Shimmer.fromColors(
               baseColor: Colors.grey.withOpacity(0.1),
               highlightColor: Colors.grey.withOpacity(0.5),
@@ -40,11 +40,11 @@ class TopProduct extends StatelessWidget {
             return SizedBox(
                 height: getProportionateScreenHeight(220),
                 child: ListView.builder(
-                    itemCount: _homeController.allProductList.length,
+                    itemCount: _homeController.popularProductList.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      var result = _homeController.allProductList[index];
+                      var result = _homeController.popularProductList[index];
                       return Padding(
                         padding: EdgeInsets.only(
                             right: getProportionateScreenWidth(10)),

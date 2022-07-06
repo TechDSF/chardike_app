@@ -174,7 +174,9 @@ class SearchScreen extends StatelessWidget {
                               height: getProportionateScreenHeight(5),
                             ),
                             Text(
-                              "₺ " + result.newPrice.toString() + " ",
+                              "₺ " +
+                                  result.variant[0].sellingPrice.toString() +
+                                  " ",
                               style: TextStyle(
                                   color: AllColors.mainColor,
                                   fontSize: getProportionateScreenWidth(13)),
@@ -236,10 +238,13 @@ class SearchScreen extends StatelessWidget {
                           selected: true,
                           selectedColor: Colors.grey.withOpacity(0.1),
                           onSelected: (value) {
+                            print(result.brand.length);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => AllSearchProducts(
+                                        productList: result.brand,
+                                        id: result.id.toString(),
                                         searchType: result.name)));
                           },
                           // backgroundColor: color,
@@ -275,6 +280,8 @@ class SearchScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => AllSearchProducts(
+                                        productList: [],
+                                        id: result.id.toString(),
                                         searchType:
                                             result.categoryName.toString())));
                           },
@@ -308,6 +315,8 @@ class SearchScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => AllSearchProducts(
+                                        productList: result.country,
+                                        id: result.id.toString(),
                                         searchType: result.name.toString())));
                           },
                           // backgroundColor: color,

@@ -1,17 +1,16 @@
-import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/screens/CategoryPage/components/AllProduct.dart';
 import 'package:chardike/screens/CategoryPage/controller/category_controller.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
 import 'model/sub_category_model.dart';
 
 class CategoryScreen extends StatelessWidget {
-  CategoryScreen({Key? key}) : super(key: key);
+  CategoryScreen({Key? key, required this.slug}) : super(key: key);
+  String slug;
+  final HomeController _homeController = Get.put(HomeController());
   final CategoryController _categoryController = Get.put(CategoryController());
   bool isTab = SizeConfig.screenWidth > 768;
 
@@ -28,6 +27,9 @@ class CategoryScreen extends StatelessWidget {
       var cellHeight = height;
       return _aspectRatio = _width / cellHeight;
     }
+
+    _categoryController.selectedTab.value = slug;
+    _categoryController.getSubCategoryListBySlug(slug: slug);
 
     return Scaffold(
         appBar: AppBar(
@@ -64,17 +66,15 @@ class CategoryScreen extends StatelessWidget {
                           top: getProportionateScreenHeight(10)),
                       color: Colors.grey.withOpacity(0.2),
                       child: ListView.builder(
-                          itemCount: _categoryController.categoryList.length,
+                          itemCount: _homeController.categoryList.length,
                           itemBuilder: ((context, index) {
-                            var result =
-                                _categoryController.categoryList[index];
+                            var result = _homeController.categoryList[index];
                             return InkWell(
                               onTap: () {
-                                _categoryController.selectedTab.value = index;
-                                _categoryController.getSubCategoryListById(
-                                    id: _categoryController
-                                        .categoryList[index].id
-                                        .toString());
+                                _categoryController.selectedTab.value =
+                                    result.slug;
+                                _categoryController.getSubCategoryListBySlug(
+                                    slug: result.slug);
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -97,12 +97,12 @@ class CategoryScreen extends StatelessWidget {
                                                   SizeConfig.screenWidth * 0.03,
                                               color: _categoryController
                                                           .selectedTab.value ==
-                                                      index
+                                                      result.slug
                                                   ? Colors.red
                                                   : Colors.black,
                                               fontWeight: _categoryController
                                                           .selectedTab.value ==
-                                                      index
+                                                      result.slug
                                                   ? FontWeight.bold
                                                   : FontWeight.normal),
                                         ))

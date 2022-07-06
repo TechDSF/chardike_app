@@ -260,16 +260,16 @@ class WheelScreen extends StatelessWidget {
                   mainAxisSpacing: getProportionateScreenWidth(5),
                   childAspectRatio: aspt(300),
                 ),
-                itemCount: _homeController.allProductList.length,
+                itemCount: _homeController.popularProductList.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  var result = _homeController.allProductList[
-                      (_homeController.allProductList.length - 1) - index];
+                  var result = _homeController.popularProductList[
+                      (_homeController.popularProductList.length - 1) - index];
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, ProductDetails.routeName,
-                          arguments: _homeController.allProductList[index]);
+                          arguments: _homeController.popularProductList[index]);
                     },
                     child: Container(
                       decoration:

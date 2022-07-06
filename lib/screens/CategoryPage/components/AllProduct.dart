@@ -114,11 +114,11 @@ class AllProduct extends StatelessWidget {
                       ? aspt(getProportionateScreenHeight(350))
                       : aspt(getProportionateScreenHeight(260)),
                 ),
-                itemCount: _homeController.allProductList.length,
+                itemCount: _homeController.popularProductList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  var result = _homeController.allProductList[
-                      (_homeController.allProductList.length - 1) - index];
+                  var result = _homeController.popularProductList[
+                      (_homeController.popularProductList.length - 1) - index];
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, ProductDetails.routeName,
@@ -135,9 +135,11 @@ class AllProduct extends StatelessWidget {
                             ? const BorderSide(color: Colors.grey, width: 0)
                             : const BorderSide(color: Colors.grey, width: 0.5),
                         bottom: index ==
-                                    _homeController.allProductList.length - 1 ||
+                                    _homeController.popularProductList.length -
+                                        1 ||
                                 index ==
-                                    _homeController.allProductList.length - 2
+                                    _homeController.popularProductList.length -
+                                        2
                             ? const BorderSide(color: Colors.grey, width: 0.5)
                             : const BorderSide(color: Colors.grey, width: 0),
                       )),
