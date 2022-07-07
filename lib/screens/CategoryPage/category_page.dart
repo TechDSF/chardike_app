@@ -5,6 +5,7 @@ import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+import '../SearchPage/screen/all_search_products.dart';
 import 'model/sub_category_model.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -139,9 +140,17 @@ class CategoryScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => AllProduct(
-                              type: result.subCategoryName,
+                        builder: (_) => AllSearchProducts(
+                              productList: [],
+                              id: result.id.toString(),
+                              searchType: result.subCategoryName,
                             )));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => AllProduct(
+                //               type: result.subCategoryName,
+                //             )));
               },
               title: Image.network(
                 result.image.toString(),

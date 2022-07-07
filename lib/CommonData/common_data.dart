@@ -14,6 +14,7 @@ class CommonData {
   static String userName = "UserName";
   static String email = "Email";
   static String phone = "Phone";
+  static String token = "token";
 
   static String currency(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
@@ -70,6 +71,11 @@ class CommonData {
       });
       return rating / list.length;
     }
+  }
+
+  static int calculateDiscount(
+      {required double regularPrice, required double sellingPrice}) {
+    return (((regularPrice - sellingPrice) * 100) / regularPrice).toInt();
   }
 
   static double aspactRatio(

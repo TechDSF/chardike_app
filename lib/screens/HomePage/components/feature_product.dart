@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/HomePage/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -127,7 +128,7 @@ class FeatureProductSection extends StatelessWidget {
                                                           0.005,
                                                     ),
                                                     Text(
-                                                      "4.9",
+                                                      "${CommonData.calculateRating(result.reviews)}",
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: SizeConfig

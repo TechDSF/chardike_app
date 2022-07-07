@@ -61,8 +61,10 @@ class HomeController extends GetxController {
         firstCategoryId.value = categoryList[initIndex].id.toString();
       } else {
         initIndex = initIndex + 1;
-        firstCategoryName.value = categoryList[initIndex].categoryName;
-        firstCategoryId.value = categoryList[initIndex].id.toString();
+        if (categoryList.isNotEmpty) {
+          firstCategoryName.value = categoryList[initIndex].categoryName;
+          firstCategoryId.value = categoryList[initIndex].id.toString();
+        }
       }
     });
   }

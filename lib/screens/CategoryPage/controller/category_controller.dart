@@ -20,8 +20,6 @@ class CategoryController extends GetxController {
   List<CategoryModel> categoryList =
       List<CategoryModel>.empty(growable: true).obs;
 
-
-
   @override
   void onInit() {
     getAllListData();

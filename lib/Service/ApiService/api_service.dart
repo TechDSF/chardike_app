@@ -166,6 +166,24 @@ class ApiService {
     }
   }
 
+  ///user login
+  static dynamic getUserToken(
+      {required String userName, required String password}) async {
+    var headers = {'Content-Type': 'application/json'};
+    var body = jsonEncode({'username': userName, 'password': password});
+
+    var response =
+        await client.post(Uri.parse(tokenUrl), body: body, headers: headers);
+    print(userName + " " + password + "${response.statusCode}");
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      var data = {"refresh": jsonData['refresh'], "access": jsonData['access']};
+      return data;
+    } else {
+      return response.statusCode;
+    }
+  }
+
   ///get slider item list
   static dynamic fetchSliderData() async {
     var headers = {

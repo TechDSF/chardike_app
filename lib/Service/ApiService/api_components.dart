@@ -10,3 +10,4 @@ String countryUrl = baseUrl + "queries/products/country/";
 String userCreateUrl = baseUrl + "user/register/";
 String userLoginUrl = baseUrl + "user/login/";
 String sliderUrl = baseUrl + "products/slider/";
+String tokenUrl = baseUrl + "api/token/";

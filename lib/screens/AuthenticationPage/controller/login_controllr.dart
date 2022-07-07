@@ -84,20 +84,31 @@ class LoginController extends GetxController {
           isSingUpLoading(false);
           context.loaderOverlay.hide();
         } else {
-          loginPasswordTextController.clear();
-          loginEmailTextController.clear();
-          print("user name = ${jsonData['username']}");
-          _userDataController.setData(
-              fullNameData: jsonData['fullName'] ?? "",
-              emailData: email,
-              mobileData: "",
-              userObjIdData: jsonData['user_obj_ID'].toString() ?? "",
-              profileIdData: jsonData['profile_ID'].toString() ?? "",
-              userNameData: jsonData['username'] ?? "");
-          _commonController.isLogin.value = true;
-          prefs.setBool("isLogin", true);
-          context.loaderOverlay.hide();
-          Navigator.pop(context);
+          var resultt = await ApiService.getUserToken(
+              userName: jsonData['username'], password: password);
+          if (resultt.runtimeType == int) {
+            Fluttertoast.showToast(
+                msg: "Token get error", toastLength: Toast.LENGTH_LONG);
+            isSingUpLoading(false);
+            context.loaderOverlay.hide();
+          } else {
+            Map d = resultt;
+            loginPasswordTextController.clear();
+            loginEmailTextController.clear();
+            print("user name = ${jsonData['username']}");
+            _userDataController.setData(
+                fullNameData: jsonData['fullName'] ?? "",
+                emailData: email,
+                mobileData: "",
+                userObjIdData: jsonData['user_obj_ID'].toString() ?? "",
+                profileIdData: jsonData['profile_ID'].toString() ?? "",
+                userNameData: jsonData['username'] ?? "",
+                tokenData: d['refresh']);
+            _commonController.isLogin.value = true;
+            prefs.setBool("isLogin", true);
+            context.loaderOverlay.hide();
+            Navigator.pop(context);
+          }
         }
       } else {
         print(response.reasonPhrase);
@@ -113,6 +124,13 @@ class LoginController extends GetxController {
       isSingUpLoading(false);
       context.loaderOverlay.hide();
     }
+  }
+
+  getUserToken({required String userName, required String password}) async {
+    var result =
+        await ApiService.getUserToken(userName: userName, password: password);
+    if (result.runtimeType == int) {
+    } else if (result.runtimeType == Map) {}
   }
 
   handleRegister(
@@ -236,7 +254,7 @@ class LoginController extends GetxController {
             Navigator.popAndPushNamed(context, ChangePasswordScreen.routeName,
                 arguments: profileId);
           } else {
-            Navigator.pop(context);
+            Navigator.popAndPushNamed(context, LoginScreen.routeName);
           }
         } else {
           Fluttertoast.showToast(

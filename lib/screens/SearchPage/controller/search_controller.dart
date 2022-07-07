@@ -55,7 +55,10 @@ class SearchController extends GetxController {
       Fluttertoast.showToast(msg: "Category fetch Error");
     } else {
       categoryList = data;
-      firstitemOfCategory.value = categoryList[0].categoryName;
+      if (categoryList.isNotEmpty) {
+        firstitemOfCategory.value = categoryList[0].categoryName;
+      }
+
       isCategoryLoading(false);
     }
   }

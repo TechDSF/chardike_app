@@ -1,17 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CheckOutController extends GetxController{
+class CheckOutController extends GetxController {
   var isLaoding = false.obs;
+  late SharedPreferences preferences;
 
   var mobileTextEditingController = TextEditingController().obs;
   var emailTextEditingController = TextEditingController().obs;
 
+  var deliverOptionIsHome = true.obs;
+  var totalAmount = 0.0.obs;
+
   @override
   void onInit() {
-    // TODO: implement onInit
-    mobileTextEditingController.value.text = "01717601905";
-    emailTextEditingController.value.text = "baskeyjames10@gmail.com";
+    getSharedPreferenceData();
     super.onInit();
+  }
+
+  getSharedPreferenceData() async {
+    preferences = await SharedPreferences.getInstance();
   }
 }

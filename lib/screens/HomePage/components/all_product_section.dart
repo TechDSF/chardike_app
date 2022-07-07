@@ -120,7 +120,7 @@ class AllProductSection extends StatelessWidget {
                                                     0.015)),
                                         color: Colors.green),
                                     child: Text(
-                                      "10%",
+                                      "${CommonData.calculateDiscount(regularPrice: result.variant[0].regularPrice, sellingPrice: result.variant[0].sellingPrice)}%",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,

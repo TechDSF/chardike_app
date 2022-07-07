@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chardike/Service/database_helper.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/components/widgets/fappbar.dart';
@@ -113,8 +114,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
 
     _favouriteController.isFavourite.value =
         _favouriteController.checkDataExitOrNot(id: productModel.id.toString());
+    _cartController.isHaveCart.value =
+        _cartController.checkDataExitOrNot(id: productModel.id.toString());
 
     _detailsController.imageIndex.value = 1;
+    _detailsController.quantityItem.value = 1;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -172,29 +176,52 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                 flex: 4,
                 child: InkWell(
                   onTap: () {
-                    try {
-                      _cartController.cartList.add(CartModel(
-                          title: productModel.productName.toString(),
-                          image: productModel.featureImage,
-                          quantity: _detailsController.quantityItem.value,
-                          price:
-                              productModel.variant[0].sellingPrice.toDouble(),
+                    // try {
+                    //   _cartController.addToCart(
+                    //       cartModel: CartModel(
+                    //           id: productModel.id.toString(),
+                    //           title: productModel.productName.toString(),
+                    //           image: productModel.featureImage,
+                    //           quantity: _detailsController.quantityItem.value,
+                    //           price: productModel.variant[0].sellingPrice
+                    //               .toDouble(),
+                    //           totalPrice:
+                    //               (_detailsController.quantityItem.value *
+                    //                       productModel.variant[0].sellingPrice)
+                    //                   .toDouble()));
+                    // } finally {
+                    //   // TODO
+                    //   _detailsController.isHaveCart.value = _cartController
+                    //           .cartList
+                    //           .where((element) =>
+                    //               element.title ==
+                    //               productModel.productName.toString())
+                    //           .isEmpty
+                    //       ? false
+                    //       : true;
+
+                    // }
+                    if (_cartController.isHaveCart.value) {
+                      _cartController.updateCartItem(
+                          id: productModel.id.toString(),
+                          quantity:
+                              _detailsController.quantityItem.value.toDouble(),
                           totalPrice: (_detailsController.quantityItem.value *
                                   productModel.variant[0].sellingPrice)
-                              .toDouble()));
-                    } finally {
-                      // TODO
-                      _detailsController.isHaveCart.value = _cartController
-                              .cartList
-                              .where((element) =>
-                                  element.title ==
-                                  productModel.productName.toString())
-                              .isEmpty
-                          ? false
-                          : true;
-                      Fluttertoast.showToast(
-                          msg: "Added Successfully",
-                          toastLength: Toast.LENGTH_LONG);
+                              .toDouble());
+                    } else {
+                      _cartController.addToCart(
+                          cartModel: CartModel(
+                              id: productModel.id.toString(),
+                              title: productModel.productName.toString(),
+                              image: productModel.featureImage,
+                              quantity: _detailsController.quantityItem.value,
+                              price: productModel.variant[0].sellingPrice
+                                  .toDouble(),
+                              totalPrice:
+                                  (_detailsController.quantityItem.value *
+                                          productModel.variant[0].sellingPrice)
+                                      .toDouble()));
                     }
                   },
                   child: Container(
@@ -423,6 +450,36 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              // SizedBox(
+                              //   height: getProportionateScreenHeight(60),
+                              //   child: ListView.builder(
+                              //       scrollDirection: Axis.horizontal,
+                              //       itemCount: productModel.variant.length,
+                              //       itemBuilder: (context, index) {
+                              //         //var imageR = productModel.variant[index];
+                              //         return Container(
+                              //           height:
+                              //               getProportionateScreenHeight(50),
+                              //           width: getProportionateScreenHeight(50),
+                              //           color: Colors.amber,
+                              //         );
+                              //       }),
+                              // ),
+                              // Row(
+                              //   children: <Widget>[
+                              //     Container(
+                              //       padding: EdgeInsets.symmetric(
+                              //           horizontal:
+                              //               getProportionateScreenWidth(5),
+                              //           vertical:
+                              //               getProportionateScreenWidth(3)),
+                              //       child: Text("250 mg"),
+                              //       decoration: BoxDecoration(
+                              //           border:
+                              //               Border.all(color: Colors.green)),
+                              //     ),
+                              //   ],
+                              // ),
                               ListTile(
                                 title: RichText(
                                   text: TextSpan(
@@ -517,6 +574,24 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text("Brand"),
+                                  SizedBox(
+                                    width: getProportionateScreenWidth(10),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      productModel.brand.name,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
                                 ],
                               ),
                               SizedBox(
@@ -882,7 +957,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                             var result = _homeController
                                                 .popularProductList[index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                Navigator.pushNamed(context,
+                                                    ProductDetails.routeName,
+                                                    arguments: result);
+                                              },
                                               child: Container(
                                                 width:
                                                     getProportionateScreenWidth(
