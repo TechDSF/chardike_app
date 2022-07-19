@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../../../../size_config.dart';
 import '../../controller/purchase_controller.dart';
 
-class ToRecive extends StatelessWidget {
-  ToRecive({Key? key}) : super(key: key);
+class Complete extends StatelessWidget {
+  Complete({Key? key}) : super(key: key);
   final PurchaseController _purchaseController = Get.put(PurchaseController());
 
   @override
@@ -13,7 +13,7 @@ class ToRecive extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.grey.withOpacity(0.1),
         body: Obx(() {
-          if (_purchaseController.statusReciveList.isEmpty) {
+          if (_purchaseController.statusCompleteList.isEmpty) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -29,14 +29,14 @@ class ToRecive extends StatelessWidget {
                   height: getProportionateScreenHeight(10),
                   width: double.infinity,
                 ),
-                Text("No Orders Yet")
+                Text("No Orders Complete Yet")
               ],
             );
           } else {
             return ListView.builder(
-                itemCount: _purchaseController.statusReciveList.length,
+                itemCount: _purchaseController.statusCompleteList.length,
                 itemBuilder: (context, index) {
-                  var result = _purchaseController.statusReciveList[index];
+                  var result = _purchaseController.statusCompleteList[index];
                   return Container(
                     color: Colors.white,
                     child: Column(children: <Widget>[

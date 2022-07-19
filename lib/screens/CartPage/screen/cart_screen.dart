@@ -1,5 +1,7 @@
+import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/CartPage/screen/cart_item.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
@@ -21,6 +23,7 @@ class CartScreen extends StatelessWidget {
   static const String routeName = "/cart_screen";
   int counter = 0;
   final HomeController _homeController = Get.put(HomeController());
+  final CommonController _commonController = Get.put(CommonController());
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,11 @@ class CartScreen extends StatelessWidget {
                   )),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, CheckOutPage.routeName);
+                      if (_commonController.isLogin.value) {
+                        Navigator.pushNamed(context, CheckOutPage.routeName);
+                      } else {
+                        Navigator.pushNamed(context, LoginScreen.routeName);
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(

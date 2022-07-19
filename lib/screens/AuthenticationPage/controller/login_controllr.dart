@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/CommonData/user_data.dart';
+import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/Service/ApiService/api_service.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/change_password_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
@@ -65,10 +66,8 @@ class LoginController extends GetxController {
     var body = json.encode({"username": email, "password": password});
 
     try {
-      var response = await http.post(
-          Uri.parse('https://shark-app-gc4oe.ondigitalocean.app/user/login/'),
-          headers: headers,
-          body: body);
+      var response = await http.post(Uri.parse(baseUrl + 'user/login/'),
+          headers: headers, body: body);
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -99,11 +98,12 @@ class LoginController extends GetxController {
             _userDataController.setData(
                 fullNameData: jsonData['fullName'] ?? "",
                 emailData: email,
-                mobileData: "",
+                mobileData: email,
                 userObjIdData: jsonData['user_obj_ID'].toString() ?? "",
                 profileIdData: jsonData['profile_ID'].toString() ?? "",
                 userNameData: jsonData['username'] ?? "",
-                tokenData: d['refresh']);
+                tokenData: d['refresh'],
+                passwordData: password);
             _commonController.isLogin.value = true;
             prefs.setBool("isLogin", true);
             context.loaderOverlay.hide();
@@ -150,11 +150,8 @@ class LoginController extends GetxController {
     });
 
     try {
-      var response = await http.post(
-          Uri.parse(
-              'https://shark-app-gc4oe.ondigitalocean.app/user/register/'),
-          headers: headers,
-          body: body);
+      var response = await http.post(Uri.parse(baseUrl + 'user/register/'),
+          headers: headers, body: body);
 
       print("response work");
 
@@ -239,11 +236,8 @@ class LoginController extends GetxController {
     var body = json.encode({"otp": otp, "profile_ID": profileId});
 
     try {
-      var response = await http.post(
-          Uri.parse(
-              'https://shark-app-gc4oe.ondigitalocean.app/user/verify/otp/'),
-          headers: headers,
-          body: body);
+      var response = await http.post(Uri.parse(baseUrl + 'user/verify/otp/'),
+          headers: headers, body: body);
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);

@@ -1,11 +1,14 @@
 import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/CheckOutPage/controller/check_out_controller.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class PaymentScreen extends StatelessWidget {
-  const PaymentScreen({Key? key}) : super(key: key);
+  PaymentScreen({Key? key}) : super(key: key);
   static const String routeName = "/payment_screen";
+  final CheckOutController _checkOutController = Get.put(CheckOutController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +41,10 @@ class PaymentScreen extends StatelessWidget {
                       fontSize: getProportionateScreenWidth(11)),
                 ),
                 Text(
-                  CommonData.takaSign + " " + "225",
-                  style: CommonData.customTextStyle(),
+                  CommonData.takaSign +
+                      " " +
+                      "${_checkOutController.totalAmount.value}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 )
               ],
             ),
@@ -53,10 +58,10 @@ class PaymentScreen extends StatelessWidget {
                       fontSize: getProportionateScreenWidth(11)),
                 ),
                 Text(
-                  CommonData.takaSign + " " + "225",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: getProportionateScreenWidth(15)),
+                  CommonData.takaSign +
+                      " " +
+                      "${_checkOutController.totalAmount.value}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 )
               ],
             )
@@ -115,6 +120,7 @@ class PaymentScreen extends StatelessWidget {
                   Icon(Icons.arrow_forward_ios)
                 ],
               ),
+           
             ],
           ),
         ),

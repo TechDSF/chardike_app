@@ -125,6 +125,20 @@ class DatabaseHelper {
     }
   }
 
+  ///delete from Cart
+  Future<int> deleteAllCartData() async {
+    // Get a reference to the database.
+    final db = await database;
+
+    try {
+      // Remove the Dog from the database.
+      return await db!.delete(cartTable);
+    } catch (_) {
+      print("Ooops! Data is not delete!");
+      return 0;
+    }
+  }
+
   ///delete from favourite
   Future<int> deleteProduct(String id) async {
     // Get a reference to the database.

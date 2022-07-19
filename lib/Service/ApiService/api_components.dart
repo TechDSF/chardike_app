@@ -1,4 +1,4 @@
-String baseUrl = "https://shark-app-gc4oe.ondigitalocean.app/";
+String baseUrl = "https://oyster-app-7ulvb.ondigitalocean.app/";
 String categoriesUrl = baseUrl + "products/categories/";
 String subCategoriesUrl = baseUrl + "products/sub_categories/list/";
 String brandUrl = baseUrl + "queries/products/brand/";
@@ -11,3 +11,9 @@ String userCreateUrl = baseUrl + "user/register/";
 String userLoginUrl = baseUrl + "user/login/";
 String sliderUrl = baseUrl + "products/slider/";
 String tokenUrl = baseUrl + "api/token/";
+String refreshTokenUrl = baseUrl + "api/token/refresh/";
+String updaetPasswordUrl = baseUrl + "user/forget/password/phone/";
+String billingAddressUrl = baseUrl + "user/billing/address/";
+String addCartItemUrl = baseUrl + "order/add/item/";
+String orderCreate = baseUrl + "order/order/";
+String orderStatusUrl = baseUrl + "order/customer/view/";

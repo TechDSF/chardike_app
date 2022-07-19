@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../../../../size_config.dart';
 import '../../controller/purchase_controller.dart';
 
-class ToRecive extends StatelessWidget {
-  ToRecive({Key? key}) : super(key: key);
+class OnTheWay extends StatelessWidget {
+  OnTheWay({Key? key}) : super(key: key);
   final PurchaseController _purchaseController = Get.put(PurchaseController());
 
   @override
@@ -13,7 +13,7 @@ class ToRecive extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.grey.withOpacity(0.1),
         body: Obx(() {
-          if (_purchaseController.statusReciveList.isEmpty) {
+          if (_purchaseController.statusOnTheWayList.isEmpty) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -34,9 +34,9 @@ class ToRecive extends StatelessWidget {
             );
           } else {
             return ListView.builder(
-                itemCount: _purchaseController.statusReciveList.length,
+                itemCount: _purchaseController.statusOnTheWayList.length,
                 itemBuilder: (context, index) {
-                  var result = _purchaseController.statusReciveList[index];
+                  var result = _purchaseController.statusOnTheWayList[index];
                   return Container(
                     color: Colors.white,
                     child: Column(children: <Widget>[

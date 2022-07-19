@@ -5,12 +5,16 @@ import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
+import '../../screens/CartPage/model/cart_item_model.dart';
 import '../../screens/CategoryPage/model/brand_model.dart';
 import '../../screens/CategoryPage/model/category_model.dart';
 import '../../screens/CategoryPage/model/sub_category_model.dart';
+import '../../screens/CheckOutPage/model/address_model.dart';
+import '../../screens/CheckOutPage/model/item_id_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
 import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
+import '../../screens/UserPage/model/order_status_model.dart';
 
 class ApiService {
   static var client = http.Client();
@@ -121,8 +125,7 @@ class ApiService {
           'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
     };
     var response = await client.get(
-        Uri.parse(
-            "https://shark-app-gc4oe.ondigitalocean.app/queries/products/category/$id/"),
+        Uri.parse(baseUrl + "queries/products/category/$id/"),
         headers: headers);
     if (response.statusCode == 200) {
       return categoryProductModelFromJson(response.body);
@@ -166,24 +169,6 @@ class ApiService {
     }
   }
 
-  ///user login
-  static dynamic getUserToken(
-      {required String userName, required String password}) async {
-    var headers = {'Content-Type': 'application/json'};
-    var body = jsonEncode({'username': userName, 'password': password});
-
-    var response =
-        await client.post(Uri.parse(tokenUrl), body: body, headers: headers);
-    print(userName + " " + password + "${response.statusCode}");
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(response.body);
-      var data = {"refresh": jsonData['refresh'], "access": jsonData['access']};
-      return data;
-    } else {
-      return response.statusCode;
-    }
-  }
-
   ///get slider item list
   static dynamic fetchSliderData() async {
     var headers = {
@@ -200,8 +185,7 @@ class ApiService {
 
   ///forgot password
   static dynamic forotPasswordMethod({required String number}) async {
-    var url = Uri.parse(
-        'https://shark-app-gc4oe.ondigitalocean.app/user/forget/password/phone/');
+    var url = Uri.parse(updaetPasswordUrl);
 
     var body = {'phone': number};
     var req = http.MultipartRequest('GET', url);
@@ -228,10 +212,7 @@ class ApiService {
   static Future<bool> checkForgotPasswordotp(
       {required String otp, required String profileId}) async {
     var body = jsonEncode({'otp': otp, 'profile_ID': profileId});
-    var response = await client.post(
-        Uri.parse(
-            "https://shark-app-gc4oe.ondigitalocean.app/user/forget/password/phone/"),
-        body: body);
+    var response = await client.post(Uri.parse(updaetPasswordUrl), body: body);
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -244,10 +225,7 @@ class ApiService {
     print("Here is profile id = " + profileId);
 
     var headers = {'Content-Type': 'application/json'};
-    var request = http.Request(
-        'PUT',
-        Uri.parse(
-            'https://shark-app-gc4oe.ondigitalocean.app/user/forget/password/phone/'));
+    var request = http.Request('PUT', Uri.parse(updaetPasswordUrl));
     request.body = json.encode({
       "password1": password,
       "password2": password,
@@ -275,6 +253,175 @@ class ApiService {
         await client.get(Uri.parse(queryProductUrl), headers: headers);
     if (response.statusCode == 200) {
       return productModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///get user token
+  static dynamic getUserToken(
+      {required String userName, required String password}) async {
+    var headers = {'Content-Type': 'application/json'};
+    var body = jsonEncode({'username': userName, 'password': password});
+
+    var response =
+        await client.post(Uri.parse(tokenUrl), body: body, headers: headers);
+    print(userName + " " + password + "${response.statusCode}");
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      var data = {"refresh": jsonData['refresh'], "access": jsonData['access']};
+      return data;
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///get user refresh token
+  static dynamic getRefreshToken({required String refreshT}) async {
+    var headers = {'Content-Type': 'application/json'};
+    var body = jsonEncode({'refresh': refreshT});
+    var response = await client.post(Uri.parse(refreshTokenUrl),
+        body: body, headers: headers);
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      var data = {"refresh": jsonData['refresh'], "access": jsonData['access']};
+      return data;
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///get user billing address
+  static Future<bool> setBillingAddress(
+      {required String accessToken,
+      required String region,
+      required String city,
+      required String area,
+      required String address,
+      required String postCode}) async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+
+    var body = json.encode({
+      "region": region,
+      "city": city,
+      "area": area,
+      "post_code": postCode,
+      "address": address
+    });
+
+    var response = await client.post(Uri.parse(billingAddressUrl),
+        headers: headers, body: body);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
+
+  ///get user billing address
+  static dynamic getBillingAddress({required String accessToken}) async {
+    var headers = {'Authorization': 'Bearer $accessToken'};
+
+    var response =
+        await client.get(Uri.parse(billingAddressUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return addressModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///add cart item
+  static dynamic addCartItem({
+    required dynamic jsonData,
+  }) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonData;
+
+    var response = await client.post(Uri.parse(addCartItemUrl),
+        headers: headers, body: body);
+    if (response.statusCode == 200) {
+      return itemIdModelFromJson(response.body);
+    } else {
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
+
+  ///place order
+  static dynamic confirmOrder(
+      {required String refCode,
+      required String accessToken,
+      required int address,
+      required dynamic coupen,
+      required String total,
+      required dynamic items,
+      required String orderStatus,
+      required bool isOrder,
+      required String mobile,
+      required String email,
+      required bool firstDeliverry}) async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+
+    var datetime = DateTime.now();
+    var date =
+        "${datetime.year}-${datetime.month}-${datetime.day}T${datetime.hour}:${datetime.minute}:22Z";
+
+    var body = json.encode({
+      "ref_code": "String",
+      "address": address,
+      "coupon": null,
+      "ordered_date": date,
+      "items": items,
+      "total": total,
+      "order_status": "Order Received",
+      "is_order": true,
+      "mobile": mobile,
+      "email": email,
+      "first_deliverry": firstDeliverry
+    });
+
+    // var body = json.encode({
+    //   "ref_code": "String",
+    //   "address": 1,
+    //   "coupon": null,
+    //   "ordered_date": date,
+    //   "items": items,
+    //   "total": total,
+    //   "order_status": "Order Received",
+    //   "is_order": true,
+    //   "mobile": mobile,
+    //   "email": null,
+    //   "first_deliverry": firstDeliverry
+    // });
+
+    var response =
+        await client.post(Uri.parse(orderCreate), headers: headers, body: body);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      print("${response.statusCode} ${response.reasonPhrase}");
+      return false;
+    }
+  }
+
+  ///get order status
+  ///get user billing address
+  static dynamic getOrderStatus({required String accessToken}) async {
+    var headers = {'Authorization': 'Bearer $accessToken'};
+
+    var response =
+        await client.get(Uri.parse(orderStatusUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return orderStatusModelFromJson(response.body);
     } else {
       return response.statusCode;
     }

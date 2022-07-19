@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../CheckOutPage/model/address_model.dart';
+
 class AddressController extends GetxController {
   var isLoading = false.obs;
 
@@ -18,9 +20,7 @@ class AddressController extends GetxController {
     super.onInit();
   }
 
-  getAddressList() async {
-    
-  }
+  getAddressList() async {}
 
   List<AddressModel> addressList = List<AddressModel>.empty(growable: true).obs;
 
@@ -40,25 +40,4 @@ class AddressController extends GetxController {
     addressDetailsController.clear();
     isLabel.value = 0;
   }
-}
-
-class AddressModel {
-  String id;
-  String fullName;
-  String phoneNumber;
-  String region;
-  String city;
-  String area;
-  String address;
-  String label;
-
-  AddressModel(
-      {required this.id,
-      required this.fullName,
-      required this.phoneNumber,
-      required this.region,
-      required this.city,
-      required this.area,
-      required this.address,
-      required this.label});
 }

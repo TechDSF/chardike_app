@@ -38,7 +38,8 @@ class SubCategoryModel {
   factory SubCategoryModel.fromJson(Map<String, dynamic> json) =>
       SubCategoryModel(
         id: json["id"],
-        image: json["image"],
+        image: json["image"] ??
+            "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg",
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         isActive: json["is_active"],

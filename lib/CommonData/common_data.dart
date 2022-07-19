@@ -15,6 +15,7 @@ class CommonData {
   static String email = "Email";
   static String phone = "Phone";
   static String token = "token";
+  static String password = "password";
 
   static String currency(BuildContext context) {
     Locale locale = Localizations.localeOf(context);

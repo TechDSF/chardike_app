@@ -1,19 +1,10 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
-import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/MainScreen/controller/main_controller.dart';
 import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
-import 'package:chardike/screens/UserPage/components/MyAddress/my_address.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import '../../CommonData/all_colors.dart';
-import '../FeedPage/screens/feed_page.dart';
-import '../HomePage/screen/home_screen.dart';
-import '../UserPage/screen/user_screen.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -24,7 +15,6 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     bool isTab = SizeConfig.screenWidth > 768;
-    print("hello------");
 
     return Scaffold(
         body: Obx(() =>

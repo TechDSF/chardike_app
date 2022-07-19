@@ -222,6 +222,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                   (_detailsController.quantityItem.value *
                                           productModel.variant[0].sellingPrice)
                                       .toDouble()));
+                      _cartController.isHaveCart.value = true;
                     }
                   },
                   child: Container(
