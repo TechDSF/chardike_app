@@ -1,4 +1,5 @@
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/screens/FeedPage/screens/chardike_blogs.dart';
 import 'package:chardike/screens/FeedPage/screens/time_line_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
@@ -78,13 +79,13 @@ class FeedPage extends StatelessWidget {
                     ),
                     Container(
                       height: getProportionateScreenHeight(10),
-                      color: Colors.grey.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.09),
                     ),
                     Expanded(
                       child: TabBarView(
                         children: [
                           TimeLineScreen(),
-                          Icon(Icons.directions_transit),
+                          ChardikeBlogScreen(),
                           Icon(Icons.directions_bike),
                         ],
                       ),

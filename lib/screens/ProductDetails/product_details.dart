@@ -571,7 +571,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     width: getProportionateScreenWidth(10),
                                   ),
                                   Text(
-                                    "80 TK",
+                                    "60 TK",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),

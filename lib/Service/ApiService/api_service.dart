@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
+import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,6 +13,7 @@ import '../../screens/CategoryPage/model/category_model.dart';
 import '../../screens/CategoryPage/model/sub_category_model.dart';
 import '../../screens/CheckOutPage/model/address_model.dart';
 import '../../screens/CheckOutPage/model/item_id_model.dart';
+import '../../screens/FeedPage/model/feed_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
 import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
@@ -424,6 +427,58 @@ class ApiService {
       return orderStatusModelFromJson(response.body);
     } else {
       return response.statusCode;
+    }
+  }
+
+  ///fetch all blogs
+  static dynamic getAllBlogs() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(blogUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return feedModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch all blogs
+  static dynamic getAdminBlogs() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(
+        Uri.parse(
+            'https://oyster-app-7ulvb.ondigitalocean.app/blog/list/view/admin/'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      return feedModelFromJson(response.body);
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  ///create blog
+  static Future<bool> blogCreate(
+      {required String filePath,
+      required String title,
+      required String description,
+      required String token}) async {
+    var headers = {'Authorization': 'Bearer $token'};
+
+    var request = http.MultipartRequest('POST', Uri.parse(createBlogUrl));
+    request.fields.addAll({
+      'title': title,
+      'description': description,
+      'url_field': 'http://www.devroben.xyz'
+    });
+    request.files.add(await http.MultipartFile.fromPath('image', filePath));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

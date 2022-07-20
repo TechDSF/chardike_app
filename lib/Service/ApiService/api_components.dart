@@ -17,3 +17,6 @@ String billingAddressUrl = baseUrl + "user/billing/address/";
 String addCartItemUrl = baseUrl + "order/add/item/";
 String orderCreate = baseUrl + "order/order/";
 String orderStatusUrl = baseUrl + "order/customer/view/";
+String blogUrl = baseUrl + "blog/list/view/";
+String adminBlogUrl = baseUrl + "blog/list/view/admin/";
+String createBlogUrl = baseUrl + "blog/create/";
