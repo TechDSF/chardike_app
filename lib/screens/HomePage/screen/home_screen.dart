@@ -6,6 +6,7 @@ import 'package:chardike/screens/HomePage/components/flash_deal_section.dart';
 import 'package:chardike/screens/HomePage/components/slider_widget.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/SearchPage/screen/sub_search_screen.dart';
+import 'package:chardike/screens/SideBar/side_bar.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,8 @@ class HomeScreen extends StatelessWidget {
       statusBarBrightness: Brightness.light,
     ));
     return Scaffold(
+      drawer: Container(
+          width: SizeConfig.screenWidth * 0.7, child: Drawer(child: SideBar())),
       body: SafeArea(
         child: Column(children: <Widget>[
           Column(children: <Widget>[
@@ -30,7 +33,9 @@ class HomeScreen extends StatelessWidget {
               children: <Widget>[
                 Builder(builder: ((context) {
                   return IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
                       icon: Icon(Icons.menu, color: Colors.black));
                 })),
                 Expanded(
@@ -43,6 +48,9 @@ class HomeScreen extends StatelessWidget {
                   width: SizeConfig.screenWidth * 0.1,
                 )
               ],
+            ),
+            SizedBox(
+              height: SizeConfig.screenHeight * 0.01,
             ),
             InkWell(
               onTap: () {

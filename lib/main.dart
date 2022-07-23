@@ -3,6 +3,7 @@ import 'package:chardike/route.dart';
 import 'package:chardike/screens/SplashScreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future main() async {
   runApp(MyApp());

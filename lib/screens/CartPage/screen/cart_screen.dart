@@ -77,7 +77,8 @@ class CartScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       if (_commonController.isLogin.value) {
-                        Navigator.pushNamed(context, CheckOutPage.routeName);
+                        Navigator.pushNamed(context, CheckOutPage.routeName,
+                            arguments: {"type": true, "amount": "10"});
                       } else {
                         Navigator.pushNamed(context, LoginScreen.routeName);
                       }

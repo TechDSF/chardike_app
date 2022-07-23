@@ -13,8 +13,8 @@ class BannerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: isTab
-          ? getProportionateScreenHeight(200)
-          : getProportionateScreenHeight(100),
+          ? getProportionateScreenHeight(250)
+          : getProportionateScreenHeight(150),
       width: double.infinity,
       decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage(image), fit: BoxFit.fill)),

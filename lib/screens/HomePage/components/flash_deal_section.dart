@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../../CommonData/all_colors.dart';
 import '../../../size_config.dart';
 import '../../FlashSaleDetails/screens/flash_sale_details.dart';
 import '../../ProductDetails/product_details.dart';
@@ -18,8 +16,6 @@ class FlashDealSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ///flash deal product
-
         Obx(() {
           if (_homeController.isLatestProductLoading.value) {
             return Shimmer.fromColors(

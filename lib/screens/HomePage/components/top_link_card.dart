@@ -15,8 +15,8 @@ class TopLinkCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: SizeConfig.screenWidth * 0.02),
       padding: EdgeInsets.all(SizeConfig.screenWidth * 0.005),
-      height: SizeConfig.screenWidth / 1,
-      width: SizeConfig.screenWidth / 5.7,
+      height: SizeConfig.screenWidth / 2,
+      width: SizeConfig.screenWidth / 4.4,
       child: Column(
         children: [
           icon == null
@@ -28,12 +28,12 @@ class TopLinkCard extends StatelessWidget {
                           Icon(
                             Icons.fire_extinguisher,
                             color: Colors.red,
-                            size: SizeConfig.screenWidth * 0.02,
+                            size: SizeConfig.screenWidth * 0.03,
                           ),
                           Text(
                             "Trending",
                             style: TextStyle(
-                                fontSize: SizeConfig.screenWidth * 0.014,
+                                fontSize: SizeConfig.screenWidth * 0.024,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -49,7 +49,7 @@ class TopLinkCard extends StatelessWidget {
                               maxLines: 2,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: SizeConfig.screenWidth * 0.02,
+                                  fontSize: SizeConfig.screenWidth * 0.03,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -63,10 +63,7 @@ class TopLinkCard extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Center(
-                          child: Padding(
-                              padding:
-                                  EdgeInsets.all(SizeConfig.screenWidth * 0.01),
-                              child: icon),
+                          child: icon,
                         ),
                       ),
                       Expanded(
@@ -79,7 +76,7 @@ class TopLinkCard extends StatelessWidget {
                               maxLines: 2,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: SizeConfig.screenWidth * 0.02,
+                                  fontSize: SizeConfig.screenWidth * 0.03,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),

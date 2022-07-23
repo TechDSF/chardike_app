@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
 import '../../CheckOutPage/model/address_model.dart';
 
 class AddressController extends GetxController {
@@ -40,4 +39,5 @@ class AddressController extends GetxController {
     addressDetailsController.clear();
     isLabel.value = 0;
   }
+
 }

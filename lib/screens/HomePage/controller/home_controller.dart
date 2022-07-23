@@ -120,8 +120,9 @@ class HomeController extends GetxController {
           title: "All Offers",
           color: Colors.orange.withOpacity(0.3),
           icon: Icon(
-            Icons.settings,
+            Icons.account_balance,
             color: Colors.deepOrange,
+            size: SizeConfig.screenWidth * 0.06,
           )),
       TopLinkModel(
           title: "Top Ranking",
@@ -129,6 +130,7 @@ class HomeController extends GetxController {
           icon: Icon(
             Icons.settings,
             color: Colors.blue,
+            size: SizeConfig.screenWidth * 0.06,
           )),
       TopLinkModel(
           title: "Top Brands",
@@ -136,6 +138,7 @@ class HomeController extends GetxController {
           icon: Icon(
             Icons.settings,
             color: Colors.purpleAccent,
+            size: SizeConfig.screenWidth * 0.06,
           )),
       TopLinkModel(
           title: "New Arrival",
@@ -143,6 +146,7 @@ class HomeController extends GetxController {
           icon: Icon(
             Icons.settings,
             color: Colors.cyanAccent,
+            size: SizeConfig.screenWidth * 0.06,
           )),
     ];
 

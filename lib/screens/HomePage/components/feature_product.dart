@@ -49,7 +49,7 @@ class FeatureProductSection extends StatelessWidget {
                     ),
                     SizedBox(
                         height: isTab
-                            ? getProportionateScreenHeight(220)
+                            ? SizeConfig.screenWidth * 0.35
                             : SizeConfig.screenWidth * 0.32,
                         child: ListView.builder(
                             scrollDirection: Axis.horizontal,

@@ -25,8 +25,15 @@ class CheckOutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _checkOutController.onInit();
-    _checkOutController.totalAmount.value =
-        _cartController.subTotalAmount.value + 60;
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    _checkOutController.deliverOptionIsHome.value = true;
+    if (args['type'] == true) {
+      _checkOutController.totalAmount.value =
+          _cartController.subTotalAmount.value + 60;
+    } else {
+      _checkOutController.totalAmount.value = double.parse(args['amount']) + 60;
+    }
+
     return LoaderOverlay(
       child: Scaffold(
         appBar: AppBar(
@@ -325,8 +332,13 @@ class CheckOutPage extends StatelessWidget {
                           onTap: () {
                             _checkOutController.deliverOptionIsHome.value =
                                 true;
-                            _checkOutController.totalAmount.value =
-                                _cartController.subTotalAmount.value + 60;
+                            if (args['type']) {
+                              _checkOutController.totalAmount.value =
+                                  _cartController.subTotalAmount.value + 60;
+                            } else {
+                              _checkOutController.totalAmount.value =
+                                  double.parse(args['amount']) + 60;
+                            }
                           },
                           child: Obx(
                             () => Container(
@@ -401,8 +413,15 @@ class CheckOutPage extends StatelessWidget {
                               onTap: () {
                                 _checkOutController.deliverOptionIsHome.value =
                                     false;
-                                _checkOutController.totalAmount.value =
-                                    _cartController.subTotalAmount.value + 150;
+
+                                if (args['type']) {
+                                  _checkOutController.totalAmount.value =
+                                      _cartController.subTotalAmount.value +
+                                          150;
+                                } else {
+                                  _checkOutController.totalAmount.value =
+                                      double.parse(args['amount']) + 150;
+                                }
                               },
                               child: Obx(
                                 () => Container(
@@ -625,14 +644,21 @@ class CheckOutPage extends StatelessWidget {
                           fontSize: getProportionateScreenWidth(18),
                           fontWeight: FontWeight.w500),
                     ),
-                    Text(
-                      CommonData.takaSign +
-                          " " +
-                          "${_cartController.subTotalAmount.value}",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(18),
-                          fontWeight: FontWeight.w600),
-                    )
+                    args['type']
+                        ? Text(
+                            CommonData.takaSign +
+                                " " +
+                                "${_cartController.subTotalAmount.value}",
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(18),
+                                fontWeight: FontWeight.w600),
+                          )
+                        : Text(
+                            CommonData.takaSign + " " + "${args['amount']}",
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(18),
+                                fontWeight: FontWeight.w600),
+                          )
                   ],
                 ),
               ),

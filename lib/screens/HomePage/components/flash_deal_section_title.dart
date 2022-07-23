@@ -17,7 +17,7 @@ class FlashDealSectionTitle extends StatelessWidget {
               Text(
                 "Flash Sale",
                 style: TextStyle(
-                    fontSize: getProportionateScreenWidth(15),
+                    fontSize: SizeConfig.screenWidth * 0.03,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(

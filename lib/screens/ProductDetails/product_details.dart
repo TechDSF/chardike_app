@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/Service/database_helper.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
@@ -12,14 +13,17 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../CommonData/all_colors.dart';
 import '../../CommonData/common_data.dart';
 import '../../size_config.dart';
+import '../AuthenticationPage/screens/login_screen.dart';
 import '../CartPage/model/cart_model.dart';
 import '../CartPage/screen/cart_screen.dart';
+import '../CheckOutPage/screens/check_out_page.dart';
 import '../HomePage/model/product_model.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -39,6 +43,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
   final CartController _cartController = Get.put(CartController());
   final FavouriteController _favouriteController =
       Get.put(FavouriteController());
+  final CommonController _commonController = Get.put(CommonController());
 
   final listViewKey = RectGetter.createGlobalKey();
   Map<int, dynamic> itemKeys = {};
@@ -111,6 +116,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
   Widget build(BuildContext context) {
     final productModel =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
+    print(productModel.shortDescriptions);
 
     _favouriteController.isFavourite.value =
         _favouriteController.checkDataExitOrNot(id: productModel.id.toString());
@@ -256,22 +262,36 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                 )),
             Expanded(
                 flex: 3,
-                child: Container(
-                    height: getProportionateScreenHeight(40),
-                    margin: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(5)),
-                    decoration: BoxDecoration(
-                        color: AllColors.mainColor,
-                        borderRadius: BorderRadius.circular(
-                            getProportionateScreenWidth(5)),
-                        border: Border.all(color: AllColors.mainColor)),
-                    child: Center(
-                        child: Text(
-                      "BUY NOW",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(13),
-                          color: Colors.white),
-                    ))))
+                child: InkWell(
+                  onTap: () {
+                    if (_commonController.isLogin.value) {
+                      Navigator.pushNamed(context, CheckOutPage.routeName,
+                          arguments: {
+                            "type": false,
+                            "amount":
+                                "${_detailsController.quantityItem.value * productModel.variant[0].sellingPrice}"
+                          });
+                    } else {
+                      Navigator.pushNamed(context, LoginScreen.routeName);
+                    }
+                  },
+                  child: Container(
+                      height: getProportionateScreenHeight(40),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(5)),
+                      decoration: BoxDecoration(
+                          color: AllColors.mainColor,
+                          borderRadius: BorderRadius.circular(
+                              getProportionateScreenWidth(5)),
+                          border: Border.all(color: AllColors.mainColor)),
+                      child: Center(
+                          child: Text(
+                        "BUY NOW",
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(13),
+                            color: Colors.white),
+                      ))),
+                ))
           ],
         ),
       ),
@@ -516,6 +536,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               Text(
                                 productModel.productName.toString(),
                                 style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     fontSize: getProportionateScreenWidth(18)),
                               ),
                               SizedBox(
@@ -712,12 +733,19 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               ),
                               Text(
                                 productModel.shortDescriptions,
-                                style: TextStyle(color: Colors.black),
+                                style:
+                                    TextStyle(color: Colors.black, height: 1.2),
                               ),
                               SizedBox(
                                 height: getProportionateScreenHeight(10),
                               ),
-                              Html(data: productModel.longDescription)
+                              Html(
+                                data: productModel.longDescription,
+                                style: {
+                                  "p":
+                                      Style(lineHeight: LineHeight.number(1.2)),
+                                },
+                              )
                             ],
                           ),
                         ),

@@ -68,7 +68,7 @@ class AllProductSection extends StatelessWidget {
                     crossAxisSpacing: getProportionateScreenWidth(5),
                     mainAxisSpacing: getProportionateScreenWidth(5),
                     childAspectRatio: isTab
-                        ? aspt(getProportionateScreenWidth(420))
+                        ? aspt(SizeConfig.screenWidth * 0.7)
                         : aspt(SizeConfig.screenWidth * 0.7),
                   ),
                   itemCount: _homeController.latestProductList.length,
@@ -89,8 +89,10 @@ class AllProductSection extends StatelessWidget {
                         ),
                         child: Column(children: <Widget>[
                           Container(
-                            height: SizeConfig.screenWidth * 0.3,
-                            width: SizeConfig.screenWidth * 0.3,
+                            height: isTab
+                                ? SizeConfig.screenWidth * 0.2
+                                : SizeConfig.screenWidth * 0.3,
+                            width: double.infinity,
                             padding: EdgeInsets.only(
                                 top: SizeConfig.screenWidth * 0.015),
                             decoration: BoxDecoration(
@@ -171,8 +173,9 @@ class AllProductSection extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize:
-                                            SizeConfig.screenWidth * 0.025,
+                                        fontSize: isTab
+                                            ? SizeConfig.screenWidth * 0.02
+                                            : SizeConfig.screenWidth * 0.025,
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   Row(
@@ -186,8 +189,10 @@ class AllProductSection extends StatelessWidget {
                                               style: TextStyle(
                                                   color: Colors.red,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize:
-                                                      SizeConfig.screenWidth *
+                                                  fontSize: isTab
+                                                      ? SizeConfig.screenWidth *
+                                                          0.02
+                                                      : SizeConfig.screenWidth *
                                                           0.025),
                                               text: "₺" +
                                                   result.variant[0].sellingPrice
@@ -197,8 +202,10 @@ class AllProductSection extends StatelessWidget {
                                                   color: Colors.black,
                                                   decoration: TextDecoration
                                                       .lineThrough,
-                                                  fontSize:
-                                                      SizeConfig.screenWidth *
+                                                  fontSize: isTab
+                                                      ? SizeConfig.screenWidth *
+                                                          0.012
+                                                      : SizeConfig.screenWidth *
                                                           0.015),
                                               text: " ₺" +
                                                   result.variant[0].regularPrice
@@ -221,8 +228,11 @@ class AllProductSection extends StatelessWidget {
                                             "${CommonData.calculateRating(result.reviews)}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: SizeConfig.screenWidth *
-                                                  0.024,
+                                              fontSize: isTab
+                                                  ? SizeConfig.screenWidth *
+                                                      0.02
+                                                  : SizeConfig.screenWidth *
+                                                      0.024,
                                             ),
                                           ),
                                           Text(
