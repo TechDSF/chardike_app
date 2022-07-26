@@ -189,8 +189,7 @@ class FlashSaleDetails extends StatelessWidget {
                                                   "Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
                                               Text(
                                                 CommonData.takaSign +
-                                                    result
-                                                        .variant[0].regularPrice
+                                                    result.regularPrice
                                                         .toString(),
                                                 style: TextStyle(
                                                     decoration: TextDecoration
@@ -199,8 +198,7 @@ class FlashSaleDetails extends StatelessWidget {
                                               Text(
                                                 CommonData.takaSign +
                                                     " " +
-                                                    result
-                                                        .variant[0].sellingPrice
+                                                    result.sellingPrice
                                                         .toString(),
                                                 style: TextStyle(
                                                     fontSize:
@@ -308,8 +306,7 @@ class FlashSaleDetails extends StatelessWidget {
                                                       "Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
                                                   Text(
                                                     CommonData.takaSign +
-                                                        result.variant[0]
-                                                            .regularPrice
+                                                        result.regularPrice
                                                             .toString(),
                                                     style: TextStyle(
                                                         decoration:
@@ -319,8 +316,7 @@ class FlashSaleDetails extends StatelessWidget {
                                                   Text(
                                                     CommonData.takaSign +
                                                         " " +
-                                                        result.variant[0]
-                                                            .sellingPrice
+                                                        result.sellingPrice
                                                             .toString(),
                                                     style: TextStyle(
                                                         fontSize:

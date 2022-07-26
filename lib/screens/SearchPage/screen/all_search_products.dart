@@ -147,7 +147,7 @@ class AllSearchProducts extends StatelessWidget {
                               Container(
                                 height: isTab
                                     ? getProportionateScreenHeight(240)
-                                    : getProportionateScreenHeight(170),
+                                    : getProportionateScreenHeight(165),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(
@@ -209,8 +209,10 @@ class AllSearchProducts extends StatelessWidget {
                                       maxLines: 2,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis,
                                           fontSize:
-                                              getProportionateScreenHeight(12)),
+                                              getProportionateScreenHeight(13)),
                                     ),
                                     SizedBox(
                                       height: getProportionateScreenHeight(5),
@@ -225,23 +227,26 @@ class AllSearchProducts extends StatelessWidget {
                                         children: [
                                           Text(
                                             "₺ " +
-                                                result.variant[0].sellingPrice
-                                                    .toString() +
+                                                result.sellingPrice.toString() +
                                                 " ",
                                             style: TextStyle(
+                                                fontSize:
+                                                    getProportionateScreenWidth(
+                                                        13),
+                                                fontWeight: FontWeight.bold,
                                                 color: AllColors.mainColor),
                                           ),
                                           Text(
                                             "₺" +
-                                                result.variant[0].regularPrice
-                                                    .toString(),
+                                                result.regularPrice.toString(),
                                             style: TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough,
                                                 color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize:
                                                     getProportionateScreenHeight(
-                                                        10)),
+                                                        11)),
                                           ),
                                         ],
                                       ),

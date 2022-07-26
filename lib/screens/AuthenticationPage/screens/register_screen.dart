@@ -309,7 +309,7 @@ class RegisterScreen extends StatelessWidget {
                             text: "Joined us before? ",
                             style: TextStyle(
                                 color: Colors.black.withOpacity(0.7))),
-                        const TextSpan(
+                        TextSpan(
                             text: "Login ",
                             style: TextStyle(
                                 color: Colors.blue,

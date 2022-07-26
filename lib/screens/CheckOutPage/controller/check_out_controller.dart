@@ -4,6 +4,8 @@ import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/Service/ApiService/api_service.dart';
 import 'package:chardike/Service/database_helper.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
+import 'package:chardike/screens/CheckOutPage/model/coupon_model.dart';
+import 'package:chardike/screens/CheckOutPage/screens/order_confirm.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 
 import 'package:chardike/screens/UserPage/controller/address_controller.dart';
@@ -13,6 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../CartPage/model/cart_item_model.dart';
 import '../model/address_model.dart';
@@ -20,16 +23,26 @@ import '../model/address_model.dart';
 class CheckOutController extends GetxController {
   var isLaoding = false.obs;
   late SharedPreferences preferences;
+  var uuid = Uuid();
 
   var mobileTextEditingController = TextEditingController().obs;
   var emailTextEditingController = TextEditingController().obs;
 
   var deliverOptionIsHome = true.obs;
   var totalAmount = 0.0.obs;
+  var isCouponApplied = false.obs;
+  var isCouponMatched = true.obs;
+  var couponResult = "".obs;
+  var freeShipiing = false.obs;
+  List<CartItemModel> dataList = [];
 
   Rx<List<AddressModel>> userAddress = Rx<List<AddressModel>>([]);
+  Rx<List<AddressModel>> userShippingAddress = Rx<List<AddressModel>>([]);
+  Rx<List<CouponModel>> couponList = Rx<List<CouponModel>>([]);
   var firstAddressValue = "".obs;
+  var firstBillingAddress = "".obs;
   var addressId = 0.obs;
+  var firstBillingId = 0.obs;
 
   final UserDataController _userDataController = Get.put(UserDataController());
   final CartController _cartController = Get.put(CartController());
@@ -40,6 +53,7 @@ class CheckOutController extends GetxController {
   void onInit() {
     getSharedPreferenceData();
     getUserAddress();
+    getShippingAddress();
     super.onInit();
   }
 
@@ -49,11 +63,14 @@ class CheckOutController extends GetxController {
   }
 
   setBillingAddress(
-      {required String region,
+      {required String name,
+      required String phone,
+      required String region,
       required String city,
       required String area,
       required String address,
       required String postCode,
+      required bool isBilling,
       required BuildContext context}) async {
     context.loaderOverlay.show();
     var data = await ApiService.getUserToken(
@@ -69,13 +86,21 @@ class CheckOutController extends GetxController {
       Map d = data;
       var result = await ApiService.setBillingAddress(
           accessToken: d['access'],
+          name: name,
+          phone: phone,
           region: region,
           city: city,
           area: area,
           address: address,
+          isBilling: isBilling,
           postCode: postCode);
       if (result) {
-        await getUserAddress();
+        if (isBilling) {
+          await getUserAddress();
+        } else {
+          await getShippingAddress();
+        }
+
         context.loaderOverlay.hide();
         Navigator.pop(context);
       } else {
@@ -115,8 +140,77 @@ class CheckOutController extends GetxController {
     }
   }
 
+  getShippingAddress() async {
+    var resultt = await ApiService.getUserToken(
+        userName: _userDataController.userName.value,
+        password: _userDataController.password.value);
+    if (resultt.runtimeType == int) {
+      // Fluttertoast.showToast(
+      //     msg: "Error to get Location", toastLength: Toast.LENGTH_LONG);
+      print("Error to get token");
+    } else {
+      Map d = resultt;
+      var res = await ApiService.getShippingAddress(accessToken: d['access']);
+      if (res.runtimeType == int) {
+        // Fluttertoast.showToast(
+        //     msg: "Error to get Location", toastLength: Toast.LENGTH_LONG);
+        print("Error to get user shipping location");
+      } else {
+        print(res);
+        if (res.isNotEmpty) {
+          userShippingAddress.value = res;
+        }
+      }
+    }
+  }
+
+  getCoupon() async {
+    var result = await ApiService.getAllCoupon();
+    if (result.runtimeType == int) {
+      print("Coupon Get Error");
+    } else {
+      couponList.value = result;
+      print("Coupon length ${couponList.value.length}");
+    }
+  }
+
+  checkCoupon({required String coupon}) {
+    var value =
+        couponList.value.where((element) => element.couponName == coupon);
+    if (value.isEmpty) {
+      isCouponMatched.value = false;
+      isCouponApplied.value = false;
+    } else {
+      isCouponMatched.value = true;
+      isCouponApplied.value = true;
+      freeShipiing.value = value.first.freeShipping;
+      couponResult.value = value.first.couponAmount.toInt == 0 &&
+              value.first.freeShipping == true
+          ? "Free Shipping"
+          : value.first.couponAmount.toInt != 0 &&
+                  value.first.freeShipping == true
+              ? "${value.first.couponAmount} tk discount and Free Shipping"
+              : value.first.couponAmount.toInt != 0 &&
+                      value.first.freeShipping == false
+                  ? "${value.first.couponAmount} tk discount"
+                  : "";
+      if (deliverOptionIsHome.value &&
+          value.first.freeShipping &&
+          value.first.couponAmount.toInt != 0) {
+        totalAmount.value = totalAmount.value - (60 + value.first.couponAmount);
+      } else if (deliverOptionIsHome.value == false &&
+          value.first.freeShipping &&
+          value.first.couponAmount.toInt != 0) {
+        totalAmount.value =
+            totalAmount.value - (150 + value.first.couponAmount);
+      }
+      print("${value.first.couponAmount}");
+    }
+  }
+
   confirmOrder(
       {required BuildContext context,
+      required bool orderType,
       required String refCode,
       required int address,
       required dynamic coupen,
@@ -128,61 +222,123 @@ class CheckOutController extends GetxController {
       required bool firstDeliverry}) async {
     context.loaderOverlay.show();
     List<CartItemModel> list = [];
-    _cartController.cartList.value.forEach((element) {
-      list.add(CartItemModel(
-          item: element.id,
-          quantity: element.quantity.toString(),
-          attr: "colors:red",
-          amount_item: element.price.toInt().toString(),
-          total_price: element.totalPrice.toInt().toString()));
-    });
+    if (orderType) {
+      _cartController.cartList.value.forEach((element) {
+        list.add(CartItemModel(
+            item: element.id,
+            quantity: element.quantity.toString(),
+            attr: "colors:red",
+            amount_item: element.price.toInt().toString(),
+            total_price: element.totalPrice.toInt().toString()));
+      });
+      print("product list length ${list.length}");
 
-    var data = convertToJson(list);
-    print(data);
-    var result = await ApiService.addCartItem(jsonData: data);
-    if (result != false) {
-      var resultt = await ApiService.getUserToken(
-          userName: _userDataController.userName.value,
-          password: _userDataController.password.value);
-      if (resultt.runtimeType == int) {
-        context.loaderOverlay.hide();
-        Fluttertoast.showToast(
-            msg: "Error to Place Order", toastLength: Toast.LENGTH_LONG);
-        print("Error to get Order token");
-      } else {
-        Map d = resultt;
-        var res = await ApiService.confirmOrder(
-            refCode: refCode,
-            accessToken: d['access'],
-            address: address,
-            coupen: coupen,
-            total: total,
-            items: result,
-            orderStatus: orderStatus,
-            isOrder: isOrder,
-            mobile: mobile,
-            email: email,
-            firstDeliverry: firstDeliverry);
-
-        if (res == false) {
+      var data = convertToJson(list);
+      print(data);
+      var result = await ApiService.addCartItem(jsonData: data);
+      if (result != false) {
+        var resultt = await ApiService.getUserToken(
+            userName: _userDataController.userName.value,
+            password: _userDataController.password.value);
+        if (resultt.runtimeType == int) {
           context.loaderOverlay.hide();
           Fluttertoast.showToast(
-              msg: "Error to Complete Order", toastLength: Toast.LENGTH_LONG);
-          print("Error to Complete Order");
+              msg: "Error to Place Order", toastLength: Toast.LENGTH_LONG);
+          print("Error to get Order token");
         } else {
-          print("result ok");
-          var db = DatabaseHelper();
-          db.deleteAllCartData();
-          _cartController.cartList.value.clear();
-          context.loaderOverlay.hide();
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (_) => MainScreen()),
-              (route) => false);
+          Map d = resultt;
+          print("email $email");
+          var res = await ApiService.confirmOrder(
+              refCode: uuid.v1(),
+              accessToken: d['access'],
+              address: address,
+              coupen: coupen,
+              total: total,
+              items: result,
+              orderStatus: orderStatus,
+              isOrder: isOrder,
+              mobile: mobile,
+              email: email,
+              firstDeliverry: firstDeliverry);
+
+          if (res == false) {
+            context.loaderOverlay.hide();
+            Fluttertoast.showToast(
+                msg: "Error to Complete Order", toastLength: Toast.LENGTH_LONG);
+            print("Error to Complete Order");
+          } else {
+            print("result ok");
+            var db = DatabaseHelper();
+            db.deleteAllCartData();
+            _cartController.cartList.value.clear();
+            context.loaderOverlay.hide();
+
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => OrderConfirm()));
+          }
         }
+      } else {
+        context.loaderOverlay.hide();
       }
     } else {
-      context.loaderOverlay.hide();
+      dataList.forEach((element) {
+        list.add(CartItemModel(
+            item: element.item,
+            quantity: element.quantity.toString(),
+            attr: "colors:red",
+            amount_item: element.amount_item,
+            total_price: element.total_price));
+      });
+
+      list = dataList;
+
+      print("The data list " + dataList.length.toString());
+      var data = convertToJson(list);
+      var result = await ApiService.addCartItem(jsonData: data);
+      if (result != false) {
+        var resultt = await ApiService.getUserToken(
+            userName: _userDataController.userName.value,
+            password: _userDataController.password.value);
+        if (resultt.runtimeType == int) {
+          context.loaderOverlay.hide();
+          Fluttertoast.showToast(
+              msg: "Error to Place Order", toastLength: Toast.LENGTH_LONG);
+          print("Error to get Order token");
+        } else {
+          Map d = resultt;
+          print("email $email");
+          var res = await ApiService.confirmOrder(
+              refCode: uuid.v1(),
+              accessToken: d['access'],
+              address: address,
+              coupen: coupen,
+              total: total,
+              items: result,
+              orderStatus: orderStatus,
+              isOrder: isOrder,
+              mobile: mobile,
+              email: email,
+              firstDeliverry: firstDeliverry);
+
+          if (res == false) {
+            context.loaderOverlay.hide();
+            Fluttertoast.showToast(
+                msg: "Error to Complete Order", toastLength: Toast.LENGTH_LONG);
+            print("Error to Complete Order");
+          } else {
+            print("result ok");
+            var db = DatabaseHelper();
+            db.deleteAllCartData();
+            _cartController.cartList.value.clear();
+            context.loaderOverlay.hide();
+
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => OrderConfirm()));
+          }
+        }
+      } else {
+        context.loaderOverlay.hide();
+      }
     }
   }
 }

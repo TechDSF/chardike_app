@@ -3,6 +3,7 @@ import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
+import 'package:chardike/screens/CartPage/model/cart_model.dart';
 import 'package:chardike/screens/CartPage/screen/cart_item.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
@@ -16,6 +17,7 @@ import 'package:group_radio_button/group_radio_button.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../ProductDetails/product_details.dart';
+import '../model/cart_item_model.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({Key? key}) : super(key: key);
@@ -78,7 +80,16 @@ class CartScreen extends StatelessWidget {
                     onTap: () {
                       if (_commonController.isLogin.value) {
                         Navigator.pushNamed(context, CheckOutPage.routeName,
-                            arguments: {"type": true, "amount": "10"});
+                            arguments: {
+                              "type": true,
+                              "data": CartItemModel(
+                                  item: "",
+                                  attr: "",
+                                  amount_item: "",
+                                  total_price: "",
+                                  quantity: ""),
+                              "amount": "10"
+                            });
                       } else {
                         Navigator.pushNamed(context, LoginScreen.routeName);
                       }
@@ -138,24 +149,29 @@ class CartScreen extends StatelessWidget {
                           SizedBox(
                             height: getProportionateScreenHeight(20),
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: getProportionateScreenWidth(25),
-                                vertical: getProportionateScreenWidth(10)),
-                            decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                borderRadius: BorderRadius.circular(
-                                    getProportionateScreenWidth(25)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ]),
-                            child: Text("Start Shopping"),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getProportionateScreenWidth(25),
+                                  vertical: getProportionateScreenWidth(10)),
+                              decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.circular(
+                                      getProportionateScreenWidth(25)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ]),
+                              child: Text("Start Shopping"),
+                            ),
                           ),
                         ],
                       ),
@@ -367,16 +383,14 @@ class CartScreen extends StatelessWidget {
                                         children: [
                                           Text(
                                             "₺ " +
-                                                result.variant[0].sellingPrice
-                                                    .toString() +
+                                                result.sellingPrice.toString() +
                                                 " ",
                                             style: TextStyle(
                                                 color: AllColors.mainColor),
                                           ),
                                           Text(
                                             "₺" +
-                                                result.variant[0].regularPrice
-                                                    .toString(),
+                                                result.regularPrice.toString(),
                                             style: TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough,

@@ -56,7 +56,8 @@ class AccountSetting extends StatelessWidget {
                   const Divider(),
                   ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, MyAddress.routeName);
+                      Navigator.pushNamed(context, MyAddress.routeName,
+                          arguments: 3);
                     },
                     title: Text("My Address"),
                     trailing: Icon(Icons.arrow_forward_ios),

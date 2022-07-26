@@ -16,6 +16,7 @@ class CommonData {
   static String phone = "Phone";
   static String token = "token";
   static String password = "password";
+  static String image = "image";
 
   static String currency(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
@@ -58,6 +59,10 @@ class CommonData {
         fontSize: getProportionateScreenWidth(13), color: Colors.black);
   }
 
+  static String customizeDate({required DateTime dateTime}) {
+    return Jiffy(dateTime, "dd, MMM yyyy").yMMMMd;
+  }
+
   static String findOutDifferenceDate(DateTime dateTime) {
     return Jiffy(dateTime).fromNow();
   }
@@ -76,7 +81,7 @@ class CommonData {
 
   static int calculateDiscount(
       {required double regularPrice, required double sellingPrice}) {
-    return (((regularPrice - sellingPrice) * 100) / regularPrice).toInt();
+    return ((regularPrice - sellingPrice) * 100) ~/ regularPrice;
   }
 
   static double aspactRatio(

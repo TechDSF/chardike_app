@@ -242,17 +242,14 @@ class SliderDetails extends StatelessWidget {
                                     children: [
                                       Text(
                                         "₺ " +
-                                            result.variant[0].sellingPrice
-                                                .toString() +
+                                            result.sellingPrice.toString() +
                                             " ",
                                         style: TextStyle(
                                             color: AllColors.mainColor),
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        "₺" +
-                                            result.variant[0].regularPrice
-                                                .toString(),
+                                        "₺" + result.regularPrice.toString(),
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough,

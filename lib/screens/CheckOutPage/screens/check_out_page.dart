@@ -2,29 +2,32 @@ import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/CheckOutPage/controller/check_out_controller.dart';
-import 'package:chardike/screens/PaymentMethodPage/screen/payment_screen.dart';
 import 'package:chardike/screens/UserPage/components/MyAddress/my_address.dart';
 import 'package:chardike/size_config.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 import '../../../CommonData/common_data.dart';
 
 class CheckOutPage extends StatelessWidget {
   CheckOutPage({Key? key}) : super(key: key);
+
   static const String routeName = "/check_out_page";
   final CartController _cartController = Get.put(CartController());
   final CheckOutController _checkOutController = Get.put(CheckOutController());
   final UserDataController _userDataController = Get.put(UserDataController());
+  final TextEditingController _couponTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _checkOutController.getCoupon();
     _checkOutController.onInit();
+    _checkOutController.isCouponApplied.value = false;
+    _checkOutController.isCouponMatched.value = true;
+
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     _checkOutController.deliverOptionIsHome.value = true;
     if (args['type'] == true) {
@@ -32,6 +35,8 @@ class CheckOutPage extends StatelessWidget {
           _cartController.subTotalAmount.value + 60;
     } else {
       _checkOutController.totalAmount.value = double.parse(args['amount']) + 60;
+      _checkOutController.dataList.clear();
+      _checkOutController.dataList.add(args['data']);
     }
 
     return LoaderOverlay(
@@ -95,13 +100,16 @@ class CheckOutPage extends StatelessWidget {
                     } else {
                       _checkOutController.confirmOrder(
                           context: context,
+                          orderType: args['type'],
                           refCode: "string",
                           address: _checkOutController.addressId.value,
-                          coupen: null,
+                          coupen: _checkOutController.isCouponMatched.value
+                              ? _couponTextController.text
+                              : null,
                           total: _checkOutController.totalAmount.value
                               .toInt()
                               .toString(),
-                          orderStatus: "Order Received",
+                          orderStatus: "Order Processing",
                           isOrder: true,
                           mobile: _checkOutController
                               .mobileTextEditingController.value.text,
@@ -218,7 +226,8 @@ class CheckOutPage extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, MyAddress.routeName);
+                            Navigator.pushNamed(context, MyAddress.routeName,
+                                arguments: 1);
                           },
                           child: Text(
                             "EDIT",
@@ -239,7 +248,39 @@ class CheckOutPage extends StatelessWidget {
                         SizedBox(
                           width: getProportionateScreenWidth(10),
                         ),
-                        Expanded(child: Text("Bill to the same address")),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(() => Text(
+                                _checkOutController.firstBillingId.value == 0
+                                    ? "Bill to the same address"
+                                    : "Bill Address")),
+                            Obx(
+                              () => Text(
+                                "" +
+                                    _checkOutController
+                                        .firstBillingAddress.value,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        )),
+                        SizedBox(
+                          width: getProportionateScreenWidth(10),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, MyAddress.routeName,
+                                arguments: 2);
+                          },
+                          child: Text(
+                            "EDIT",
+                            style: TextStyle(
+                                color: AllColors.mainColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
                       ],
                     ),
                     SizedBox(
@@ -330,14 +371,20 @@ class CheckOutPage extends StatelessWidget {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            _checkOutController.deliverOptionIsHome.value =
-                                true;
-                            if (args['type']) {
-                              _checkOutController.totalAmount.value =
-                                  _cartController.subTotalAmount.value + 60;
+                            if (_checkOutController.freeShipiing.value ==
+                                false) {
+                              _checkOutController.deliverOptionIsHome.value =
+                                  true;
+                              if (args['type']) {
+                                _checkOutController.totalAmount.value =
+                                    _cartController.subTotalAmount.value + 60;
+                              } else {
+                                _checkOutController.totalAmount.value =
+                                    double.parse(args['amount']) + 60;
+                              }
                             } else {
-                              _checkOutController.totalAmount.value =
-                                  double.parse(args['amount']) + 60;
+                              Fluttertoast.showToast(
+                                  msg: "You got Free Shipping Coupon");
                             }
                           },
                           child: Obx(
@@ -411,16 +458,22 @@ class CheckOutPage extends StatelessWidget {
                         Expanded(
                           child: InkWell(
                               onTap: () {
-                                _checkOutController.deliverOptionIsHome.value =
-                                    false;
+                                if (_checkOutController.freeShipiing.value ==
+                                    false) {
+                                  _checkOutController
+                                      .deliverOptionIsHome.value = false;
 
-                                if (args['type']) {
-                                  _checkOutController.totalAmount.value =
-                                      _cartController.subTotalAmount.value +
-                                          150;
+                                  if (args['type']) {
+                                    _checkOutController.totalAmount.value =
+                                        _cartController.subTotalAmount.value +
+                                            150;
+                                  } else {
+                                    _checkOutController.totalAmount.value =
+                                        double.parse(args['amount']) + 150;
+                                  }
                                 } else {
-                                  _checkOutController.totalAmount.value =
-                                      double.parse(args['amount']) + 150;
+                                  Fluttertoast.showToast(
+                                      msg: "You got Free Shipping Coupon");
                                 }
                               },
                               child: Obx(
@@ -594,41 +647,75 @@ class CheckOutPage extends StatelessWidget {
               SizedBox(
                 height: getProportionateScreenWidth(20),
               ),
-              Container(
-                height: getProportionateScreenHeight(50),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius:
-                        BorderRadius.circular(getProportionateScreenWidth(10))),
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
-                margin: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(10)),
-                child: Row(children: <Widget>[
-                  Expanded(
-                      child: TextField(
-                    decoration: InputDecoration(
-                        hintText: "Coupen",
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none),
-                  )),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(10)),
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(
-                                getProportionateScreenWidth(10)),
-                            bottomRight: Radius.circular(
-                                getProportionateScreenWidth(10)))),
-                    child: Center(
-                        child: Text(
-                      "Apply Coupen",
-                      style: TextStyle(color: Colors.white),
+              Obx(
+                () => Container(
+                  height: getProportionateScreenHeight(50),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: _checkOutController.isCouponMatched.value
+                              ? Colors.grey
+                              : Colors.red),
+                      borderRadius: BorderRadius.circular(
+                          getProportionateScreenWidth(10))),
+                  padding:
+                      EdgeInsets.only(left: getProportionateScreenWidth(5)),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(10)),
+                  child: Row(children: <Widget>[
+                    Expanded(
+                        child: TextField(
+                      controller: _couponTextController,
+                      decoration: InputDecoration(
+                          hintText: "Coupon",
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none),
                     )),
-                  ),
-                ]),
+                    InkWell(
+                      onTap: () {
+                        if (_checkOutController.isCouponApplied.value) {
+                          Fluttertoast.showToast(
+                              msg: "You allready applied coupon!");
+                        } else {
+                          _checkOutController.checkCoupon(
+                              coupon: _couponTextController.text);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenWidth(10)),
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(
+                                    getProportionateScreenWidth(10)),
+                                bottomRight: Radius.circular(
+                                    getProportionateScreenWidth(10)))),
+                        child: Center(
+                            child: Text(
+                          "Apply Coupen",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      ),
+                    ),
+                  ]),
+                ),
               ),
+              SizedBox(
+                height: getProportionateScreenWidth(5),
+              ),
+              Obx(() {
+                if (_checkOutController.isCouponMatched.value &&
+                    _checkOutController.isCouponApplied.value) {
+                  return Text(
+                    "You got ${_checkOutController.couponResult.value}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AllColors.mainColor),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              }),
               SizedBox(
                 height: getProportionateScreenWidth(30),
               ),

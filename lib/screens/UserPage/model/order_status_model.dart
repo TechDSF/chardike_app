@@ -29,7 +29,6 @@ class OrderStatusModel {
     required this.isOrder,
     required this.firstDeliverry,
     required this.customer,
-    required this.address,
     required this.coupon,
     required this.items,
   });
@@ -49,7 +48,6 @@ class OrderStatusModel {
   bool isOrder;
   bool firstDeliverry;
   OrderStatusModelCustomer customer;
-  Address address;
   dynamic coupon;
   List<ItemElement> items;
 
@@ -68,9 +66,8 @@ class OrderStatusModel {
         paymentMethod: json["payment_method"],
         paymentComplete: json["payment_complete"],
         isOrder: json["is_order"],
-        firstDeliverry: json["first_deliverry"],
+        firstDeliverry: json["fast_delivery"],
         customer: OrderStatusModelCustomer.fromJson(json["customer"]),
-        address: Address.fromJson(json["address"]),
         coupon: json["coupon"],
         items: List<ItemElement>.from(
             json["items"].map((x) => ItemElement.fromJson(x))),
@@ -92,61 +89,8 @@ class OrderStatusModel {
         "is_order": isOrder,
         "first_deliverry": firstDeliverry,
         "customer": customer.toJson(),
-        "address": address.toJson(),
         "coupon": coupon,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
-      };
-}
-
-class Address {
-  Address({
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.isActive,
-    required this.region,
-    required this.city,
-    required this.area,
-    required this.postCode,
-    required this.address,
-    required this.customer,
-  });
-
-  int id;
-  DateTime createdAt;
-  DateTime updatedAt;
-  bool isActive;
-  String region;
-  String city;
-  String area;
-  String postCode;
-  String address;
-  AddressCustomer customer;
-
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
-        id: json["id"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
-        region: json["region"],
-        city: json["city"],
-        area: json["area"],
-        postCode: json["post_code"],
-        address: json["address"],
-        customer: AddressCustomer.fromJson(json["customer"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "region": region,
-        "city": city,
-        "area": area,
-        "post_code": postCode,
-        "address": address,
-        "customer": customer.toJson(),
       };
 }
 
@@ -466,7 +410,6 @@ class ItemItem {
     required this.sku,
     required this.featureImage,
     required this.soldCount,
-    required this.expireRate,
     required this.isStock,
     required this.brand,
     required this.country,
@@ -487,7 +430,6 @@ class ItemItem {
   String sku;
   String featureImage;
   dynamic soldCount;
-  DateTime expireRate;
   bool isStock;
   int brand;
   int country;
@@ -508,7 +450,6 @@ class ItemItem {
         sku: json["sku"],
         featureImage: json["feature_image"],
         soldCount: json["sold_count"],
-        expireRate: DateTime.parse(json["expire_rate"]),
         isStock: json["is_stock"],
         brand: json["brand"],
         country: json["country"],
@@ -530,8 +471,6 @@ class ItemItem {
         "sku": sku,
         "feature_image": featureImage,
         "sold_count": soldCount,
-        "expire_rate":
-            "${expireRate.year.toString().padLeft(4, '0')}-${expireRate.month.toString().padLeft(2, '0')}-${expireRate.day.toString().padLeft(2, '0')}",
         "is_stock": isStock,
         "brand": brand,
         "country": country,

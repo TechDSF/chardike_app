@@ -104,7 +104,19 @@ class _CartItemState extends State<CartItem> {
                                       getProportionateScreenWidth(5)),
                                   bottomLeft: Radius.circular(
                                       getProportionateScreenWidth(5)))),
-                          child: Center(child: Text("-")),
+                          child: Center(
+                              child: widget.itemCount <= 1
+                                  ? InkWell(
+                                      onTap: () {
+                                        _cartController
+                                            .callDelete(widget.cartModel.id);
+                                      },
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: SizeConfig.screenWidth * 0.04,
+                                      ),
+                                    )
+                                  : Text("-")),
                         ),
                       ),
                       Container(

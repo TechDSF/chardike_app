@@ -319,57 +319,58 @@ class UserScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Obx(() {
-              if (!_commonController.isLogin.value) {
-                return SizedBox();
-              } else {
-                return Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Image.asset(
-                        "asset/icons/gift.png",
-                        height: getProportionateScreenWidth(25),
-                        width: getProportionateScreenWidth(25),
-                      ),
-                      title: const Text(
-                        "Welcome Package",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: ButtonWithText(
-                                text: "Free Vouchers",
-                                color: Colors.amber,
-                                icon: "")),
-                        Expanded(
-                            child: ButtonWithText(
-                                text: "Free Gifts",
-                                color: AllColors.mainColor,
-                                icon: "")),
-                        Expanded(
-                            child: ButtonWithText(
-                                text: "Free Money",
-                                color: Colors.amber,
-                                icon: "")),
-                        Expanded(
-                            child: ButtonWithText(
-                                text: "Free Deals",
-                                color: AllColors.mainColor,
-                                icon: "")),
-                      ],
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenWidth(15),
-                    ),
-                  ],
-                );
-              }
-            }),
+            // Obx(() {
+            //   if (!_commonController.isLogin.value) {
+            //     return SizedBox();
+            //   } else {
+            //     return Column(
+            //       children: <Widget>[
+            //         ListTile(
+            //           leading: Image.asset(
+            //             "asset/icons/gift.png",
+            //             height: getProportionateScreenWidth(25),
+            //             width: getProportionateScreenWidth(25),
+            //           ),
+            //           title: const Text(
+            //             "Welcome Package",
+            //             style: TextStyle(color: Colors.black),
+            //           ),
+            //         ),
+            //         const Divider(
+            //           color: Colors.grey,
+            //         ),
+            //         Row(
+            //           children: <Widget>[
+            //             Expanded(
+            //                 child: ButtonWithText(
+            //                     text: "Free Vouchers",
+            //                     color: Colors.amber,
+            //                     icon: "")),
+            //             Expanded(
+            //                 child: ButtonWithText(
+            //                     text: "Free Gifts",
+            //                     color: AllColors.mainColor,
+            //                     icon: "")),
+            //             Expanded(
+            //                 child: ButtonWithText(
+            //                     text: "Free Money",
+            //                     color: Colors.amber,
+            //                     icon: "")),
+            //             Expanded(
+            //                 child: ButtonWithText(
+            //                     text: "Free Deals",
+            //                     color: AllColors.mainColor,
+            //                     icon: "")),
+            //           ],
+            //         ),
+            //         SizedBox(
+            //           height: getProportionateScreenWidth(15),
+            //         ),
+            //       ],
+            //     );
+            //   }
+            // }),
+
             ListTile(
               onTap: () {
                 if (!_commonController.isLogin.value) {

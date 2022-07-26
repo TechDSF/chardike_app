@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
+import 'package:chardike/screens/ProductDetails/model/review_model.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +13,7 @@ import '../../screens/CategoryPage/model/brand_model.dart';
 import '../../screens/CategoryPage/model/category_model.dart';
 import '../../screens/CategoryPage/model/sub_category_model.dart';
 import '../../screens/CheckOutPage/model/address_model.dart';
+import '../../screens/CheckOutPage/model/coupon_model.dart';
 import '../../screens/CheckOutPage/model/item_id_model.dart';
 import '../../screens/FeedPage/model/feed_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
@@ -297,22 +299,30 @@ class ApiService {
   ///get user billing address
   static Future<bool> setBillingAddress(
       {required String accessToken,
+      required String name,
+      required String phone,
       required String region,
       required String city,
       required String area,
       required String address,
+      required bool isBilling,
       required String postCode}) async {
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken'
     };
 
+    print("$name , $phone, $region, $city , $area, $isBilling");
+
     var body = json.encode({
+      "name": name,
+      "phone": phone,
       "region": region,
       "city": city,
       "area": area,
-      "post_code": postCode,
-      "address": address
+      "post_code": ",",
+      "address": address,
+      "is_billing": isBilling
     });
 
     var response = await client.post(Uri.parse(billingAddressUrl),
@@ -338,6 +348,19 @@ class ApiService {
     }
   }
 
+  ///get user billing address
+  static dynamic getShippingAddress({required String accessToken}) async {
+    var headers = {'Authorization': 'Bearer $accessToken'};
+
+    var response =
+        await client.get(Uri.parse(shippingAddressUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return addressModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
   ///add cart item
   static dynamic addCartItem({
     required dynamic jsonData,
@@ -351,7 +374,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return itemIdModelFromJson(response.body);
     } else {
-      print(response.reasonPhrase);
+      print("Add cart item error ${response.reasonPhrase}");
       return false;
     }
   }
@@ -378,18 +401,21 @@ class ApiService {
     var date =
         "${datetime.year}-${datetime.month}-${datetime.day}T${datetime.hour}:${datetime.minute}:22Z";
 
+    var ref = DateTime.now().millisecondsSinceEpoch;
+    print(coupen + " " + email);
     var body = json.encode({
-      "ref_code": "String",
-      "address": address,
-      "coupon": null,
+      "ref_code": ref.toString(),
+      "address_shipping": address,
+      "address_billing": address,
+      "coupon": coupen,
       "ordered_date": date,
       "items": items,
       "total": total,
-      "order_status": "Order Received",
+      "order_status": "Order Processing",
       "is_order": true,
       "mobile": mobile,
       "email": email,
-      "first_deliverry": firstDeliverry
+      "fast_delivery": firstDeliverry
     });
 
     // var body = json.encode({
@@ -444,10 +470,7 @@ class ApiService {
   ///fetch all blogs
   static dynamic getAdminBlogs() async {
     var headers = {'Content-Type': 'application/json'};
-    var response = await client.get(
-        Uri.parse(
-            'https://oyster-app-7ulvb.ondigitalocean.app/blog/list/view/admin/'),
-        headers: headers);
+    var response = await client.get(Uri.parse(adminBlogUrl), headers: headers);
 
     if (response.statusCode == 200) {
       return feedModelFromJson(response.body);
@@ -468,7 +491,9 @@ class ApiService {
     request.fields.addAll({
       'title': title,
       'description': description,
-      'url_field': 'http://www.devroben.xyz'
+      'url_field': 'http://www.devroben.xyz',
+      'is_active': 'true',
+      'is_customer': 'true'
     });
     request.files.add(await http.MultipartFile.fromPath('image', filePath));
     request.headers.addAll(headers);
@@ -479,6 +504,30 @@ class ApiService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  ///fetch all coupon
+  static dynamic getAllCoupon() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(couponUrl), headers: headers);
+
+    if (response.statusCode == 200) {
+      return couponModelFromJson(response.body);
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  ///fetch all reviews
+  static dynamic getALlReview() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(reviewListUrl), headers: headers);
+
+    if (response.statusCode == 200) {
+      return reviewModelFromJson(response.body);
+    } else {
+      print(response.statusCode);
     }
   }
 }

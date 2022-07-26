@@ -298,10 +298,7 @@ class MyLikes extends StatelessWidget {
                                   height: getProportionateScreenHeight(5),
                                 ),
                                 Text(
-                                  "₺ " +
-                                      result.variant[0].sellingPrice
-                                          .toString() +
-                                      " ",
+                                  "₺ " + result.sellingPrice.toString() + " ",
                                   style: TextStyle(
                                       color: AllColors.mainColor,
                                       fontSize:

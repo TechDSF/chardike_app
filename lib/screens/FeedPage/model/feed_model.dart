@@ -18,20 +18,32 @@ class FeedModel {
     required this.description,
     required this.image,
     required this.urlField,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.userProfileImage,
+    required this.userFullName,
   });
 
   int id;
   String title;
   String description;
-  dynamic image;
+  String image;
   String urlField;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String userProfileImage;
+  String userFullName;
 
   factory FeedModel.fromJson(Map<String, dynamic> json) => FeedModel(
         id: json["id"],
-        title: json["title"],
-        description: json["description"],
-        image: json["image"],
-        urlField: json["url_field"],
+        title: json["title"] ?? "",
+        description: json["description"] ?? "",
+        image: json["image"] ?? "",
+        urlField: json["url_field"] ?? "",
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        userProfileImage: json["user_profile_image"] ?? "",
+        userFullName: json["user_full_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,5 +52,9 @@ class FeedModel {
         "description": description,
         "image": image,
         "url_field": urlField,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "user_profile_image": userProfileImage,
+        "user_full_name": userFullName,
       };
 }

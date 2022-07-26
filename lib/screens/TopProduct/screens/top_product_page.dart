@@ -211,8 +211,7 @@ class TopProductPage extends StatelessWidget {
                                               Text(
                                                 CommonData.takaSign +
                                                     " " +
-                                                    result
-                                                        .variant[0].sellingPrice
+                                                    result.sellingPrice
                                                         .toString(),
                                                 style: TextStyle(
                                                     color: AllColors.mainColor,
@@ -323,8 +322,7 @@ class TopProductPage extends StatelessWidget {
                                               Text(
                                                 CommonData.takaSign +
                                                     " " +
-                                                    result
-                                                        .variant[0].sellingPrice
+                                                    result.sellingPrice
                                                         .toString(),
                                                 style: TextStyle(
                                                     color: AllColors.mainColor,

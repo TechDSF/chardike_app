@@ -1,6 +1,7 @@
 import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/Service/ApiService/api_service.dart';
 import 'package:chardike/screens/FeedPage/model/feed_model.dart';
+import 'package:chardike/screens/ProductDetails/model/review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -11,20 +12,15 @@ class FeedController extends GetxController {
   var isLoading = false.obs;
   var isBlogLoading = false.obs;
   var isAdminBlogLoading = false.obs;
+  var isReviewBlogLoading = false.obs;
   Rx<List<FeedModel>> timeLineList = Rx<List<FeedModel>>([]);
   Rx<List<FeedModel>> adminBlogList = Rx<List<FeedModel>>([]);
+  Rx<List<ReviewModel>> reviewList = Rx<List<ReviewModel>>([]);
   final ImagePicker _picker = ImagePicker();
   var selectImage = "".obs;
   TextEditingController titleTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
   final UserDataController _userDataController = Get.put(UserDataController());
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    //getTimeLineFeed();
-    super.onInit();
-  }
 
   getTimeLineFeed() async {
     isBlogLoading(true);
@@ -48,6 +44,18 @@ class FeedController extends GetxController {
       adminBlogList.value = result;
       print(adminBlogList.value.length);
       isAdminBlogLoading(false);
+    }
+  }
+
+  getReviewList() async {
+    isReviewBlogLoading(true);
+    var result = await ApiService.getALlReview();
+    if (result.runtimeType == int) {
+      print("Blog review fetch Error");
+      isReviewBlogLoading(false);
+    } else {
+      reviewList.value = result;
+      isReviewBlogLoading(false);
     }
   }
 

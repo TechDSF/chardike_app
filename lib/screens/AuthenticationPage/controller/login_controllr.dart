@@ -103,7 +103,8 @@ class LoginController extends GetxController {
                 profileIdData: jsonData['profile_ID'].toString() ?? "",
                 userNameData: jsonData['username'] ?? "",
                 tokenData: d['refresh'],
-                passwordData: password);
+                passwordData: password,
+                imageData: "");
             _commonController.isLogin.value = true;
             prefs.setBool("isLogin", true);
             context.loaderOverlay.hide();

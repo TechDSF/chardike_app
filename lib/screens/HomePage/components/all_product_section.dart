@@ -32,58 +32,67 @@ class AllProductSection extends StatelessWidget {
       return _aspectRatio = _width / cellHeight;
     }
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.03),
-      child: Column(
-        children: <Widget>[
-          ///all product section
-          SectionTitle(title: "Daily Discover", onTap: () {}),
-          SizedBox(
-            height: getProportionateScreenHeight(10),
-          ),
-          Obx(() {
-            if (_homeController.isLatestProductLoading.value) {
-              return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isTab ? 4 : 3,
-                      crossAxisSpacing: getProportionateScreenWidth(5),
-                      mainAxisSpacing: getProportionateScreenWidth(5)),
-                  itemBuilder: (context, index) {
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey.withOpacity(0.1),
-                      highlightColor: Colors.grey.withOpacity(0.5),
-                      child: Container(
-                        height: getProportionateScreenHeight(170),
-                        color: Colors.yellow,
-                      ),
-                    );
-                  });
-            } else {
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    return Column(
+      children: <Widget>[
+        ///all product section
+        Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.02),
+          child: SectionTitle(title: "Daily Discover", onTap: () {}),
+        ),
+        SizedBox(
+          height: getProportionateScreenHeight(10),
+        ),
+        Obx(() {
+          if (_homeController.isLatestProductLoading.value) {
+            return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: isTab ? 4 : 3,
                     crossAxisSpacing: getProportionateScreenWidth(5),
-                    mainAxisSpacing: getProportionateScreenWidth(5),
-                    childAspectRatio: isTab
-                        ? aspt(SizeConfig.screenWidth * 0.7)
-                        : aspt(SizeConfig.screenWidth * 0.7),
-                  ),
-                  itemCount: _homeController.latestProductList.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    ProductModel result =
-                        _homeController.latestProductList[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, ProductDetails.routeName,
-                            arguments: result);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
+                    mainAxisSpacing: getProportionateScreenWidth(5)),
+                itemBuilder: (context, index) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey.withOpacity(0.1),
+                    highlightColor: Colors.grey.withOpacity(0.5),
+                    child: Container(
+                      height: getProportionateScreenHeight(170),
+                      color: Colors.yellow,
+                    ),
+                  );
+                });
+          } else {
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isTab ? 4 : 3,
+                  crossAxisSpacing: getProportionateScreenWidth(5),
+                  mainAxisSpacing: getProportionateScreenWidth(5),
+                  childAspectRatio: isTab
+                      ? aspt(SizeConfig.screenWidth * 0.7)
+                      : aspt(SizeConfig.screenWidth * 0.7),
+                ),
+                itemCount: _homeController.latestProductList.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  ProductModel result =
+                      _homeController.latestProductList[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, ProductDetails.routeName,
+                          arguments: result);
+                    },
+                    child: SizedBox(
+                      height: isTab
+                          ? SizeConfig.screenWidth * 0.6
+                          : SizeConfig.screenWidth * 0.5,
+                      width: SizeConfig.screenWidth * 0.32,
+                      child: Card(
+                        color: Color(0xFFF3F5F8),
+                        elevation: 1,
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               SizeConfig.screenWidth * 0.02),
                         ),
@@ -91,15 +100,13 @@ class AllProductSection extends StatelessWidget {
                           Container(
                             height: isTab
                                 ? SizeConfig.screenWidth * 0.2
-                                : SizeConfig.screenWidth * 0.3,
+                                : SizeConfig.screenWidth * 0.27,
                             width: double.infinity,
                             padding: EdgeInsets.only(
                                 top: SizeConfig.screenWidth * 0.015),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(
-                                      SizeConfig.screenWidth * 0.02),
-                                  topRight: Radius.circular(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
                                       SizeConfig.screenWidth * 0.02),
                                 ),
                                 image: DecorationImage(
@@ -122,7 +129,8 @@ class AllProductSection extends StatelessWidget {
                                                     0.015)),
                                         color: Colors.green),
                                     child: Text(
-                                      "${CommonData.calculateDiscount(regularPrice: result.variant[0].regularPrice, sellingPrice: result.variant[0].sellingPrice)}%",
+                                      "${CommonData.calculateDiscount(regularPrice: double.parse(result.regularPrice), sellingPrice: double.parse(result.sellingPrice))}%",
+                                      //"${result.regularPrice}",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -152,17 +160,19 @@ class AllProductSection extends StatelessWidget {
                                   )
                                 ]),
                           ),
+                          SizedBox(
+                            height: SizeConfig.screenWidth * 0.01,
+                          ),
                           Expanded(
                               child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.screenWidth * 0.008),
+                                horizontal: SizeConfig.screenWidth * 0.003),
                             decoration: BoxDecoration(
-                                color: Color(0xFFF3F5F8),
                                 borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(
-                                        SizeConfig.screenWidth * 0.01),
+                                        SizeConfig.screenWidth * 0.02),
                                     bottomRight: Radius.circular(
-                                        SizeConfig.screenWidth * 0.01))),
+                                        SizeConfig.screenWidth * 0.02))),
                             child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -172,6 +182,7 @@ class AllProductSection extends StatelessWidget {
                                     maxLines: 2,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                         fontSize: isTab
                                             ? SizeConfig.screenWidth * 0.02
@@ -193,22 +204,23 @@ class AllProductSection extends StatelessWidget {
                                                       ? SizeConfig.screenWidth *
                                                           0.02
                                                       : SizeConfig.screenWidth *
-                                                          0.025),
+                                                          0.027),
                                               text: "₺" +
-                                                  result.variant[0].sellingPrice
+                                                  result.sellingPrice
                                                       .toString()),
                                           TextSpan(
                                               style: TextStyle(
                                                   color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
                                                   decoration: TextDecoration
                                                       .lineThrough,
                                                   fontSize: isTab
                                                       ? SizeConfig.screenWidth *
                                                           0.012
                                                       : SizeConfig.screenWidth *
-                                                          0.015),
+                                                          0.019),
                                               text: " ₺" +
-                                                  result.variant[0].regularPrice
+                                                  result.regularPrice
                                                       .toString())
                                         ])),
                                       ),
@@ -252,15 +264,15 @@ class AllProductSection extends StatelessWidget {
                           ))
                         ]),
                       ),
-                    );
-                  });
-            }
-          }),
-          SizedBox(
-            height: getProportionateScreenHeight(50),
-          ),
-        ],
-      ),
+                    ),
+                  );
+                });
+          }
+        }),
+        SizedBox(
+          height: getProportionateScreenHeight(50),
+        ),
+      ],
     );
   }
 }

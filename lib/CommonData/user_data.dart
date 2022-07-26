@@ -14,6 +14,7 @@ class UserDataController extends GetxController {
   var email = "".obs;
   var token = "".obs;
   var password = "".obs;
+  var image = "".obs;
 
   getData() async {
     preferences = await SharedPreferences.getInstance();
@@ -25,6 +26,7 @@ class UserDataController extends GetxController {
     userName.value = preferences.getString(CommonData.userName) ?? "";
     token.value = preferences.getString(CommonData.token) ?? "";
     password.value = preferences.getString(CommonData.password) ?? "";
+    image.value = preferences.getString(CommonData.image) ?? "";
   }
 
   setData(
@@ -35,7 +37,8 @@ class UserDataController extends GetxController {
       required String profileIdData,
       required String userNameData,
       required String tokenData,
-      required String passwordData}) async {
+      required String passwordData,
+      required String imageData}) async {
     preferences = await SharedPreferences.getInstance();
     preferences.setString(CommonData.fullName, fullNameData);
     preferences.setString(CommonData.email, emailData);
@@ -45,6 +48,7 @@ class UserDataController extends GetxController {
     preferences.setString(CommonData.userName, userNameData);
     preferences.setString(CommonData.token, tokenData);
     preferences.setString(CommonData.password, passwordData);
+    preferences.setString(CommonData.image, imageData);
 
     fullName.value = fullNameData;
     email.value = emailData;
@@ -54,5 +58,6 @@ class UserDataController extends GetxController {
     userName.value = userNameData;
     token.value = tokenData;
     password.value = passwordData;
+    image.value = imageData;
   }
 }

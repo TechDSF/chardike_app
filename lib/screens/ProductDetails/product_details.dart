@@ -21,6 +21,7 @@ import '../../CommonData/all_colors.dart';
 import '../../CommonData/common_data.dart';
 import '../../size_config.dart';
 import '../AuthenticationPage/screens/login_screen.dart';
+import '../CartPage/model/cart_item_model.dart';
 import '../CartPage/model/cart_model.dart';
 import '../CartPage/screen/cart_screen.dart';
 import '../CheckOutPage/screens/check_out_page.dart';
@@ -163,10 +164,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           slug: productModel.slug,
                           image: productModel.featureImage,
                           name: productModel.productName,
-                          newPrice:
-                              productModel.variant[0].sellingPrice.toString(),
-                          oldPrice:
-                              productModel.variant[0].regularPrice.toString());
+                          newPrice: productModel.sellingPrice.toString(),
+                          oldPrice: productModel.regularPrice.toString());
                       _favouriteController.addProduct(model: model);
                       _favouriteController.isFavourite.value = true;
                     },
@@ -213,7 +212,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                           quantity:
                               _detailsController.quantityItem.value.toDouble(),
                           totalPrice: (_detailsController.quantityItem.value *
-                                  productModel.variant[0].sellingPrice)
+                                  double.parse(productModel.sellingPrice))
                               .toDouble());
                     } else {
                       _cartController.addToCart(
@@ -222,12 +221,11 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               title: productModel.productName.toString(),
                               image: productModel.featureImage,
                               quantity: _detailsController.quantityItem.value,
-                              price: productModel.variant[0].sellingPrice
-                                  .toDouble(),
-                              totalPrice:
-                                  (_detailsController.quantityItem.value *
-                                          productModel.variant[0].sellingPrice)
-                                      .toDouble()));
+                              price: double.parse(productModel.sellingPrice),
+                              totalPrice: (_detailsController
+                                          .quantityItem.value *
+                                      double.parse(productModel.sellingPrice))
+                                  .toDouble()));
                       _cartController.isHaveCart.value = true;
                     }
                   },
@@ -265,11 +263,21 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                 child: InkWell(
                   onTap: () {
                     if (_commonController.isLogin.value) {
+                      var d =
+                          "${double.parse(productModel.sellingPrice).toInt().toString()}";
+
                       Navigator.pushNamed(context, CheckOutPage.routeName,
                           arguments: {
                             "type": false,
+                            "data": CartItemModel(
+                                item: productModel.id.toString(),
+                                quantity:
+                                    _detailsController.quantityItem.toString(),
+                                attr: "colors:red",
+                                amount_item: "$d",
+                                total_price: "100"),
                             "amount":
-                                "${_detailsController.quantityItem.value * productModel.variant[0].sellingPrice}"
+                                "${_detailsController.quantityItem.value * double.parse(productModel.sellingPrice)}"
                           });
                     } else {
                       Navigator.pushNamed(context, LoginScreen.routeName);
@@ -509,7 +517,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     children: <TextSpan>[
                                       TextSpan(
                                         text: CommonData.takaSign +
-                                            productModel.variant[0].sellingPrice
+                                            productModel.sellingPrice
                                                 .toString(),
                                         style: TextStyle(
                                             fontSize:
@@ -519,7 +527,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                       TextSpan(text: " "),
                                       TextSpan(
                                         text: CommonData.takaSign +
-                                            productModel.variant[0].regularPrice
+                                            productModel.regularPrice
                                                 .toString(),
                                         style: TextStyle(
                                             decoration:
@@ -699,12 +707,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          if (_detailsController
-                                                  .quantityItem.value <
-                                              5) {
-                                            _detailsController
-                                                .quantityItem.value++;
-                                          }
+                                          _detailsController
+                                              .quantityItem.value++;
                                         },
                                         child: Container(
                                           height:
@@ -1046,7 +1050,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                       children: [
                                                         Text(
                                                           "₺ " +
-                                                              result.variant[0]
+                                                              result
                                                                   .sellingPrice
                                                                   .toString() +
                                                               " ",
@@ -1056,7 +1060,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                                         ),
                                                         Text(
                                                           "₺" +
-                                                              result.variant[0]
+                                                              result
                                                                   .regularPrice
                                                                   .toString(),
                                                           style: TextStyle(

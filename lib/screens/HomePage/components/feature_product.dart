@@ -34,189 +34,225 @@ class FeatureProductSection extends StatelessWidget {
               return Container(
                 color: Color(0xFFDEFCF8),
                 padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.screenWidth * 0.03,
                     vertical: SizeConfig.screenWidth * 0.02),
                 child: Column(
                   children: [
-                    SectionTitle(
-                        title: "Popular Product",
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, FeatureProduct.routeName);
-                        }),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.screenWidth * 0.02),
+                      child: SectionTitle(
+                          title: "Popular Product",
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, FeatureProduct.routeName);
+                          }),
+                    ),
                     SizedBox(
                       height: getProportionateScreenHeight(5),
                     ),
                     SizedBox(
-                        height: isTab
-                            ? SizeConfig.screenWidth * 0.35
-                            : SizeConfig.screenWidth * 0.32,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                _homeController.popularProductList.length,
-                            itemBuilder: (context, index) {
-                              var result =
-                                  _homeController.popularProductList[index];
-                              return InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, ProductDetails.routeName,
-                                        arguments: _homeController
-                                            .popularProductList[index]);
-                                  },
-                                  child: Container(
-                                    height: SizeConfig.screenWidth * 0.32,
-                                    width: SizeConfig.screenWidth * 0.25,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          SizeConfig.screenWidth * 0.02),
-                                      color: Colors.white,
-                                    ),
-                                    margin: EdgeInsets.only(
-                                        right: SizeConfig.screenWidth * 0.02),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          height: SizeConfig.screenWidth * 0.22,
-                                          width: SizeConfig.screenWidth * 0.25,
+                        height: SizeConfig.screenWidth * 0.45,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: SizeConfig.screenWidth * 0.005),
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  _homeController.popularProductList.length,
+                              itemBuilder: (context, index) {
+                                var result =
+                                    _homeController.popularProductList[index];
+                                return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, ProductDetails.routeName,
+                                          arguments: _homeController
+                                              .popularProductList[index]);
+                                    },
+                                    child: SizedBox(
+                                      height: SizeConfig.screenWidth * 0.45,
+                                      width: SizeConfig.screenWidth * 0.32,
+                                      child: Card(
+                                        color: Colors.white,
+                                        elevation: 1,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              SizeConfig.screenWidth * 0.02),
+                                        ),
+                                        child: Padding(
                                           padding: EdgeInsets.all(
                                               SizeConfig.screenWidth * 0.01),
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.green.withOpacity(0.2),
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(
-                                                      SizeConfig.screenWidth *
-                                                          0.02),
-                                                  topRight: Radius.circular(
-                                                      SizeConfig.screenWidth *
-                                                          0.02)),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      result.featureImage),
-                                                  fit: BoxFit.fill)),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                          child: Column(
                                             children: <Widget>[
                                               Container(
+                                                height: SizeConfig.screenWidth *
+                                                    0.26,
                                                 padding: EdgeInsets.all(
                                                     SizeConfig.screenWidth *
-                                                        0.001),
+                                                        0.01),
                                                 decoration: BoxDecoration(
+                                                    color: Colors.green
+                                                        .withOpacity(0.2),
                                                     borderRadius: BorderRadius
-                                                        .circular(SizeConfig
-                                                                .screenWidth *
-                                                            0.006),
-                                                    color: Colors.grey
-                                                        .withOpacity(0.3)),
+                                                        .all(Radius.circular(
+                                                            SizeConfig
+                                                                    .screenWidth *
+                                                                0.02)),
+                                                    image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            result
+                                                                .featureImage),
+                                                        fit: BoxFit.fill)),
                                                 child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.star,
-                                                      size: SizeConfig
-                                                              .screenWidth *
-                                                          0.02,
-                                                      color: Colors.orange,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      padding: EdgeInsets.all(
+                                                          SizeConfig
+                                                                  .screenWidth *
+                                                              0.001),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius
+                                                              .circular(SizeConfig
+                                                                      .screenWidth *
+                                                                  0.006),
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.3)),
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.star,
+                                                            size: SizeConfig
+                                                                    .screenWidth *
+                                                                0.02,
+                                                            color:
+                                                                Colors.orange,
+                                                          ),
+                                                          SizedBox(
+                                                            width: SizeConfig
+                                                                    .screenWidth *
+                                                                0.005,
+                                                          ),
+                                                          Text(
+                                                            "${CommonData.calculateRating(result.reviews)}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: SizeConfig
+                                                                        .screenWidth *
+                                                                    0.02),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    SizedBox(
+                                                    Container(
+                                                      height: SizeConfig
+                                                              .screenWidth *
+                                                          0.05,
                                                       width: SizeConfig
                                                               .screenWidth *
-                                                          0.005,
-                                                    ),
-                                                    Text(
-                                                      "${CommonData.calculateRating(result.reviews)}",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: SizeConfig
-                                                                  .screenWidth *
-                                                              0.02),
-                                                    ),
+                                                          0.05,
+                                                      child: Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.orange,
+                                                        size: SizeConfig
+                                                                .screenWidth *
+                                                            0.03,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.3)),
+                                                    )
                                                   ],
                                                 ),
                                               ),
-                                              Container(
+                                              SizedBox(
                                                 height: SizeConfig.screenWidth *
-                                                    0.05,
-                                                width: SizeConfig.screenWidth *
-                                                    0.05,
-                                                child: Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.orange,
-                                                  size: SizeConfig.screenWidth *
-                                                      0.03,
+                                                    0.01,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Text(
+                                                      result.productName,
+                                                      maxLines: 2,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black,
+                                                          fontSize: SizeConfig
+                                                                  .screenWidth *
+                                                              0.028,
+                                                          overflow: TextOverflow
+                                                              .ellipsis),
+                                                    ),
+                                                    SizedBox(
+                                                      height: SizeConfig
+                                                              .screenWidth *
+                                                          0.003,
+                                                    ),
+                                                    RichText(
+                                                        text:
+                                                            TextSpan(children: [
+                                                      TextSpan(
+                                                          style: TextStyle(
+                                                              color: Colors.red,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: SizeConfig
+                                                                      .screenWidth *
+                                                                  0.027),
+                                                          text: "₺" +
+                                                              result
+                                                                  .sellingPrice
+                                                                  .toString()),
+                                                      TextSpan(
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color:
+                                                                  Colors.black,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              fontSize: SizeConfig
+                                                                      .screenWidth *
+                                                                  0.019),
+                                                          text: " ₺" +
+                                                              result
+                                                                  .regularPrice
+                                                                  .toString())
+                                                    ])),
+                                                    SizedBox(
+                                                      height: SizeConfig
+                                                              .screenWidth *
+                                                          0.005,
+                                                    ),
+                                                  ],
                                                 ),
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Colors.grey
-                                                        .withOpacity(0.3)),
                                               )
                                             ],
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(
-                                                result.productName,
-                                                maxLines: 2,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize:
-                                                        SizeConfig.screenWidth *
-                                                            0.02,
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
-                                              ),
-                                              SizedBox(
-                                                height: SizeConfig.screenWidth *
-                                                    0.003,
-                                              ),
-                                              RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: SizeConfig
-                                                                .screenWidth *
-                                                            0.025),
-                                                    text: "₺" +
-                                                        result.variant[0]
-                                                            .sellingPrice
-                                                            .toString()),
-                                                TextSpan(
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
-                                                        fontSize: SizeConfig
-                                                                .screenWidth *
-                                                            0.015),
-                                                    text: " ₺" +
-                                                        result.variant[0]
-                                                            .regularPrice
-                                                            .toString())
-                                              ])),
-                                              SizedBox(
-                                                height: SizeConfig.screenWidth *
-                                                    0.005,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ));
-                            })),
+                                      ),
+                                    ));
+                              }),
+                        )),
                   ],
                 ),
               );

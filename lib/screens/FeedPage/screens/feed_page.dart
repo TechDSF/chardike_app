@@ -1,5 +1,6 @@
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/screens/FeedPage/screens/chardike_blogs.dart';
+import 'package:chardike/screens/FeedPage/screens/review_page.dart';
 import 'package:chardike/screens/FeedPage/screens/time_line_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
@@ -35,17 +36,6 @@ class FeedPage extends StatelessWidget {
             SizedBox(
               width: getProportionateScreenWidth(15),
             ),
-            InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, CartScreen.routeName);
-                },
-                child: CommonData.icon(
-                    icon: "asset/icons/messenger.png",
-                    color: AllColors.mainColor,
-                    isTab: isTab)),
-            SizedBox(
-              width: getProportionateScreenWidth(10),
-            )
           ],
         ),
         body: DefaultTabController(
@@ -79,14 +69,14 @@ class FeedPage extends StatelessWidget {
                     ),
                     Container(
                       height: getProportionateScreenHeight(10),
-                      color: Colors.black.withOpacity(0.09),
+                      color: Colors.black.withOpacity(0.04),
                     ),
                     Expanded(
                       child: TabBarView(
                         children: [
                           TimeLineScreen(),
                           ChardikeBlogScreen(),
-                          Icon(Icons.directions_bike),
+                          Reviewpage()
                         ],
                       ),
                     ),
