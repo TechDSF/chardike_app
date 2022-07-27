@@ -17,7 +17,7 @@ class FlashDealSectionTitle extends StatelessWidget {
               Text(
                 "Flash Sale",
                 style: TextStyle(
-                    fontSize: SizeConfig.screenWidth * 0.03,
+                    fontSize: SizeConfig.screenWidth * 0.04,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -26,25 +26,25 @@ class FlashDealSectionTitle extends StatelessWidget {
               Text(
                 "Ending in",
                 style: TextStyle(
-                    fontSize: SizeConfig.screenWidth * 0.025,
+                    fontSize: SizeConfig.screenWidth * 0.03,
                     color: Colors.black),
               ),
               SizedBox(
                 width: getProportionateScreenWidth(5),
               ),
               SlideCountdownSeparated(
-                height: getProportionateScreenHeight(15),
-                width: getProportionateScreenHeight(15),
+                height: SizeConfig.screenWidth * 0.03,
+                width: SizeConfig.screenWidth * 0.03,
                 separatorStyle: TextStyle(color: Colors.deepOrange),
                 textStyle: TextStyle(
-                    fontSize: getProportionateScreenHeight(8),
+                    fontSize: SizeConfig.screenWidth * 0.018,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
                 decoration: BoxDecoration(
                     color: Colors.deepOrange,
                     borderRadius:
                         BorderRadius.circular(getProportionateScreenWidth(3))),
-                duration: Duration(hours: 2, minutes: 29),
+                duration: Duration(hours: 24, minutes: 00),
               )
             ],
           ),
@@ -56,7 +56,7 @@ class FlashDealSectionTitle extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: SizeConfig.screenWidth * 0.02),
+                  fontSize: SizeConfig.screenWidth * 0.03),
             ))
       ],
     );

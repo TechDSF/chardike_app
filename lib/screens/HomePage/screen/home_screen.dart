@@ -1,3 +1,4 @@
+import 'package:chardike/screens/HomePage/components/Look_galance.dart';
 import 'package:chardike/screens/HomePage/components/all_product_section.dart';
 import 'package:chardike/screens/HomePage/components/banner_section.dart';
 import 'package:chardike/screens/HomePage/components/category_section.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../components/multi_part_banner.dart';
 import '../components/top_offers.dart';
+import '../components/just_for_you.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -116,12 +118,14 @@ class HomeScreen extends StatelessWidget {
                   height: getProportionateScreenHeight(15),
                 ),
                 CategorySection(),
+                JustForYouSection(),
                 MultiPartBannerSection(
                     bigImage: "asset/custom/custom_2.png",
                     smallImage1: "asset/custom/custom_3.png",
                     smallImage2: "asset/custom/custom_4.png",
                     onTap: () {}),
-                AllProductSection()
+                AllProductSection(),
+                LookAtGlance()
               ],
             ),
           ))

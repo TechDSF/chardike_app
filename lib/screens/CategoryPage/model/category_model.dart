@@ -25,7 +25,7 @@ class CategoryModel {
   });
 
   int id;
-  dynamic image;
+  String image;
   DateTime createdAt;
   DateTime updatedAt;
   bool isActive;
@@ -35,7 +35,7 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         id: json["id"],
-        image: json["image"],
+        image: json["image"] ?? "",
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         isActive: json["is_active"],

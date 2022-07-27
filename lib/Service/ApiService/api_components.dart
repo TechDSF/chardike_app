@@ -4,6 +4,7 @@ String subCategoriesUrl = baseUrl + "products/sub_categories/list/";
 String brandUrl = baseUrl + "queries/products/brand/";
 String productUrl = baseUrl + "products/product/";
 String popularProductUrl = baseUrl + "queries/popular-products/";
+String falshSaleUrl = baseUrl + "flash-sale/view/";
 String latestProductUrl = baseUrl + "queries/latest-products/";
 String queryProductUrl = baseUrl + "queries/products/";
 String countryUrl = baseUrl + "queries/products/country/";

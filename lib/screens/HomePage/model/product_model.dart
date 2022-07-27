@@ -78,7 +78,8 @@ class ProductModel {
         longDescription: json["long_description"] ?? "",
         alterText: json["alter_text"] ?? "",
         tags: json["tags"] ?? "",
-        featureImage: json["feature_image"],
+        featureImage: json["feature_image"] ??
+            "https://firebasestorage.googleapis.com/v0/b/quizer-ff18d.appspot.com/o/Screenshot%202022-07-26%20at%2011.57.26%20AM.png?alt=media&token=addadafb-a5fc-42ed-a351-424e7af30e54",
         productImage: List<ProductImage>.from(
             json["product_image"].map((x) => ProductImage.fromJson(x))),
         soldCount: json["sold_count"],
@@ -469,7 +470,6 @@ class SubCategory {
     required this.subCategoryName,
     required this.slug,
     required this.description,
-    required this.category,
   });
 
   int id;
@@ -480,7 +480,6 @@ class SubCategory {
   String subCategoryName;
   String slug;
   String description;
-  Category category;
 
   factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
         id: json["id"],
@@ -491,7 +490,6 @@ class SubCategory {
         subCategoryName: json["sub_category_name"],
         slug: json["slug"] ?? "",
         description: json["description"] ?? "",
-        category: Category.fromJson(json["category"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -503,6 +501,5 @@ class SubCategory {
         "sub_category_name": subCategoryName,
         "slug": slug,
         "description": description,
-        "category": category.toJson(),
       };
 }

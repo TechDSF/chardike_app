@@ -16,7 +16,7 @@ class SectionTitle extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-                fontSize: SizeConfig.screenWidth * 0.03,
+                fontSize: SizeConfig.screenWidth * 0.04,
                 fontWeight: FontWeight.bold),
           ),
         ),
@@ -27,7 +27,7 @@ class SectionTitle extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: SizeConfig.screenWidth * 0.02),
+                  fontSize: SizeConfig.screenWidth * 0.03),
             ))
       ],
     );

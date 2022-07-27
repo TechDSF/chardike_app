@@ -60,7 +60,7 @@ class CategorySection extends StatelessWidget {
               );
             } else {
               return SizedBox(
-                height: SizeConfig.screenWidth * 0.42,
+                height: SizeConfig.screenWidth * 0.5,
                 child: GridView.builder(
                     itemCount: _homeController.categoryList.length,
                     scrollDirection: Axis.horizontal,
@@ -88,40 +88,74 @@ class CategorySection extends StatelessWidget {
                                               .selectedCategoryItem.value ==
                                           index
                                       ? Color(0xFFFC7409)
-                                      : Color(0xFFF3F5F8),
+                                      : Color(0xFFFC7409),
+                                  //: Color(0xFFF3F5F8),
                                   borderRadius: BorderRadius.circular(
                                       SizeConfig.screenWidth * 0.015)),
-                              child: Column(children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: Obx((() => Image.network(
-                                        result.image,
-                                        color: _categoryController
-                                                    .selectedCategoryItem
-                                                    .value ==
-                                                index
-                                            ? Colors.white
-                                            : Colors.black,
-                                        height: SizeConfig.screenWidth * 0.1,
-                                        width: SizeConfig.screenWidth * 0.1,
-                                      ))),
-                                ),
-                                Expanded(
-                                    flex: 1,
-                                    child: Obx(() => Text(
-                                          result.categoryName,
-                                          style: TextStyle(
-                                              color: _categoryController
-                                                          .selectedCategoryItem
-                                                          .value ==
-                                                      index
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: SizeConfig.screenWidth *
-                                                  0.025),
-                                        )))
-                              ]),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    result.image != ""
+                                        ? Expanded(
+                                            flex: 2,
+                                            child: Obx((() => Image.network(
+                                                  result.image,
+                                                  color: _categoryController
+                                                              .selectedCategoryItem
+                                                              .value ==
+                                                          index
+                                                      ? Colors.white
+                                                      : Colors.white,
+                                                  //: Colors.black,
+                                                  height:
+                                                      SizeConfig.screenWidth *
+                                                          0.13,
+                                                  width:
+                                                      SizeConfig.screenWidth *
+                                                          0.13,
+                                                ))),
+                                          )
+                                        : SizedBox(),
+                                    Expanded(
+                                        flex: 1,
+                                        child: result.image == ""
+                                            ? Center(
+                                                child: Obx(() => Text(
+                                                      result.categoryName,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: _categoryController
+                                                                      .selectedCategoryItem
+                                                                      .value ==
+                                                                  index
+                                                              ? Colors.white
+                                                              //: Colors.black,
+                                                              : Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: SizeConfig
+                                                                  .screenWidth *
+                                                              0.03),
+                                                    )))
+                                            : Obx(() => Text(
+                                                  result.categoryName,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: _categoryController
+                                                                  .selectedCategoryItem
+                                                                  .value ==
+                                                              index
+                                                          ? Colors.white
+                                                          : Colors.white,
+                                                      //: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: SizeConfig
+                                                              .screenWidth *
+                                                          0.03),
+                                                )))
+                                  ]),
                             ),
                           ));
                     })),

@@ -16,6 +16,7 @@ import '../../screens/CheckOutPage/model/address_model.dart';
 import '../../screens/CheckOutPage/model/coupon_model.dart';
 import '../../screens/CheckOutPage/model/item_id_model.dart';
 import '../../screens/FeedPage/model/feed_model.dart';
+import '../../screens/FlashSaleDetails/flash_sale_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
 import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
@@ -74,6 +75,17 @@ class ApiService {
         await client.get(Uri.parse(popularProductUrl), headers: headers);
     if (response.statusCode == 200) {
       return productModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch flash products
+  static dynamic getFlashProduct() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(falshSaleUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return flashSaleModelFromJson(response.body);
     } else {
       return response.statusCode;
     }

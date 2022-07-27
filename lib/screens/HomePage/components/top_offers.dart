@@ -12,7 +12,7 @@ class TopOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: SizeConfig.screenWidth * 0.25,
+      height: SizeConfig.screenWidth * 0.3,
       child: ListView.builder(
           itemCount: _newHomeController.topLinkList.length,
           scrollDirection: Axis.horizontal,

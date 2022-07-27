@@ -15,8 +15,8 @@ class TopLinkCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: SizeConfig.screenWidth * 0.02),
       padding: EdgeInsets.all(SizeConfig.screenWidth * 0.005),
-      height: SizeConfig.screenWidth / 2,
-      width: SizeConfig.screenWidth / 4.4,
+      height: SizeConfig.screenWidth / 3,
+      width: SizeConfig.screenWidth / 3.25,
       child: Column(
         children: [
           icon == null
@@ -49,7 +49,7 @@ class TopLinkCard extends StatelessWidget {
                               maxLines: 2,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: SizeConfig.screenWidth * 0.03,
+                                  fontSize: SizeConfig.screenWidth * 0.04,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -76,7 +76,7 @@ class TopLinkCard extends StatelessWidget {
                               maxLines: 2,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: SizeConfig.screenWidth * 0.03,
+                                  fontSize: SizeConfig.screenWidth * 0.04,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -95,7 +95,8 @@ class TopLinkCard extends StatelessWidget {
               "Explore",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: SizeConfig.screenWidth * 0.018),
+                  fontWeight: FontWeight.bold,
+                  fontSize: SizeConfig.screenWidth * 0.025),
             ),
           ),
           SizedBox(

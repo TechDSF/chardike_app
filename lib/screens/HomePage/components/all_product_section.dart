@@ -38,7 +38,7 @@ class AllProductSection extends StatelessWidget {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.02),
-          child: SectionTitle(title: "Daily Discover", onTap: () {}),
+          child: SectionTitle(title: "All Products", onTap: () {}),
         ),
         SizedBox(
           height: getProportionateScreenHeight(10),
@@ -66,12 +66,10 @@ class AllProductSection extends StatelessWidget {
           } else {
             return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isTab ? 4 : 3,
+                  crossAxisCount: 3,
                   crossAxisSpacing: getProportionateScreenWidth(5),
                   mainAxisSpacing: getProportionateScreenWidth(5),
-                  childAspectRatio: isTab
-                      ? aspt(SizeConfig.screenWidth * 0.7)
-                      : aspt(SizeConfig.screenWidth * 0.7),
+                  childAspectRatio: aspt(SizeConfig.screenWidth * 0.7),
                 ),
                 itemCount: _homeController.latestProductList.length,
                 shrinkWrap: true,
@@ -99,7 +97,7 @@ class AllProductSection extends StatelessWidget {
                         child: Column(children: <Widget>[
                           Container(
                             height: isTab
-                                ? SizeConfig.screenWidth * 0.2
+                                ? SizeConfig.screenWidth * 0.3
                                 : SizeConfig.screenWidth * 0.27,
                             width: double.infinity,
                             padding: EdgeInsets.only(

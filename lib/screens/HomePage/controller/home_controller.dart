@@ -49,7 +49,17 @@ class HomeController extends GetxController {
     getLatestProduct();
     getQueryProduct();
     getCategoryProduct();
+    //getFlashSaleProduct();
     super.onInit();
+  }
+
+  getFlashSaleProduct() async {
+    var result = await ApiService.getFlashProduct();
+    if (result.runtimeType == int) {
+      print("Flash get error");
+    } else {
+      print("Flash product length ${result.length}");
+    }
   }
 
   changeSearchTypeText() {
