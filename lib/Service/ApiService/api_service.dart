@@ -151,6 +151,117 @@ class ApiService {
     }
   }
 
+  ///set profile data
+  static dynamic setProfileData(
+      {required String dob,
+      required String fullName,
+      required String gender,
+      required bool image,
+      required String imageData,
+      required String address,
+      required String bio,
+      required String token}) async {
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+
+    if (image) {
+      print("image e dhukse $imageData");
+      var request = http.MultipartRequest('POST', Uri.parse(updateProfileUrl));
+      request.fields.addAll({
+        'full_name': fullName,
+        'dob': dob,
+        'gender': gender,
+        'address': address,
+        'bio': bio,
+      });
+      request.files
+          .add(await http.MultipartFile.fromPath('profile_picture', imageData));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseString = await response.stream.bytesToString();
+        final jsonData = json.decode(responseString);
+        Map<String, String> map = {
+          "full_name": jsonData["full_name"] ?? "Demo User",
+          "dob": jsonData["dob"] ?? "",
+          "gender": jsonData["gender"] ?? "",
+          "profile_picture": jsonData["profile_picture"] ?? "",
+          "address": jsonData["address"] ?? "",
+          "city": jsonData["city"] ?? "",
+          "zipcode": jsonData["zipcode"] ?? "",
+          "country": jsonData["country"] ?? "",
+          "phone": jsonData["phone"] ?? ""
+        };
+        return map;
+      } else {
+        return false;
+      }
+    } else {
+      print("image e dhuke ni");
+      print(fullName + " " + dob + " " + gender + " " + address + " " + bio);
+      var body = jsonEncode({
+        'full_name': fullName,
+        'dob': dob,
+        'gender': gender,
+        'address': "Address",
+        'bio': bio,
+      });
+
+      var response = await client.post(Uri.parse(updateProfileUrl),
+          body: body, headers: headers);
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(response.body);
+        print(jsonData);
+        Map<String, String> map = {
+          "full_name": jsonData["full_name"] ?? "Demo User",
+          "dob": jsonData["dob"] ?? "",
+          "gender": jsonData["gender"] ?? "",
+          "profile_picture": jsonData["profile_picture"] ?? "",
+          "address": jsonData["address"] ?? "",
+          "city": jsonData["city"] ?? "",
+          "zipcode": jsonData["zipcode"] ?? "",
+          "country": jsonData["country"] ?? "",
+          "phone": jsonData["phone"] ?? ""
+        };
+        return map;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  ///get profile data
+  static dynamic getProfileData({required String accessToken}) async {
+    var headers = {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json'
+    };
+
+    var response =
+        await client.get(Uri.parse(profileDataUrl), headers: headers);
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      Map<String, String> map = {
+        "full_name": jsonData["full_name"] ?? "Demo User",
+        "dob": jsonData["dob"] ?? "",
+        "gender": jsonData["gender"] ?? "",
+        "profile_picture": jsonData["profile_picture"] ?? "",
+        "address": jsonData["address"] ?? "",
+        "city": jsonData["city"] ?? "",
+        "zipcode": jsonData["zipcode"] ?? "",
+        "country": jsonData["country"] ?? "",
+        "phone": jsonData["phone"] ?? ""
+      };
+      return map;
+    } else {
+      return response.statusCode;
+    }
+  }
+
   ///create user
   static Future<bool> createUser(
       {required String email,
@@ -455,7 +566,6 @@ class ApiService {
   }
 
   ///get order status
-  ///get user billing address
   static dynamic getOrderStatus({required String accessToken}) async {
     var headers = {'Authorization': 'Bearer $accessToken'};
 

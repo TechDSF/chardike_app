@@ -17,6 +17,13 @@ class CommonData {
   static String token = "token";
   static String password = "password";
   static String image = "image";
+  static String dob = "dob";
+  static String gender = "gender";
+  static String address = "address";
+  static String city = "city";
+  static String zipcode = "zipcode";
+  static String country = "country";
+  static String bio = "bio";
 
   static String currency(BuildContext context) {
     Locale locale = Localizations.localeOf(context);

@@ -123,24 +123,37 @@ class UserScreen extends StatelessWidget {
                             horizontal: getProportionateScreenWidth(10)),
                         child: Row(
                           children: <Widget>[
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, EditProfile.routeName);
-                              },
-                              child: Container(
-                                height: getProportionateScreenWidth(70),
-                                width: getProportionateScreenWidth(70),
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white),
-                                child: Icon(
-                                  Icons.person,
-                                  color: AllColors.mainColor,
-                                  size: getProportionateScreenWidth(40),
-                                ),
-                              ),
-                            ),
+                            InkWell(onTap: () {
+                              Navigator.pushNamed(
+                                  context, EditProfile.routeName);
+                            }, child: Obx(() {
+                              if (_userDataController.image.value != "") {
+                                return Container(
+                                  height: getProportionateScreenWidth(70),
+                                  width: getProportionateScreenWidth(70),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              _userDataController.image.value),
+                                          fit: BoxFit.cover)),
+                                );
+                              } else {
+                                return Container(
+                                  height: getProportionateScreenWidth(70),
+                                  width: getProportionateScreenWidth(70),
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: AllColors.mainColor,
+                                    size: getProportionateScreenWidth(40),
+                                  ),
+                                );
+                              }
+                            })),
                             SizedBox(
                               width: getProportionateScreenWidth(15),
                             ),

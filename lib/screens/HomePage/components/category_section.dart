@@ -87,8 +87,8 @@ class CategorySection extends StatelessWidget {
                                   color: _categoryController
                                               .selectedCategoryItem.value ==
                                           index
-                                      ? Color(0xFFFC7409)
-                                      : Color(0xFFFC7409),
+                                      ? Color(0xFFFF3366)
+                                      : Color(0xFFFF3366),
                                   //: Color(0xFFF3F5F8),
                                   borderRadius: BorderRadius.circular(
                                       SizeConfig.screenWidth * 0.015)),

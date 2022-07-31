@@ -1,14 +1,14 @@
-import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+
+import '../../HomePage/model/product_model.dart';
 
 class FlashSaleDetails extends StatelessWidget {
   FlashSaleDetails({Key? key}) : super(key: key);
@@ -33,362 +33,265 @@ class FlashSaleDetails extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text("Flash Sale"),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(10)),
-            child: const Center(
-                child: FaIcon(
-              FontAwesomeIcons.share,
-            )),
-          )
-        ],
-      ),
-      body: DefaultTabController(
-          length: 3,
-          child: Column(
-            children: [
-              Container(
-                height: getProportionateScreenHeight(50),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(color: Colors.grey.withOpacity(0.5)))),
-                child: TabBar(
-                  padding: EdgeInsets.all(0),
-                  labelPadding: EdgeInsets.all(0),
-                  unselectedLabelColor: Colors.black,
-                  indicatorColor: AllColors.mainColor,
-                  labelColor: AllColors.mainColor,
-                  labelStyle:
-                      TextStyle(fontSize: getProportionateScreenWidth(11)),
-                  tabs: [
-                    Tab(
-                      text: "ongoing",
-                      icon: Text(
-                        "${DateTime.now().hour}:00",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: getProportionateScreenWidth(15)),
-                      ),
-                      iconMargin:
-                          EdgeInsets.all(getProportionateScreenHeight(3)),
+        appBar: AppBar(
+          elevation: 1,
+          centerTitle: false,
+          title: const Text("Flash Sale"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: getProportionateScreenHeight(5),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "ENDS IN",
+                      style: TextStyle(
+                          fontSize: SizeConfig.screenWidth * 0.025,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Tab(
-                      text: "coming soon",
-                      icon: Text(
-                        "${DateTime.now().hour + 1}:00",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    SizedBox(
+                      width: getProportionateScreenWidth(5),
                     ),
-                    Tab(
-                      text: "coming soon",
-                      icon: Text(
-                        "${DateTime.now().hour + 2}:00",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    SlideCountdownSeparated(
+                      height: SizeConfig.screenWidth * 0.04,
+                      width: SizeConfig.screenWidth * 0.04,
+                      separatorStyle: TextStyle(color: Colors.deepOrange),
+                      textStyle: TextStyle(
+                          fontSize: SizeConfig.screenWidth * 0.02,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          borderRadius: BorderRadius.circular(
+                              getProportionateScreenWidth(3))),
+                      duration: Duration(hours: 24, minutes: 00),
+                    )
                   ],
                 ),
-              ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: getProportionateScreenHeight(5),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            "ENDS IN",
-                            style: TextStyle(
-                                fontSize: getProportionateScreenWidth(11)),
-                          ),
-                          SizedBox(
-                            width: getProportionateScreenWidth(5),
-                          ),
-                          SlideCountdownSeparated(
-                            withDays: true,
-                            height: getProportionateScreenHeight(15),
-                            width: getProportionateScreenHeight(15),
-                            textStyle: TextStyle(
-                                fontSize: getProportionateScreenHeight(7),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(
-                                    getProportionateScreenWidth(3))),
-                            duration: Duration(
-                                hours: 00, minutes: DateTime.now().minute),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(10),
-                      ),
-                      isTab
-                          ? GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  _homeController.popularProductList.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing:
-                                          getProportionateScreenWidth(10),
-                                      mainAxisSpacing:
-                                          getProportionateScreenWidth(10),
-                                      childAspectRatio: aspt(
-                                          getProportionateScreenWidth(140))),
-                              itemBuilder: (context, index) {
-                                var result =
-                                    _homeController.popularProductList[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, ProductDetails.routeName,
-                                        arguments: result);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Colors.grey.withOpacity(0.2))),
-                                    child: Row(
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
+                GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isTab ? 3 : 2,
+                        crossAxisSpacing: getProportionateScreenWidth(5),
+                        mainAxisSpacing: getProportionateScreenWidth(5),
+                        childAspectRatio: CommonData.aspactRatio(
+                            height: isTab
+                                ? SizeConfig.screenWidth * 0.7
+                                : SizeConfig.screenWidth * 0.7,
+                            context: context,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5)),
+                    itemCount: _homeController.latestProductList.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      ProductModel result =
+                          _homeController.latestProductList[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, ProductDetails.routeName,
+                              arguments: result);
+                        },
+                        child: SizedBox(
+                          height: isTab
+                              ? SizeConfig.screenWidth * 0.7
+                              : SizeConfig.screenWidth * 0.5,
+                          width: SizeConfig.screenWidth * 0.32,
+                          child: Card(
+                            color: Color(0xFFF3F5F8),
+                            shadowColor: Colors.grey,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.screenWidth * 0.02),
+                            ),
+                            child: Column(children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Container(
+                                  height: isTab
+                                      ? SizeConfig.screenWidth * 0.3
+                                      : SizeConfig.screenWidth * 0.43,
+                                  width: double.infinity,
+                                  padding: EdgeInsets.only(
+                                      top: SizeConfig.screenWidth * 0.015),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            SizeConfig.screenWidth * 0.02),
+                                      ),
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage(result.featureImage),
+                                          fit: BoxFit.fill)),
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Container(
-                                          height:
-                                              getProportionateScreenHeight(120),
-                                          width:
-                                              getProportionateScreenHeight(120),
+                                          padding: EdgeInsets.all(
+                                              SizeConfig.screenWidth * 0.004),
                                           decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1)),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      result.featureImage))),
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              getProportionateScreenWidth(10),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            children: <Widget>[
-                                              const Text(
-                                                  "Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
-                                              Text(
-                                                CommonData.takaSign +
-                                                    result.regularPrice
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .lineThrough),
-                                              ),
-                                              Text(
-                                                CommonData.takaSign +
-                                                    " " +
-                                                    result.sellingPrice
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        getProportionateScreenWidth(
-                                                            15),
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AllColors.mainColor),
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child:
-                                                        LinearPercentIndicator(
-                                                      lineHeight: 8.0,
-                                                      percent: double.parse(
-                                                          (23 / 100)
-                                                              .toStringAsFixed(
-                                                                  1)),
-                                                      progressColor:
-                                                          Colors.orange,
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              color: AllColors
-                                                                  .mainColor),
-                                                          shape:
-                                                              BoxShape.circle),
-                                                      child: Center(
-                                                          child: Padding(
-                                                        padding: EdgeInsets.all(
-                                                            getProportionateScreenWidth(
-                                                                10)),
-                                                        child: Text(
-                                                          "Buy",
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                                  getProportionateScreenWidth(
-                                                                      12)),
-                                                        ),
-                                                      )),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                              borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(
+                                                      SizeConfig.screenWidth *
+                                                          0.015),
+                                                  bottomRight: Radius.circular(
+                                                      SizeConfig.screenWidth *
+                                                          0.015)),
+                                              color: Colors.green),
+                                          child: Text(
+                                            "${CommonData.calculateDiscount(regularPrice: double.parse(result.regularPrice), sellingPrice: double.parse(result.sellingPrice))}%",
+                                            //"${result.regularPrice}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    SizeConfig.screenWidth *
+                                                        0.023),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              })
-                          : ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  _homeController.popularProductList.length,
-                              itemBuilder: (context, index) {
-                                var result =
-                                    _homeController.popularProductList[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, ProductDetails.routeName,
-                                        arguments: result);
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
+                                        ),
+                                        Row(
+                                          children: [
                                             Container(
                                               height:
-                                                  getProportionateScreenHeight(
-                                                      120),
+                                                  SizeConfig.screenWidth * 0.05,
                                               width:
-                                                  getProportionateScreenHeight(
-                                                      120),
+                                                  SizeConfig.screenWidth * 0.05,
+                                              child: Icon(
+                                                Icons.favorite,
+                                                color: Colors.orange,
+                                                size: SizeConfig.screenWidth *
+                                                    0.03,
+                                              ),
                                               decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.1)),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(result
-                                                          .featureImage))),
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3)),
                                             ),
                                             SizedBox(
-                                              width:
-                                                  getProportionateScreenWidth(
-                                                      10),
+                                              width: SizeConfig.screenWidth *
+                                                  0.008,
                                             ),
-                                            Expanded(
-                                              child: Column(
-                                                children: <Widget>[
-                                                  const Text(
-                                                      "Cos De BAHA Vitamin C Facial Serum (VM)-30ml"),
-                                                  Text(
-                                                    CommonData.takaSign +
-                                                        result.regularPrice
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough),
-                                                  ),
-                                                  Text(
-                                                    CommonData.takaSign +
-                                                        " " +
-                                                        result.sellingPrice
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            getProportionateScreenWidth(
-                                                                15),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: AllColors
-                                                            .mainColor),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 3,
-                                                        child:
-                                                            LinearPercentIndicator(
-                                                          lineHeight: 8.0,
-                                                          percent: double.parse(
-                                                              (23 / 100)
-                                                                  .toStringAsFixed(
-                                                                      1)),
-                                                          progressColor:
-                                                              Colors.orange,
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: AllColors
-                                                                      .mainColor),
-                                                              shape: BoxShape
-                                                                  .circle),
-                                                          child: Center(
-                                                              child: Padding(
-                                                            padding: EdgeInsets.all(
-                                                                getProportionateScreenWidth(
-                                                                    10)),
-                                                            child: Text(
-                                                              "Buy",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      getProportionateScreenWidth(
-                                                                          12)),
-                                                            ),
-                                                          )),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                              ),
-                                            )
                                           ],
-                                        ),
+                                        )
+                                      ]),
+                                ),
+                              ),
+                              SizedBox(
+                                height: SizeConfig.screenWidth * 0.01,
+                              ),
+                              Expanded(
+                                  child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: SizeConfig.screenWidth * 0.003),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(
+                                            SizeConfig.screenWidth * 0.02),
+                                        bottomRight: Radius.circular(
+                                            SizeConfig.screenWidth * 0.02))),
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Text(
+                                        result.productName,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: isTab
+                                                ? SizeConfig.screenWidth * 0.02
+                                                : SizeConfig.screenWidth * 0.03,
+                                            overflow: TextOverflow.ellipsis),
                                       ),
-                                      Divider()
-                                    ],
-                                  ),
-                                );
-                              }),
-                    ],
-                  ),
-                ),
-              ))
-            ],
-          )),
-    );
+                                      RichText(
+                                          text: TextSpan(children: [
+                                        TextSpan(
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: isTab
+                                                    ? SizeConfig.screenWidth *
+                                                        0.025
+                                                    : SizeConfig.screenWidth *
+                                                        0.03),
+                                            text: "₺" +
+                                                result.sellingPrice.toString()),
+                                        TextSpan(
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                fontSize: isTab
+                                                    ? SizeConfig.screenWidth *
+                                                        0.018
+                                                    : SizeConfig.screenWidth *
+                                                        0.022),
+                                            text: " ₺" +
+                                                result.regularPrice.toString())
+                                      ])),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          RatingBar.builder(
+                                            initialRating:
+                                                CommonData.calculateRating(
+                                                    result.reviews),
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemSize: isTab
+                                                ? SizeConfig.screenWidth * 0.02
+                                                : SizeConfig.screenWidth * 0.03,
+                                            itemPadding: EdgeInsets.symmetric(
+                                                horizontal: 1.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              print(rating);
+                                            },
+                                          ),
+                                          Text(
+                                            "(${result.reviews.length})",
+                                            style: TextStyle(
+                                              fontSize: isTab
+                                                  ? SizeConfig.screenWidth *
+                                                      0.02
+                                                  : SizeConfig.screenWidth *
+                                                      0.03,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ]),
+                              ))
+                            ]),
+                          ),
+                        ),
+                      );
+                 
+                    })
+              ],
+            ),
+          ),
+        ));
   }
 }

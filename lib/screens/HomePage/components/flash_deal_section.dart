@@ -71,7 +71,8 @@ class FlashDealSection extends StatelessWidget {
                                       width: SizeConfig.screenWidth * 0.32,
                                       child: Card(
                                         color: Colors.white,
-                                        elevation: 1,
+                                        shadowColor: Colors.grey,
+                                        elevation: 2,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
                                               SizeConfig.screenWidth * 0.02),
@@ -271,24 +272,24 @@ class FlashDealSection extends StatelessWidget {
                                                                         .screenWidth *
                                                                     0.01),
                                                             decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        SizeConfig.screenWidth *
-                                                                            0.006),
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.3)),
+                                                                borderRadius: BorderRadius
+                                                                    .circular(SizeConfig
+                                                                            .screenWidth *
+                                                                        0.006),
+                                                                color: Color(
+                                                                    0xFFff3366)),
                                                             child: Text(
                                                               "Shop Now",
                                                               style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
                                                                   fontSize:
                                                                       SizeConfig
                                                                               .screenWidth *
-                                                                          0.015),
+                                                                          0.018),
                                                             )),
                                                       ],
                                                     ),

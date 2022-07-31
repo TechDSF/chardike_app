@@ -24,3 +24,5 @@ String adminBlogUrl = baseUrl + "blog/list/view/admin/";
 String createBlogUrl = baseUrl + "blog/create/";
 String couponUrl = baseUrl + "order/coupon/list/";
 String reviewListUrl = baseUrl + "products/review/";
+String profileDataUrl = baseUrl + "user/profile/";
+String updateProfileUrl = baseUrl + "user/user_profile_update/";

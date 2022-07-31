@@ -25,9 +25,7 @@ class MultiPartBannerSection extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  height: isTab
-                      ? getProportionateScreenHeight(230)
-                      : getProportionateScreenHeight(170),
+                  height: SizeConfig.screenHeight * 0.24,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
@@ -43,9 +41,7 @@ class MultiPartBannerSection extends StatelessWidget {
                   child: Column(
                 children: <Widget>[
                   Container(
-                    height: isTab
-                        ? getProportionateScreenHeight(114)
-                        : getProportionateScreenHeight(84),
+                    height: SizeConfig.screenHeight * 0.12,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
@@ -57,9 +53,7 @@ class MultiPartBannerSection extends StatelessWidget {
                     height: getProportionateScreenHeight(2),
                   ),
                   Container(
-                    height: isTab
-                        ? getProportionateScreenHeight(114)
-                        : getProportionateScreenHeight(84),
+                    height: SizeConfig.screenHeight * 0.12,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(

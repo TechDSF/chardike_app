@@ -1,8 +1,7 @@
 import 'package:chardike/CommonData/all_colors.dart';
-import 'package:chardike/screens/UserPage/components/MyPurchases/cancel.dart';
-import 'package:chardike/screens/UserPage/components/MyPurchases/on_the_way.dart';
-import 'package:chardike/screens/UserPage/components/MyPurchases/processing.dart';
-import 'package:chardike/screens/UserPage/components/MyPurchases/to_recive.dart';
+import 'package:chardike/screens/UserPage/components/MyPurchases/components/hold_status.dart';
+import 'package:chardike/screens/UserPage/components/MyPurchases/components/shipped.dart';
+import 'package:chardike/screens/UserPage/components/MyPurchases/components/to_recive.dart';
 import 'package:chardike/screens/UserPage/controller/purchase_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,12 @@ import 'package:get/get.dart';
 import '../../../../CommonData/common_data.dart';
 import '../../../../size_config.dart';
 import '../../../CartPage/screen/cart_screen.dart';
-import 'complete.dart';
+import 'components/cancel.dart';
+import 'components/complete.dart';
+import 'components/deleted_status.dart';
+import 'components/failed_status.dart';
+import 'components/pending.dart';
+import 'components/refunded.dart';
 
 class MyPurchases extends StatelessWidget {
   MyPurchases({Key? key}) : super(key: key);
@@ -23,7 +27,7 @@ class MyPurchases extends StatelessWidget {
     _purchaseController.getMyOrders();
     return Obx(() => DefaultTabController(
           initialIndex: _purchaseController.tabIndex.value,
-          length: 5,
+          length: 9,
           child: Scaffold(
               appBar: AppBar(
                 title: Text("My Purchases"),
@@ -50,28 +54,44 @@ class MyPurchases extends StatelessWidget {
                       indicatorColor: AllColors.mainColor,
                       tabs: [
                         Tab(
-                          text: "Processing",
+                          text: "Pending",
                         ),
                         Tab(
-                          text: "On The Way",
+                          text: "Received",
                         ),
                         Tab(
-                          text: "Recived",
+                          text: "Shipped",
                         ),
                         Tab(
-                          text: "Complete",
+                          text: "On Hold",
                         ),
                         Tab(
-                          text: "Cancelled",
-                        )
+                          text: "Completed",
+                        ),
+                        Tab(
+                          text: "Canceled",
+                        ),
+                        Tab(
+                          text: "Refunded",
+                        ),
+                        Tab(
+                          text: "Failed",
+                        ),
+                        Tab(
+                          text: "Deleted",
+                        ),
                       ]),
                   Expanded(
                     child: TabBarView(children: [
-                      Processing(),
-                      OnTheWay(),
-                      ToRecive(),
-                      Complete(),
-                      Cancel()
+                      Pending(),
+                      RecievedStatus(),
+                      Shipped(),
+                      HoldStatus(),
+                      CompleteStatus(),
+                      CancelStatus(),
+                      RefundedStatus(),
+                      FailedStatus(),
+                      DeletedStatus()
                     ]),
                   )
                 ],

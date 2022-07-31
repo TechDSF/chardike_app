@@ -1,4 +1,5 @@
 import 'package:chardike/screens/HomePage/components/banner_section.dart';
+import 'package:chardike/screens/HomePage/components/products_of_you_details.dart';
 import 'package:chardike/screens/HomePage/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -26,7 +27,14 @@ class JustForYouSection extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.02),
           child: Column(
             children: [
-              SectionTitle(title: "Products For You", onTap: () {}),
+              SectionTitle(
+                  title: "Products For You",
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ProductsYouDetails()));
+                  }),
               SizedBox(
                 height: getProportionateScreenHeight(10),
               ),
@@ -90,6 +98,7 @@ class JustForYouSection extends StatelessWidget {
                             width: SizeConfig.screenWidth * 0.32,
                             child: Card(
                               color: Color(0xFFF3F5F8),
+                              shadowColor: Colors.grey,
                               elevation: 2,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -262,87 +271,6 @@ class JustForYouSection extends StatelessWidget {
                                             )
                                           ],
                                         ),
-                                        // Row(
-                                        //   mainAxisAlignment:
-                                        //       MainAxisAlignment.spaceBetween,
-                                        //   children: [
-                                        //     Expanded(
-                                        //       child: RichText(
-                                        //           text: TextSpan(children: [
-                                        //         TextSpan(
-                                        //             style: TextStyle(
-                                        //                 color: Colors.red,
-                                        //                 fontWeight:
-                                        //                     FontWeight.bold,
-                                        //                 fontSize: isTab
-                                        //                     ? SizeConfig
-                                        //                             .screenWidth *
-                                        //                         0.02
-                                        //                     : SizeConfig
-                                        //                             .screenWidth *
-                                        //                         0.027),
-                                        //             text: "₺" +
-                                        //                 result.sellingPrice
-                                        //                     .toString()),
-                                        //         TextSpan(
-                                        //             style: TextStyle(
-                                        //                 color: Colors.black,
-                                        //                 fontWeight:
-                                        //                     FontWeight.w600,
-                                        //                 decoration:
-                                        //                     TextDecoration
-                                        //                         .lineThrough,
-                                        //                 fontSize: isTab
-                                        //                     ? SizeConfig
-                                        //                             .screenWidth *
-                                        //                         0.012
-                                        //                     : SizeConfig
-                                        //                             .screenWidth *
-                                        //                         0.019),
-                                        //             text: " ₺" +
-                                        //                 result.regularPrice
-                                        //                     .toString())
-                                        //       ])),
-                                        //     ),
-                                        //     Row(
-                                        //       mainAxisAlignment:
-                                        //           MainAxisAlignment.center,
-                                        //       crossAxisAlignment:
-                                        //           CrossAxisAlignment.center,
-                                        //       children: <Widget>[
-                                        //         Icon(
-                                        //           Icons.star,
-                                        //           size: SizeConfig.screenWidth *
-                                        //               0.024,
-                                        //           color: Colors.orange,
-                                        //         ),
-                                        //         Text(
-                                        //           "${CommonData.calculateRating(result.reviews)}",
-                                        //           style: TextStyle(
-                                        //             fontWeight: FontWeight.bold,
-                                        //             fontSize: isTab
-                                        //                 ? SizeConfig
-                                        //                         .screenWidth *
-                                        //                     0.02
-                                        //                 : SizeConfig
-                                        //                         .screenWidth *
-                                        //                     0.024,
-                                        //           ),
-                                        //         ),
-                                        //         Text(
-                                        //           "(${result.reviews.length})",
-                                        //           style: TextStyle(
-                                        //             color: Colors.black
-                                        //                 .withOpacity(0.7),
-                                        //             fontSize:
-                                        //                 SizeConfig.screenWidth *
-                                        //                     0.02,
-                                        //           ),
-                                        //         )
-                                        //       ],
-                                        //     )
-                                        //   ],
-                                        // ),
                                       ]),
                                 ))
                               ]),

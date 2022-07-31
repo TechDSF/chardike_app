@@ -15,49 +15,49 @@ class BrandPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Brand"),
       ),
-      body: Obx(() {
-        if (_searchController.brandList.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: double.infinity,
-              ),
-              Text("You don't have any brand!")
-            ],
-          );
-        } else {
-          return Wrap(
-            spacing: 8,
-            children:
-                List.generate(_searchController.brandList.length, (index) {
-              var result = _searchController.brandList[index];
-              return ChoiceChip(
-                labelPadding: const EdgeInsets.all(2.0),
-                label: Text(result.name,
-                    style: TextStyle(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: getProportionateScreenWidth(13))),
-                selected: true,
-                selectedColor: Colors.grey.withOpacity(0.1),
-                onSelected: (value) {
-                  print(result.brand.length);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => AllSearchProducts(
-                              productList: result.brand,
-                              id: result.id.toString(),
-                              searchType: result.name)));
-                },
-                // backgroundColor: color,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-              );
-            }),
-          );
-        }
-      }),
+      body: Column(
+        children: [
+          _searchController.brandList.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: double.infinity,
+                    ),
+                    Text("You don't have any brand!")
+                  ],
+                )
+              : Wrap(
+                  spacing: 8,
+                  children: List.generate(_searchController.brandList.length,
+                      (index) {
+                    var result = _searchController.brandList[index];
+                    return ChoiceChip(
+                      labelPadding: const EdgeInsets.all(2.0),
+                      label: Text(result.name,
+                          style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: getProportionateScreenWidth(13))),
+                      selected: true,
+                      selectedColor: Colors.grey.withOpacity(0.1),
+                      onSelected: (value) {
+                        print(result.brand.length);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => AllSearchProducts(
+                                    productList: result.brand,
+                                    id: result.id.toString(),
+                                    searchType: result.name)));
+                      },
+                      // backgroundColor: color,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                    );
+                  }),
+                )
+        ],
+      ),
     );
   }
 }

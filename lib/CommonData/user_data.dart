@@ -15,6 +15,13 @@ class UserDataController extends GetxController {
   var token = "".obs;
   var password = "".obs;
   var image = "".obs;
+  var dob = "".obs;
+  var gender = "".obs;
+  var address = "".obs;
+  var city = "".obs;
+  var zipcode = "".obs;
+  var country = "".obs;
+  var bio = "".obs;
 
   getData() async {
     preferences = await SharedPreferences.getInstance();
@@ -27,6 +34,13 @@ class UserDataController extends GetxController {
     token.value = preferences.getString(CommonData.token) ?? "";
     password.value = preferences.getString(CommonData.password) ?? "";
     image.value = preferences.getString(CommonData.image) ?? "";
+    dob.value = preferences.getString(CommonData.dob) ?? "";
+    gender.value = preferences.getString(CommonData.gender) ?? "";
+    address.value = preferences.getString(CommonData.address) ?? "";
+    city.value = preferences.getString(CommonData.city) ?? "";
+    zipcode.value = preferences.getString(CommonData.zipcode) ?? "";
+    country.value = preferences.getString(CommonData.country) ?? "";
+    bio.value = preferences.getString(CommonData.bio) ?? "";
   }
 
   setData(
@@ -38,7 +52,14 @@ class UserDataController extends GetxController {
       required String userNameData,
       required String tokenData,
       required String passwordData,
-      required String imageData}) async {
+      required String imageData,
+      required String dobData,
+      required String bioData,
+      required String genderData,
+      required String addressData,
+      required String cityData,
+      required String zipcodeData,
+      required String countryData}) async {
     preferences = await SharedPreferences.getInstance();
     preferences.setString(CommonData.fullName, fullNameData);
     preferences.setString(CommonData.email, emailData);
@@ -49,6 +70,13 @@ class UserDataController extends GetxController {
     preferences.setString(CommonData.token, tokenData);
     preferences.setString(CommonData.password, passwordData);
     preferences.setString(CommonData.image, imageData);
+    preferences.setString(CommonData.dob, dobData);
+    preferences.setString(CommonData.bio, bioData);
+    preferences.setString(CommonData.gender, genderData);
+    preferences.setString(CommonData.address, addressData);
+    preferences.setString(CommonData.city, cityData);
+    preferences.setString(CommonData.zipcode, zipcodeData);
+    preferences.setString(CommonData.country, countryData);
 
     fullName.value = fullNameData;
     email.value = emailData;
@@ -59,5 +87,12 @@ class UserDataController extends GetxController {
     token.value = tokenData;
     password.value = passwordData;
     image.value = imageData;
+    dob.value = dobData;
+    bio.value = bioData;
+    gender.value = genderData;
+    address.value = addressData;
+    city.value = cityData;
+    zipcode.value = zipcodeData;
+    country.value = countryData;
   }
 }

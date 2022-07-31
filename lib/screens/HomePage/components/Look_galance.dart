@@ -12,7 +12,12 @@ class LookAtGlance extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.01),
       child: Column(
         children: <Widget>[
-          SectionTitle(title: "Look at a Galance", onTap: () {}),
+          Text(
+            "Look at a Glance",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: SizeConfig.screenWidth * 0.04),
+          ),
           SizedBox(
             height: SizeConfig.screenHeight * 0.01,
           ),

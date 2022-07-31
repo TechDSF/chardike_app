@@ -82,12 +82,21 @@ class CategoryScreen extends StatelessWidget {
                                     bottom: getProportionateScreenHeight(20)),
                                 child: Column(
                                   children: <Widget>[
-                                    Image.network(
-                                      result.image.toString(),
-                                      height: SizeConfig.screenWidth * 0.15,
-                                      width: SizeConfig.screenWidth * 0.15,
-                                      fit: BoxFit.fill,
-                                    ),
+                                    result.image == ""
+                                        ? SizedBox(
+                                            height:
+                                                SizeConfig.screenWidth * 0.07,
+                                            width:
+                                                SizeConfig.screenWidth * 0.07,
+                                          )
+                                        : Image.network(
+                                            result.image.toString(),
+                                            height:
+                                                SizeConfig.screenWidth * 0.15,
+                                            width:
+                                                SizeConfig.screenWidth * 0.15,
+                                            fit: BoxFit.fill,
+                                          ),
                                     SizedBox(
                                       height: getProportionateScreenHeight(5),
                                     ),

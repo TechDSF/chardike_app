@@ -94,23 +94,49 @@ class LoginController extends GetxController {
             Map d = resultt;
             loginPasswordTextController.clear();
             loginEmailTextController.clear();
-            print("user name = ${jsonData['username']}");
-            _userDataController.setData(
-                fullNameData: jsonData['fullName'] ?? "",
-                emailData: email,
-                mobileData: email,
-                userObjIdData: jsonData['user_obj_ID'].toString() ?? "",
-                profileIdData: jsonData['profile_ID'].toString() ?? "",
-                userNameData: jsonData['username'] ?? "",
-                tokenData: d['refresh'],
-                passwordData: password,
-                imageData: "");
-            _commonController.isLogin.value = true;
-            prefs.setBool("isLogin", true);
-            context.loaderOverlay.hide();
-            Navigator.pop(context);
+            var userDataResult =
+                await ApiService.getProfileData(accessToken: d['access']);
+
+            if (userDataResult.runtimeType == int) {
+              print("Login is not complete, when get profile data");
+              Fluttertoast.showToast(
+                  msg: "Login is not complete!",
+                  toastLength: Toast.LENGTH_LONG);
+              isSingUpLoading(false);
+              context.loaderOverlay.hide();
+            } else {
+              print("user name = ${jsonData['username']}");
+              _userDataController.setData(
+                  fullNameData: jsonData['full_name'] ?? "",
+                  emailData: "",
+                  mobileData: email,
+                  userObjIdData: jsonData['user_obj_ID'].toString() ?? "",
+                  profileIdData: jsonData['profile_ID'].toString() ?? "",
+                  userNameData: jsonData['username'] ?? "",
+                  tokenData: d['refresh'],
+                  passwordData: password,
+                  imageData: userDataResult['profile_picture'],
+                  dobData: userDataResult['dob'],
+                  bioData: "",
+                  genderData: userDataResult['gender'],
+                  addressData: userDataResult['address'],
+                  cityData: userDataResult['city'],
+                  zipcodeData: userDataResult['zipcode'],
+                  countryData: userDataResult['country']);
+              _commonController.isLogin.value = true;
+              prefs.setBool("isLogin", true);
+              context.loaderOverlay.hide();
+              Navigator.pop(context);
+            }
           }
         }
+      } else if (response.statusCode == 504) {
+        print("You don't have account with this credentionals!");
+        Fluttertoast.showToast(
+            msg: "You don't have account with this credentionals!",
+            toastLength: Toast.LENGTH_LONG);
+        isSingUpLoading(false);
+        context.loaderOverlay.hide();
       } else {
         print(response.reasonPhrase);
         Fluttertoast.showToast(

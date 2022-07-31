@@ -10,6 +10,8 @@ class SplashController extends GetxController {
       Navigator.popAndPushNamed(context, MainScreen.routeName);
       dispose();
     });
+
+    
   }
 
   @override

@@ -56,7 +56,7 @@ class FlashDealSectionTitle extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: SizeConfig.screenWidth * 0.03),
+                  fontSize: SizeConfig.screenWidth * 0.037),
             ))
       ],
     );
