@@ -122,7 +122,11 @@ class TopProductPage extends StatelessWidget {
                                 onTap: () {
                                   Navigator.pushNamed(
                                       context, ProductDetails.routeName,
-                                      arguments: result);
+                                      arguments: {
+                                        "type": true,
+                                        "ds": "0",
+                                        "product": result
+                                      });
                                 },
                                 child: Container(
                                     decoration: BoxDecoration(
@@ -236,7 +240,11 @@ class TopProductPage extends StatelessWidget {
                             onTap: () {
                               Navigator.pushNamed(
                                   context, ProductDetails.routeName,
-                                  arguments: result);
+                                  arguments: {
+                                    "type": true,
+                                    "ds": "0",
+                                    "product": result
+                                  });
                             },
                             child: Column(
                               children: [

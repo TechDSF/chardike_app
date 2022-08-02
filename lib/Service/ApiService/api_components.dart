@@ -26,3 +26,4 @@ String couponUrl = baseUrl + "order/coupon/list/";
 String reviewListUrl = baseUrl + "products/review/";
 String profileDataUrl = baseUrl + "user/profile/";
 String updateProfileUrl = baseUrl + "user/user_profile_update/";
+String bannerUrl = baseUrl + "products/banners/list/";

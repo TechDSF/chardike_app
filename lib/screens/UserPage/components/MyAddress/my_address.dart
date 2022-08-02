@@ -18,6 +18,8 @@ class MyAddress extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as int;
     _addressController.isBilling.value = true;
+    _checkOutController.getUserAddress();
+    _checkOutController.getShippingAddress();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -199,10 +201,8 @@ class MyAddress extends StatelessWidget {
               } else {
                 return Expanded(
                   child: Obx(() {
-                    if (_checkOutController.userAddress.value.isEmpty) {
-                      return SizedBox(
-                        child: Text("Shipping"),
-                      );
+                    if (_checkOutController.userShippingAddress.value.isEmpty) {
+                      return SizedBox();
                     } else {
                       return ListView.builder(
                           shrinkWrap: true,

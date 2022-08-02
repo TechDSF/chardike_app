@@ -105,9 +105,9 @@ class LoginController extends GetxController {
               isSingUpLoading(false);
               context.loaderOverlay.hide();
             } else {
-              print("user name = ${jsonData['username']}");
+              print("user name = ${jsonData}");
               _userDataController.setData(
-                  fullNameData: jsonData['full_name'] ?? "",
+                  fullNameData: jsonData['fullName'] ?? "",
                   emailData: "",
                   mobileData: email,
                   userObjIdData: jsonData['user_obj_ID'].toString() ?? "",

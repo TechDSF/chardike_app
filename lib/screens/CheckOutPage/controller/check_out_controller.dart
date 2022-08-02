@@ -128,7 +128,7 @@ class CheckOutController extends GetxController {
         //     msg: "Error to get Location", toastLength: Toast.LENGTH_LONG);
         print("Error to get user location");
       } else {
-        print(res);
+        print("User address $res");
         if (res.isNotEmpty) {
           userAddress.value = res;
 

@@ -91,6 +91,12 @@ class CommonData {
     return ((regularPrice - sellingPrice) * 100) ~/ regularPrice;
   }
 
+  static Duration calculateEndTime({required DateTime endTime}) {
+    Duration date = endTime.difference(DateTime.now());
+    print("Calculate Data $date");
+    return date;
+  }
+
   static double aspactRatio(
       {required double height,
       required BuildContext context,

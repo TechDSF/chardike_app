@@ -1,16 +1,9 @@
-// To parse this JSON data, do
-//
-//     final subCategoryModel = subCategoryModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
+import 'package:chardike/screens/CategoryPage/model/category_model.dart';
 import 'dart:convert';
 
 List<SubCategoryModel> subCategoryModelFromJson(String str) =>
     List<SubCategoryModel>.from(
         json.decode(str).map((x) => SubCategoryModel.fromJson(x)));
-
-String subCategoryModelToJson(List<SubCategoryModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SubCategoryModel {
   SubCategoryModel({
@@ -33,7 +26,7 @@ class SubCategoryModel {
   String subCategoryName;
   String slug;
   String description;
-  Category category;
+  CategoryModel category;
 
   factory SubCategoryModel.fromJson(Map<String, dynamic> json) =>
       SubCategoryModel(
@@ -42,66 +35,10 @@ class SubCategoryModel {
             "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg",
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
-        subCategoryName: json["sub_category_name"],
-        slug: json["slug"],
-        description: json["description"],
-        category: Category.fromJson(json["category"]),
+        isActive: json["is_active"] ?? false,
+        subCategoryName: json["sub_category_name"] ?? "",
+        slug: json["slug"] ?? "",
+        description: json["description"] ?? "",
+        category: CategoryModel.fromJson(json["category"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "image": image,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "sub_category_name": subCategoryName,
-        "slug": slug,
-        "description": description,
-        "category": category.toJson(),
-      };
-}
-
-class Category {
-  Category({
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.isActive,
-    required this.categoryName,
-    required this.slug,
-    required this.image,
-    required this.categoryCode,
-  });
-
-  int id;
-  DateTime createdAt;
-  DateTime updatedAt;
-  bool isActive;
-  String categoryName;
-  String slug;
-  String image;
-  String categoryCode;
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
-        categoryName: json["category_name"],
-        slug: json["slug"],
-        image: json["image"],
-        categoryCode: json["category_code"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "category_name": categoryName,
-        "slug": slug,
-        "image": image,
-        "category_code": categoryCode,
-      };
 }

@@ -1,3 +1,4 @@
+import 'package:chardike/screens/BannerProducts/banner_products.dart';
 import 'package:chardike/screens/HomePage/components/Look_galance.dart';
 import 'package:chardike/screens/HomePage/components/all_product_section.dart';
 import 'package:chardike/screens/HomePage/components/banner_section.dart';
@@ -111,7 +112,15 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: getProportionateScreenHeight(15),
                 ),
-                BannerSection(image: "asset/custom/custom_1.png", onTap: () {}),
+                BannerSection(
+                    image: "",
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => BannerProducts(
+                                  bannerModel: _homeController.bannerList[0])));
+                    }),
                 FlashDealSection(),
                 FeatureProductSection(),
                 SizedBox(
@@ -120,11 +129,20 @@ class HomeScreen extends StatelessWidget {
                 CategorySection(),
                 JustForYouSection(),
                 MultiPartBannerSection(
-                    bigImage: "asset/custom/custom_2.png",
-                    smallImage1: "asset/custom/custom_3.png",
-                    smallImage2: "asset/custom/custom_4.png",
-                    onTap: () {}),
+                    bigImage: "",
+                    smallImage1: "",
+                    smallImage2: "",
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => BannerProducts(
+                                  bannerModel: _homeController.bannerList[0])));
+                    }),
                 AllProductSection(),
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
                 LookAtGlance()
               ],
             ),

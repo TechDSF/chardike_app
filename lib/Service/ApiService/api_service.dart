@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:chardike/screens/ProductDetails/model/review_model.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-
-import '../../screens/CartPage/model/cart_item_model.dart';
 import '../../screens/CategoryPage/model/brand_model.dart';
 import '../../screens/CategoryPage/model/category_model.dart';
 import '../../screens/CategoryPage/model/sub_category_model.dart';
@@ -17,6 +14,7 @@ import '../../screens/CheckOutPage/model/coupon_model.dart';
 import '../../screens/CheckOutPage/model/item_id_model.dart';
 import '../../screens/FeedPage/model/feed_model.dart';
 import '../../screens/FlashSaleDetails/flash_sale_model.dart';
+import '../../screens/HomePage/model/banner_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
 import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
@@ -41,10 +39,7 @@ class ApiService {
 
   ///fetch main categories
   static dynamic fetchSubCategories() async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response =
         await client.get(Uri.parse(subCategoriesUrl), headers: headers);
     if (response.statusCode == 200) {
@@ -56,7 +51,8 @@ class ApiService {
 
   ///fetch all brands
   static dynamic fetchBrands() async {
-    var response = await client.get(Uri.parse(brandUrl));
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(brandUrl), headers: headers);
     if (response.statusCode == 200) {
       print("work");
       return brandModelFromJson(response.body);
@@ -65,12 +61,21 @@ class ApiService {
     }
   }
 
+  ///fetch all brands
+  static dynamic fetchBanners() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(bannerUrl), headers: headers);
+    if (response.statusCode == 200) {
+      print("work");
+      return bannerModelFromJson(response.body);
+    } else {
+      return response.statusCode;
+    }
+  }
+
   ///fetch popular products
   static dynamic fetchPopularProducts() async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response =
         await client.get(Uri.parse(popularProductUrl), headers: headers);
     if (response.statusCode == 200) {
@@ -491,6 +496,7 @@ class ApiService {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonData;
+    print(jsonData);
 
     var response = await client.post(Uri.parse(addCartItemUrl),
         headers: headers, body: body);

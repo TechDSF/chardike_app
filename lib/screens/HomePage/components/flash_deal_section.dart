@@ -1,3 +1,5 @@
+import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/CommonData/common_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -17,17 +19,30 @@ class FlashDealSection extends StatelessWidget {
     return Column(
       children: <Widget>[
         Obx(() {
-          if (_homeController.isLatestProductLoading.value) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey.withOpacity(0.1),
-              highlightColor: Colors.grey.withOpacity(0.5),
-              child: Container(
-                height: getProportionateScreenHeight(170),
-                color: Colors.yellow,
-              ),
+          if (_homeController.isFlashProductLoading.value) {
+            return SizedBox(
+              height: SizeConfig.screenWidth * 0.4,
+              width: double.infinity,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey.withOpacity(0.1),
+                        highlightColor: Colors.grey.withOpacity(0.2),
+                        child: Container(
+                          height: SizeConfig.screenWidth * 0.4,
+                          width: SizeConfig.screenWidth * 0.32,
+                          color: Colors.yellow,
+                        ),
+                      ),
+                    );
+                  }),
             );
           } else {
-            if (_homeController.latestProductList.isEmpty) {
+            if (_homeController.flashProductList.isEmpty) {
               return SizedBox();
             } else {
               return Container(
@@ -56,15 +71,22 @@ class FlashDealSection extends StatelessWidget {
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount:
-                                  _homeController.latestProductList.length,
+                                  _homeController.flashProductList.length,
                               itemBuilder: (context, index) {
                                 var result =
-                                    _homeController.latestProductList[index];
+                                    _homeController.flashProductList[index];
                                 return InkWell(
                                     onTap: () {
                                       Navigator.pushNamed(
                                           context, ProductDetails.routeName,
-                                          arguments: result);
+                                          arguments: {
+                                            "type": false,
+                                            "ds": result
+                                                .productElement.flashPrice
+                                                .toString(),
+                                            "product": result
+                                                .productElement.flashProduct
+                                          });
                                     },
                                     child: SizedBox(
                                       height: SizeConfig.screenWidth * 0.5,
@@ -99,6 +121,8 @@ class FlashDealSection extends StatelessWidget {
                                                     image: DecorationImage(
                                                         image: NetworkImage(
                                                             result
+                                                                .productElement
+                                                                .flashProduct
                                                                 .featureImage),
                                                         fit: BoxFit.fill)),
                                                 child: Row(
@@ -137,7 +161,7 @@ class FlashDealSection extends StatelessWidget {
                                                                 0.005,
                                                           ),
                                                           Text(
-                                                            "4.9",
+                                                            "${CommonData.calculateRating(result.productElement.flashProduct.reviews)}",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
@@ -183,7 +207,10 @@ class FlashDealSection extends StatelessWidget {
                                                           .spaceAround,
                                                   children: [
                                                     Text(
-                                                      result.productName,
+                                                      result
+                                                          .productElement
+                                                          .flashProduct
+                                                          .productName,
                                                       maxLines: 2,
                                                       textAlign:
                                                           TextAlign.center,
@@ -216,7 +243,8 @@ class FlashDealSection extends StatelessWidget {
                                                                   0.027),
                                                           text: "₺" +
                                                               result
-                                                                  .sellingPrice
+                                                                  .productElement
+                                                                  .flashPrice
                                                                   .toString()),
                                                       TextSpan(
                                                           style: TextStyle(
@@ -233,6 +261,8 @@ class FlashDealSection extends StatelessWidget {
                                                                   0.019),
                                                           text: " ₺" +
                                                               result
+                                                                  .productElement
+                                                                  .flashProduct
                                                                   .regularPrice
                                                                   .toString())
                                                     ])),
@@ -246,22 +276,32 @@ class FlashDealSection extends StatelessWidget {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: <Widget>[
-                                                        SizedBox(
-                                                          width: SizeConfig
-                                                                  .screenWidth *
-                                                              0.12,
-                                                          child:
-                                                              LinearPercentIndicator(
-                                                            lineHeight: 4.0,
-                                                            percent: double
-                                                                .parse((50 /
-                                                                        100)
-                                                                    .toStringAsFixed(
-                                                                        1)),
-                                                            progressColor:
-                                                                Colors.red,
-                                                          ),
+                                                        Text(
+                                                          "${result.discount}%",
+                                                          //"${CommonData.calculateDiscount(regularPrice: double.parse(result.flashProduct.regularPrice), sellingPrice: result.flashPrice)}%",
+                                                          style: TextStyle(
+                                                              color: AllColors
+                                                                  .mainColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
+                                                        // SizedBox(
+                                                        //   width: SizeConfig
+                                                        //           .screenWidth *
+                                                        //       0.12,
+                                                        //   child:
+                                                        //       LinearPercentIndicator(
+                                                        //     lineHeight: 4.0,
+                                                        //     percent: double
+                                                        //         .parse((50 /
+                                                        //                 100)
+                                                        //             .toStringAsFixed(
+                                                        //                 1)),
+                                                        //     progressColor:
+                                                        //         Colors.red,
+                                                        //   ),
+                                                        // ),
                                                         Container(
                                                             padding: EdgeInsets
                                                                 .all(SizeConfig

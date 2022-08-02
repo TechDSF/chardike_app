@@ -1,5 +1,4 @@
 import 'package:chardike/screens/HomePage/components/banner_section.dart';
-import 'package:chardike/screens/HomePage/components/section_title.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 

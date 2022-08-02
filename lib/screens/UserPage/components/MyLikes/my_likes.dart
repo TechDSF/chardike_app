@@ -217,9 +217,12 @@ class MyLikes extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, ProductDetails.routeName,
-                                arguments:
-                                    _homeController.popularProductList[index]);
+                                context, ProductDetails.routeName, arguments: {
+                              "type": true,
+                              "ds": "0",
+                              "product":
+                                  _homeController.popularProductList[index]
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(

@@ -17,15 +17,11 @@ class SplashScreen extends StatelessWidget {
     _splashController.getSharedPreferenceData(context);
     return Scaffold(
       body: Center(
-        child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, MainScreen.routeName);
-            },
-            child: Image.asset(
-              "asset/images/chardike_logo.png",
-              height: getProportionateScreenWidth(130),
-              width: getProportionateScreenWidth(130),
-            )),
+        child: Image.asset(
+          "asset/images/chardike_logo.png",
+          height: getProportionateScreenWidth(130),
+          width: getProportionateScreenWidth(130),
+        ),
       ),
     );
   }

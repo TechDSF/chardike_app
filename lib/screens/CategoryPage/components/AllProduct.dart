@@ -122,7 +122,11 @@ class AllProduct extends StatelessWidget {
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, ProductDetails.routeName,
-                          arguments: result);
+                          arguments: {
+                            "type": true,
+                            "ds": "0",
+                            "product": result
+                          });
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -1,16 +1,16 @@
+import 'package:chardike/screens/HomePage/model/banner_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
 
-import '../../../CommonData/common_data.dart';
-import '../../../size_config.dart';
-import '../../ProductDetails/product_details.dart';
-import '../controller/home_controller.dart';
-import '../model/product_model.dart';
+import '../../CommonData/common_data.dart';
+import '../../size_config.dart';
+import '../HomePage/model/product_model.dart';
+import '../ProductDetails/product_details.dart';
 
-class ProductsYouDetails extends StatelessWidget {
-  ProductsYouDetails({Key? key}) : super(key: key);
-  final HomeController _homeController = Get.put(HomeController());
+class BannerProducts extends StatelessWidget {
+  BannerProducts({Key? key, required this.bannerModel}) : super(key: key);
+  BannerModel bannerModel;
+
   bool isTab = SizeConfig.screenWidth > 768;
 
   @override
@@ -18,7 +18,7 @@ class ProductsYouDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text("Products For You"),
+        title: Text(bannerModel.name),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -34,13 +34,17 @@ class ProductsYouDetails extends StatelessWidget {
                     context: context,
                     crossAxisCount: 2,
                     crossAxisSpacing: 5)),
-            itemCount: _homeController.latestProductList.length,
+            itemCount: bannerModel.products.length,
             itemBuilder: (context, index) {
-              ProductModel result = _homeController.latestProductList[index];
+              var result = bannerModel.products[index];
               return InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, ProductDetails.routeName,
-                      arguments: {"type": true, "ds": "0", "product": result});
+                      arguments: {
+                        "type": true,
+                        "ds": "0",
+                        "product": result.bannerProduct
+                      });
                 },
                 child: SizedBox(
                   height: isTab
@@ -70,7 +74,8 @@ class ProductsYouDetails extends StatelessWidget {
                                 Radius.circular(SizeConfig.screenWidth * 0.02),
                               ),
                               image: DecorationImage(
-                                  image: NetworkImage(result.featureImage),
+                                  image: NetworkImage(
+                                      result.bannerProduct.featureImage),
                                   fit: BoxFit.fill)),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,12 +92,13 @@ class ProductsYouDetails extends StatelessWidget {
                                               SizeConfig.screenWidth * 0.015)),
                                       color: Colors.green),
                                   child: Text(
-                                    "${CommonData.calculateDiscount(regularPrice: double.parse(result.regularPrice), sellingPrice: double.parse(result.sellingPrice))}%",
+                                    "${CommonData.calculateDiscount(regularPrice: double.parse(result.bannerProduct.regularPrice), sellingPrice: double.parse(result.bannerProduct.sellingPrice))}%",
                                     //"${result.regularPrice}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: SizeConfig.screenWidth * 0.023),
+                                        fontSize:
+                                            SizeConfig.screenWidth * 0.023),
                                   ),
                                 ),
                                 Row(
@@ -134,7 +140,7 @@ class ProductsYouDetails extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                result.productName,
+                                result.bannerProduct.productName,
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -154,7 +160,8 @@ class ProductsYouDetails extends StatelessWidget {
                                         fontSize: isTab
                                             ? SizeConfig.screenWidth * 0.025
                                             : SizeConfig.screenWidth * 0.03),
-                                    text: "₺" + result.sellingPrice.toString()),
+                                    text: "₺" +
+                                        result.bannerProduct.sellingPrice),
                                 TextSpan(
                                     style: TextStyle(
                                         color: Colors.black,
@@ -163,14 +170,16 @@ class ProductsYouDetails extends StatelessWidget {
                                         fontSize: isTab
                                             ? SizeConfig.screenWidth * 0.018
                                             : SizeConfig.screenWidth * 0.022),
-                                    text: " ₺" + result.regularPrice.toString())
+                                    text: " ₺" +
+                                        result.bannerProduct.regularPrice
+                                            .toString())
                               ])),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   RatingBar.builder(
                                     initialRating: CommonData.calculateRating(
-                                        result.reviews),
+                                        result.bannerProduct.reviews),
                                     minRating: 1,
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,
@@ -189,7 +198,7 @@ class ProductsYouDetails extends StatelessWidget {
                                     },
                                   ),
                                   Text(
-                                    "(${result.reviews.length})",
+                                    "(${result.bannerProduct.reviews.length})",
                                     style: TextStyle(
                                       fontSize: isTab
                                           ? SizeConfig.screenWidth * 0.02
@@ -204,10 +213,8 @@ class ProductsYouDetails extends StatelessWidget {
                   ),
                 ),
               );
-          
             }),
       ),
-  
     );
   }
 }

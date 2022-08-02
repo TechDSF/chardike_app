@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:chardike/screens/HomePage/components/all_product_details.dart';
 import 'package:chardike/screens/HomePage/components/section_title.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -90,7 +87,11 @@ class AllProductSection extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, ProductDetails.routeName,
-                              arguments: result);
+                              arguments: {
+                                "type": true,
+                                "ds": "0",
+                                "product": result
+                              });
                         },
                         child: SizedBox(
                           height: isTab

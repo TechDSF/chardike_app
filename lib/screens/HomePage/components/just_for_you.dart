@@ -90,8 +90,11 @@ class JustForYouSection extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, ProductDetails.routeName,
-                                arguments: result);
+                                context, ProductDetails.routeName, arguments: {
+                              "type": true,
+                              "ds": "0",
+                              "product": result
+                            });
                           },
                           child: SizedBox(
                             height: SizeConfig.screenWidth * 0.5,

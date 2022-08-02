@@ -389,7 +389,7 @@ class UserScreen extends StatelessWidget {
                 if (!_commonController.isLogin.value) {
                   Navigator.pushNamed(context, LoginScreen.routeName);
                 } else {
-                  _purchaseController.tabIndex.value = 2;
+                  _purchaseController.tabIndex.value = 1;
                   Navigator.pushNamed(context, MyPurchases.routeName);
                 }
               },

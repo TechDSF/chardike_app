@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/Service/ApiService/api_service.dart';
+import 'package:chardike/screens/FlashSaleDetails/flash_model.dart';
+import 'package:chardike/screens/FlashSaleDetails/flash_sale_model.dart';
+import 'package:chardike/screens/HomePage/model/banner_model.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +24,17 @@ class HomeController extends GetxController {
   late Timer timer;
 
   ScrollController scrollController = ScrollController();
+
+  ///for banners
+  var isBannerLoading = false.obs;
+  List<BannerModel> bannerList = List<BannerModel>.empty(growable: true).obs;
+
+  var isFlashProductLoading = false.obs;
+  List<FlashSaleModel> allFlashList =
+      List<FlashSaleModel>.empty(growable: true).obs;
+
+  List<FlashModel> flashProductList =
+      List<FlashModel>.empty(growable: true).obs;
 
   var isPopularProductLoading = false.obs;
   List<ProductModel> popularProductList =
@@ -49,16 +64,51 @@ class HomeController extends GetxController {
     getLatestProduct();
     getQueryProduct();
     getCategoryProduct();
-    //getFlashSaleProduct();
+    getFlashSaleProduct();
+    getBannerProduct();
     super.onInit();
   }
 
-  getFlashSaleProduct() async {
-    var result = await ApiService.getFlashProduct();
+  ///for banner product
+  getBannerProduct() async {
+    isBannerLoading(true);
+    var result = await ApiService.fetchBanners();
     if (result.runtimeType == int) {
-      print("Flash get error");
+      isBannerLoading(false);
+      print("Banner get error");
     } else {
-      print("Flash product length ${result.length}");
+      isBannerLoading(false);
+      bannerList = result;
+    }
+  }
+
+  getFlashSaleProduct() async {
+    isFlashProductLoading(true);
+    try {
+      var result = await ApiService.getFlashProduct();
+      if (result.runtimeType == int) {
+        print("Flash get error");
+        isFlashProductLoading(false);
+      } else {
+        List<FlashSaleModel> list = result;
+        list.forEach((element) {
+          if (element.startTime.isBefore(DateTime.now()) &&
+              element.endTime.isAfter(DateTime.now())) {
+            allFlashList.add(element);
+            element.products.forEach((e) {
+              flashProductList.add(FlashModel(
+                  discount: element.discount.toInt(), productElement: e));
+            });
+          }
+        });
+
+        print("Flash Length = ${flashProductList.length}");
+      }
+    } on Exception catch (e) {
+      print("Flash get error : ${e.toString()}");
+      isFlashProductLoading(false);
+    } finally {
+      isFlashProductLoading(false);
     }
   }
 

@@ -66,8 +66,12 @@ class FeatureProductSection extends StatelessWidget {
                                     onTap: () {
                                       Navigator.pushNamed(
                                           context, ProductDetails.routeName,
-                                          arguments: _homeController
-                                              .popularProductList[index]);
+                                          arguments: {
+                                            "type": true,
+                                            "ds": "0",
+                                            "product": _homeController
+                                                .popularProductList[index]
+                                          });
                                     },
                                     child: SizedBox(
                                       height: SizeConfig.screenWidth * 0.45,

@@ -1,11 +1,15 @@
+import 'package:chardike/CommonData/common_data.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../../size_config.dart';
+import '../controller/home_controller.dart';
 
 class FlashDealSectionTitle extends StatelessWidget {
   FlashDealSectionTitle({Key? key, required this.onTap}) : super(key: key);
   VoidCallback onTap;
+  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,8 @@ class FlashDealSectionTitle extends StatelessWidget {
                     color: Colors.deepOrange,
                     borderRadius:
                         BorderRadius.circular(getProportionateScreenWidth(3))),
-                duration: Duration(hours: 24, minutes: 00),
+                duration: CommonData.calculateEndTime(
+                    endTime: _homeController.allFlashList[0].endTime),
               )
             ],
           ),
