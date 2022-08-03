@@ -43,6 +43,7 @@ class CheckOutController extends GetxController {
   var firstBillingAddress = "".obs;
   var addressId = 0.obs;
   var firstBillingId = 0.obs;
+  var isBillingSelected = false.obs;
 
   final UserDataController _userDataController = Get.put(UserDataController());
   final CartController _cartController = Get.put(CartController());
@@ -131,10 +132,6 @@ class CheckOutController extends GetxController {
         print("User address $res");
         if (res.isNotEmpty) {
           userAddress.value = res;
-
-          addressId.value = userAddress.value[0].id;
-          firstAddressValue.value =
-              "${userAddress.value[0].area},${userAddress.value[0].city},${userAddress.value[0].region}";
         }
       }
     }
@@ -159,6 +156,10 @@ class CheckOutController extends GetxController {
         print(res);
         if (res.isNotEmpty) {
           userShippingAddress.value = res;
+
+          addressId.value = userShippingAddress.value[0].id;
+          firstAddressValue.value =
+              "${userShippingAddress.value[0].area},${userShippingAddress.value[0].city},${userShippingAddress.value[0].region}";
         }
       }
     }
@@ -213,6 +214,7 @@ class CheckOutController extends GetxController {
       required bool orderType,
       required String refCode,
       required int address,
+      required int billingAddress,
       required dynamic coupen,
       required String total,
       required String orderStatus,
@@ -252,6 +254,7 @@ class CheckOutController extends GetxController {
               refCode: uuid.v1(),
               accessToken: d['access'],
               address: address,
+              billingAddress: billingAddress,
               coupen: coupen,
               total: total,
               items: result,
@@ -311,6 +314,7 @@ class CheckOutController extends GetxController {
               refCode: uuid.v1(),
               accessToken: d['access'],
               address: address,
+              billingAddress: billingAddress,
               coupen: coupen,
               total: total,
               items: result,

@@ -58,10 +58,10 @@ class MyAddress extends StatelessWidget {
                 unselectedLabelColor: Colors.grey,
                 tabs: const [
                   Tab(
-                    text: "Billing",
+                    text: "Shipping",
                   ),
                   Tab(
-                    text: "Shipping",
+                    text: "Billing",
                   )
                 ],
               ),
@@ -70,17 +70,17 @@ class MyAddress extends StatelessWidget {
               if (_addressController.isBilling.value) {
                 return Expanded(
                   child: Obx(() {
-                    if (_checkOutController.userAddress.value.isEmpty) {
+                    if (_checkOutController.userShippingAddress.value.isEmpty) {
                       return SizedBox();
                     } else {
                       return ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount:
-                              _checkOutController.userAddress.value.length,
+                          itemCount: _checkOutController
+                              .userShippingAddress.value.length,
                           itemBuilder: (context, index) {
-                            AddressModel model =
-                                _checkOutController.userAddress.value[index];
+                            AddressModel model = _checkOutController
+                                .userShippingAddress.value[index];
                             return InkWell(
                               onTap: () {
                                 if (args == 1) {
@@ -200,137 +200,157 @@ class MyAddress extends StatelessWidget {
                 );
               } else {
                 return Expanded(
-                  child: Obx(() {
-                    if (_checkOutController.userShippingAddress.value.isEmpty) {
-                      return SizedBox();
-                    } else {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: _checkOutController
-                              .userShippingAddress.value.length,
-                          itemBuilder: (context, index) {
-                            AddressModel model = _checkOutController
-                                .userShippingAddress.value[index];
-                            return InkWell(
-                              onTap: () {
-                                if (args == 2) {
-                                  _checkOutController.firstBillingId.value =
-                                      model.id;
-                                  _checkOutController
-                                          .firstBillingAddress.value =
-                                      "${model.area},${model.city},${model.region}";
-                                  print(
-                                      "${model.area},${model.city},${model.region}");
-                                  Navigator.pop(context);
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.location_on_rounded,
-                                          color: AllColors.mainColor,
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              getProportionateScreenWidth(10),
-                                        ),
-                                        Expanded(
-                                            child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              model.area,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize:
-                                                      getProportionateScreenWidth(
-                                                          14)),
-                                            ),
-                                            SizedBox(
-                                              height:
-                                                  getProportionateScreenHeight(
-                                                      3),
-                                            ),
-                                            Text(
-                                              model.city,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize:
-                                                      getProportionateScreenWidth(
-                                                          14)),
-                                            ),
-                                            SizedBox(
-                                              height:
-                                                  getProportionateScreenHeight(
-                                                      7),
-                                            ),
-                                            Wrap(
-                                              direction: Axis.horizontal,
-                                              children: <Widget>[
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              getProportionateScreenWidth(
-                                                                  10)),
-                                                      color: Colors.teal),
-                                                  child: Text(
-                                                    model.region,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          _checkOutController.firstBillingId.value = 0;
+                          _checkOutController.firstBillingAddress.value = "";
+                          Navigator.pop(context);
+                        },
+                        leading: Icon(Icons.location_city_sharp),
+                        title: Text("Bill to the same address"),
+                      ),
+                      Divider(),
+                      Expanded(
+                        child: Obx(() {
+                          if (_checkOutController.userAddress.value.isEmpty) {
+                            return SizedBox();
+                          } else {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: _checkOutController
+                                    .userAddress.value.length,
+                                itemBuilder: (context, index) {
+                                  AddressModel model = _checkOutController
+                                      .userAddress.value[index];
+                                  return InkWell(
+                                    onTap: () {
+                                      if (args == 2) {
+                                        _checkOutController
+                                            .firstBillingId.value = model.id;
+                                        _checkOutController
+                                                .firstBillingAddress.value =
+                                            "${model.area},${model.city},${model.region}";
+                                        print(
+                                            "${model.area},${model.city},${model.region}");
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.location_on_rounded,
+                                                color: AllColors.mainColor,
+                                              ),
+                                              SizedBox(
+                                                width:
+                                                    getProportionateScreenWidth(
+                                                        10),
+                                              ),
+                                              Expanded(
+                                                  child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    model.area,
                                                     style: TextStyle(
+                                                        color: Colors.black,
                                                         fontSize:
                                                             getProportionateScreenWidth(
-                                                                12),
-                                                        color: Colors.white),
+                                                                14)),
                                                   ),
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          getProportionateScreenWidth(
-                                                              5),
-                                                      vertical:
-                                                          getProportionateScreenWidth(
-                                                              2)),
-                                                ),
-                                                SizedBox(
-                                                  width:
-                                                      getProportionateScreenWidth(
-                                                          5),
-                                                ),
-                                                Text(model.address +
-                                                    "," +
-                                                    model.area +
-                                                    "," +
-                                                    model.city +
-                                                    "," +
-                                                    model.region)
-                                              ],
-                                            )
-                                          ],
-                                        )),
-                                        SizedBox(
-                                          width:
-                                              getProportionateScreenWidth(10),
-                                        ),
-                                        TextButton(
-                                            onPressed: () {},
-                                            child: Text("Edit"))
-                                      ],
+                                                  SizedBox(
+                                                    height:
+                                                        getProportionateScreenHeight(
+                                                            3),
+                                                  ),
+                                                  Text(
+                                                    model.city,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize:
+                                                            getProportionateScreenWidth(
+                                                                14)),
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        getProportionateScreenHeight(
+                                                            7),
+                                                  ),
+                                                  Wrap(
+                                                    direction: Axis.horizontal,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        getProportionateScreenWidth(
+                                                                            10)),
+                                                            color: Colors.teal),
+                                                        child: Text(
+                                                          model.region,
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  getProportionateScreenWidth(
+                                                                      12),
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                        padding: EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                getProportionateScreenWidth(
+                                                                    5),
+                                                            vertical:
+                                                                getProportionateScreenWidth(
+                                                                    2)),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            getProportionateScreenWidth(
+                                                                5),
+                                                      ),
+                                                      Text(model.address +
+                                                          "," +
+                                                          model.area +
+                                                          "," +
+                                                          model.city +
+                                                          "," +
+                                                          model.region)
+                                                    ],
+                                                  )
+                                                ],
+                                              )),
+                                              SizedBox(
+                                                width:
+                                                    getProportionateScreenWidth(
+                                                        10),
+                                              ),
+                                              TextButton(
+                                                  onPressed: () {},
+                                                  child: Text("Edit"))
+                                            ],
+                                          ),
+                                          Divider()
+                                        ],
+                                      ),
                                     ),
-                                    Divider()
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    }
-                  }),
+                                  );
+                                });
+                          }
+                        }),
+                      )
+                    ],
+                  ),
                 );
               }
             })

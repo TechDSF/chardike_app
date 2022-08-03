@@ -161,6 +161,7 @@ class DatabaseHelper {
   Future<int> updateCartItem(
       {required String id,
       required double quantityData,
+      required double priceData,
       required double totalPriceData}) async {
     // Get a reference to the database.
     final db = await database;
@@ -169,7 +170,7 @@ class DatabaseHelper {
       // Remove the Dog from the database.
       return await db!.update(
         cartTable,
-        {quantity: quantityData, totalPrice: totalPriceData},
+        {quantity: quantityData, totalPrice: totalPriceData, price: priceData},
         where: 'id = ?',
         whereArgs: [id],
       );

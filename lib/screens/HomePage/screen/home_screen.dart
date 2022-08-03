@@ -112,15 +112,34 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: getProportionateScreenHeight(15),
                 ),
-                BannerSection(
-                    image: "",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => BannerProducts(
-                                  bannerModel: _homeController.bannerList[0])));
-                    }),
+                Obx(() {
+                  if (_homeController.isBannerLoading.value) {
+                    return SizedBox();
+                  } else {
+                    if (_homeController.bannerList.length < 1) {
+                      return SizedBox();
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.screenWidth * 0.02),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.screenWidth * 0.01),
+                          child: BannerSection(
+                              image: "",
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => BannerProducts(
+                                            bannerModel:
+                                                _homeController.banner1)));
+                              }),
+                        ),
+                      );
+                    }
+                  }
+                }),
                 FlashDealSection(),
                 FeatureProductSection(),
                 SizedBox(

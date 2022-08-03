@@ -208,10 +208,20 @@ class _ProductDetailsScreenState extends State<ProductDetails>
 
                     // }
                     if (_cartController.isHaveCart.value) {
+                      if (priceType) {
+                        print(
+                            "${(_detailsController.quantityItem.value * double.parse(productModel.sellingPrice)).toDouble()}");
+                      } else {
+                        print(
+                            "${(_detailsController.quantityItem.value * double.parse(flPrice.toString())).toDouble()}");
+                      }
                       _cartController.updateCartItem(
                           id: productModel.id.toString(),
                           quantity:
                               _detailsController.quantityItem.value.toDouble(),
+                          price: priceType
+                              ? double.parse(productModel.sellingPrice)
+                              : double.parse(flPrice.toString()),
                           totalPrice: priceType
                               ? (_detailsController.quantityItem.value *
                                       double.parse(productModel.sellingPrice))
@@ -844,23 +854,42 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Container(
-                                              height:
-                                                  getProportionateScreenHeight(
-                                                      50),
-                                              width:
-                                                  getProportionateScreenHeight(
-                                                      50),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(result
-                                                          .profile
-                                                          .profilePicture
-                                                          .toString())),
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.grey
-                                                      .withOpacity(0.5)),
-                                            ),
+                                            result.profile.profilePicture == ""
+                                                ? Container(
+                                                    height:
+                                                        getProportionateScreenHeight(
+                                                            50),
+                                                    width:
+                                                        getProportionateScreenHeight(
+                                                            50),
+                                                    child: Icon(
+                                                      Icons.person,
+                                                      size:
+                                                          getProportionateScreenHeight(
+                                                              30),
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.grey
+                                                            .withOpacity(0.5)),
+                                                  )
+                                                : Container(
+                                                    height:
+                                                        getProportionateScreenHeight(
+                                                            50),
+                                                    width:
+                                                        getProportionateScreenHeight(
+                                                            50),
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                result.profile
+                                                                    .profilePicture
+                                                                    .toString())),
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.grey
+                                                            .withOpacity(0.5)),
+                                                  ),
                                             SizedBox(
                                               width:
                                                   getProportionateScreenWidth(

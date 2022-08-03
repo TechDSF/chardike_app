@@ -78,10 +78,14 @@ class CartController extends GetxController {
   updateCartItem(
       {required String id,
       required double quantity,
+      required double price,
       required double totalPrice}) async {
     var helper = DatabaseHelper();
     var restult = await helper.updateCartItem(
-        id: id, quantityData: quantity, totalPriceData: totalPrice);
+        id: id,
+        quantityData: quantity,
+        priceData: price,
+        totalPriceData: totalPrice);
     if (restult != 0) {
       try {
         getCartProduct();

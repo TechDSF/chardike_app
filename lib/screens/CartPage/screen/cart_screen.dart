@@ -216,6 +216,8 @@ class CartScreen extends StatelessWidget {
                                     cartModel:
                                         _cartController.cartList.value[index],
                                     itemCount: result.quantity,
+                                    itemPrice: _cartController
+                                        .cartList.value[index].price,
                                   ),
                                 );
                               }),

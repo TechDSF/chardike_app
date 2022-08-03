@@ -29,6 +29,12 @@ class HomeController extends GetxController {
   var isBannerLoading = false.obs;
   List<BannerModel> bannerList = List<BannerModel>.empty(growable: true).obs;
 
+  late BannerModel banner1;
+  late BannerModel banner2;
+  late BannerModel banner3;
+  late BannerModel banner4;
+  late BannerModel banner5;
+
   var isFlashProductLoading = false.obs;
   List<FlashSaleModel> allFlashList =
       List<FlashSaleModel>.empty(growable: true).obs;
@@ -79,6 +85,16 @@ class HomeController extends GetxController {
     } else {
       isBannerLoading(false);
       bannerList = result;
+      bannerList.forEach((element) {
+        if (element.name == "Skinfood Sale") {
+          banner1 = element;
+          banner3 = element;
+          banner5 = element;
+        } else {
+          banner2 = element;
+          banner4 = element;
+        }
+      });
     }
   }
 

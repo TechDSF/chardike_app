@@ -7,10 +7,15 @@ import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
 
 class CartItem extends StatefulWidget {
-  CartItem({Key? key, required this.cartModel, required this.itemCount})
+  CartItem(
+      {Key? key,
+      required this.cartModel,
+      required this.itemCount,
+      required this.itemPrice})
       : super(key: key);
   CartModel cartModel;
   int itemCount;
+  double itemPrice;
 
   @override
   State<CartItem> createState() => _CartItemState();
@@ -55,7 +60,7 @@ class _CartItemState extends State<CartItem> {
                     width: getProportionateScreenWidth(10),
                   ),
                   Text(
-                    "${CommonData.takaSign} ${widget.itemCount * widget.cartModel.price}",
+                    "${CommonData.takaSign} ${widget.itemCount * widget.itemPrice}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -73,7 +78,7 @@ class _CartItemState extends State<CartItem> {
                         children: <TextSpan>[
                           TextSpan(
                               text:
-                                  '${CommonData.takaSign} ${widget.cartModel.price}',
+                                  '${CommonData.takaSign} ${widget.itemPrice}',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           TextSpan(text: " x ${widget.itemCount}")
                         ],

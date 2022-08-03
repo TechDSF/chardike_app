@@ -422,7 +422,7 @@ class Profile {
         dob: json["dob"],
         gender: json["gender"],
         bio: json["bio"],
-        profilePicture: json["profile_picture"],
+        profilePicture: json["profile_picture"] ?? "",
         address: json["address"],
         city: json["city"],
         zipcode: json["zipcode"],

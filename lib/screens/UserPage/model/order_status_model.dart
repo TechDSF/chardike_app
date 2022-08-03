@@ -1,16 +1,8 @@
-// To parse this JSON data, do
-//
-//     final orderStatusModel = orderStatusModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<OrderStatusModel> orderStatusModelFromJson(String str) =>
     List<OrderStatusModel>.from(
         json.decode(str).map((x) => OrderStatusModel.fromJson(x)));
-
-String orderStatusModelToJson(List<OrderStatusModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderStatusModel {
   OrderStatusModel({
@@ -56,11 +48,13 @@ class OrderStatusModel {
         id: json["id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
+        isActive: json["is_active"] ?? false,
         refCode: json["ref_code"] ?? "",
         mobile: json["mobile"] ?? "",
         email: json["email"] ?? "",
-        orderedDate: DateTime.parse(json["ordered_date"]),
+        orderedDate: json["ordered_date"] == null
+            ? DateTime.now()
+            : DateTime.parse(json["ordered_date"]),
         total: json["total"],
         orderStatus: json["order_status"],
         paymentMethod: json["payment_method"] ?? "",
@@ -72,26 +66,6 @@ class OrderStatusModel {
         items: List<ItemElement>.from(
             json["items"].map((x) => ItemElement.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "ref_code": refCode,
-        "mobile": mobile,
-        "email": email,
-        "ordered_date": orderedDate.toIso8601String(),
-        "total": total,
-        "order_status": orderStatus,
-        "payment_method": paymentMethod,
-        "payment_complete": paymentComplete,
-        "is_order": isOrder,
-        "first_deliverry": firstDeliverry,
-        "customer": customer.toJson(),
-        "coupon": coupon,
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
-      };
 }
 
 class AddressCustomer {
@@ -150,25 +124,6 @@ class AddressCustomer {
         user: json["user"] ?? 0,
         permission: List<int>.from(json["permission"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "full_name": fullName,
-        "address": address,
-        "city": city,
-        "zipcode": zipcode,
-        "country": country,
-        "phone": phone,
-        "is_phone_verified": isPhoneVerified,
-        "phone_otp": phoneOtp,
-        "customer_ID": customerId,
-        "points_gained": pointsGained,
-        "user": user,
-        "permission": List<dynamic>.from(permission.map((x) => x)),
-      };
 }
 
 class OrderStatusModelCustomer {
@@ -228,25 +183,6 @@ class OrderStatusModelCustomer {
         permission: List<Permission>.from(
             json["permission"].map((x) => Permission.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "full_name": fullName,
-        "address": address,
-        "city": city,
-        "zipcode": zipcode,
-        "country": country,
-        "phone": phone,
-        "is_phone_verified": isPhoneVerified,
-        "phone_otp": phoneOtp,
-        "customer_ID": customerId,
-        "points_gained": pointsGained,
-        "user": user.toJson(),
-        "permission": List<dynamic>.from(permission.map((x) => x.toJson())),
-      };
 }
 
 class Permission {
@@ -271,14 +207,6 @@ class Permission {
         isActive: json["is_active"],
         permissionName: json["permission_name"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "permission_name": permissionName,
-      };
 }
 
 class User {
@@ -325,22 +253,6 @@ class User {
         userPermissions:
             List<dynamic>.from(json["user_permissions"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "last_login": lastLogin.toIso8601String(),
-        "is_superuser": isSuperuser,
-        "username": username,
-        "email": email,
-        "is_staff": isStaff,
-        "is_active": isActive,
-        "password": password,
-        "confirm_password": confirmPassword,
-        "date_joined":
-            "${dateJoined.year.toString().padLeft(4, '0')}-${dateJoined.month.toString().padLeft(2, '0')}-${dateJoined.day.toString().padLeft(2, '0')}",
-        "groups": List<dynamic>.from(groups.map((x) => x)),
-        "user_permissions": List<dynamic>.from(userPermissions.map((x) => x)),
-      };
 }
 
 class ItemElement {
@@ -380,19 +292,6 @@ class ItemElement {
         totalAmountItem: json["total_amount_item"],
         item: ItemItem.fromJson(json["item"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "quantity": quantity,
-        "attr": attr,
-        "is_order": isOrder,
-        "amount_item": amountItem,
-        "total_amount_item": totalAmountItem,
-        "item": item.toJson(),
-      };
 }
 
 class ItemItem {
@@ -456,25 +355,4 @@ class ItemItem {
         category: List<int>.from(json["category"].map((x) => x)),
         subCategory: List<int>.from(json["sub_category"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "product_name": productName,
-        "slug": slug,
-        "meta": meta,
-        "short_descriptions": shortDescriptions,
-        "long_description": longDescription,
-        "alter_text": alterText,
-        "sku": sku,
-        "feature_image": featureImage,
-        "sold_count": soldCount,
-        "is_stock": isStock,
-        "brand": brand,
-        "country": country,
-        "category": List<dynamic>.from(category.map((x) => x)),
-        "sub_category": List<dynamic>.from(subCategory.map((x) => x)),
-      };
 }

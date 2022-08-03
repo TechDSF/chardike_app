@@ -103,6 +103,10 @@ class CheckOutPage extends StatelessWidget {
                           orderType: args['type'],
                           refCode: "string",
                           address: _checkOutController.addressId.value,
+                          billingAddress:
+                              _checkOutController.firstBillingId.value == 0
+                                  ? _checkOutController.addressId.value
+                                  : _checkOutController.firstBillingId.value,
                           coupen: _checkOutController.isCouponMatched.value
                               ? _couponTextController.text
                               : null,

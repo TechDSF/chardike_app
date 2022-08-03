@@ -501,6 +501,7 @@ class ApiService {
     var response = await client.post(Uri.parse(addCartItemUrl),
         headers: headers, body: body);
     if (response.statusCode == 200) {
+      print("Cart item add success ${response.body}");
       return itemIdModelFromJson(response.body);
     } else {
       print("Add cart item error ${response.reasonPhrase}");
@@ -513,6 +514,7 @@ class ApiService {
       {required String refCode,
       required String accessToken,
       required int address,
+      required int billingAddress,
       required dynamic coupen,
       required String total,
       required dynamic items,
@@ -535,12 +537,12 @@ class ApiService {
     var body = json.encode({
       "ref_code": ref.toString(),
       "address_shipping": address,
-      "address_billing": address,
+      "address_billing": billingAddress,
       "coupon": coupen,
       "ordered_date": date,
       "items": items,
       "total": total,
-      "order_status": "Order Processing",
+      "order_status": "Pending",
       "is_order": true,
       "mobile": mobile,
       "email": email,
@@ -656,6 +658,34 @@ class ApiService {
       return reviewModelFromJson(response.body);
     } else {
       print(response.statusCode);
+    }
+  }
+
+  ///create product review
+  static Future<bool> createReview(
+      {required int profileId,
+      required int productId,
+      required int star,
+      required String message}) async {
+    var headers = {"Content-Type": "application/json"};
+
+    print("$profileId , $productId, $star, $message");
+
+    var body = jsonEncode({
+      "profile": profileId,
+      "product": productId,
+      "star_count": star,
+      "review": message
+    });
+
+    var response = await client.post(Uri.parse(createReviewUrl),
+        headers: headers, body: body);
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      print("${response.reasonPhrase}  ${response.statusCode.toString()}");
+      return false;
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
+import '../../BannerProducts/banner_products.dart';
 import '../../ProductDetails/product_details.dart';
 import '../controller/home_controller.dart';
 import '../model/product_model.dart';
@@ -38,11 +39,29 @@ class JustForYouSection extends StatelessWidget {
               SizedBox(
                 height: getProportionateScreenHeight(10),
               ),
-              ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(getProportionateScreenWidth(5)),
-                  child: BannerSection(
-                      image: "asset/custom/custom_1.png", onTap: () {})),
+              Obx(() {
+                if (_homeController.isBannerLoading.value) {
+                  return SizedBox();
+                } else {
+                  if (_homeController.bannerList.length < 2) {
+                    return SizedBox();
+                  } else {
+                    return ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(getProportionateScreenWidth(5)),
+                      child: BannerSection(
+                          image: "",
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => BannerProducts(
+                                        bannerModel: _homeController.banner2)));
+                          }),
+                    );
+                  }
+                }
+              }),
               SizedBox(
                 height: getProportionateScreenHeight(10),
               ),

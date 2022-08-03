@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../size_config.dart';
 
 import '../../../controller/purchase_controller.dart';
+import '../complete_status_item.dart';
 
 class CompleteStatus extends StatelessWidget {
   CompleteStatus({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class CompleteStatus extends StatelessWidget {
                   itemCount: _purchaseController.statusCompleteList.length,
                   itemBuilder: (context, index) {
                     var result = _purchaseController.statusCompleteList[index];
-                    return StatusItem(result: result);
+                    return CompleteStatusItem(result: result);
                   });
             }
           }
