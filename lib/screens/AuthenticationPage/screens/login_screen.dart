@@ -283,7 +283,7 @@ class LoginScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.black.withOpacity(0.7))),
                     TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => RegisterScreen()));

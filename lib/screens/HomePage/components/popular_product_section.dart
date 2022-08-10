@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../size_config.dart';
-import '../../FeatureProduct/screens/feature_products.dart';
+import '../../PopularProduct/popular_product.dart';
 import '../../ProductDetails/product_details.dart';
 import '../controller/home_controller.dart';
 
-class FeatureProductSection extends StatelessWidget {
-  FeatureProductSection({Key? key}) : super(key: key);
+class PopularProductSection extends StatelessWidget {
+  PopularProductSection({Key? key}) : super(key: key);
   final HomeController _homeController = Get.put(HomeController());
   bool isTab = SizeConfig.screenWidth > 768;
 
@@ -41,10 +41,11 @@ class FeatureProductSection extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: SizeConfig.screenWidth * 0.02),
                       child: SectionTitle(
-                          title: "Popular Product",
+                          title: "Feature Product",
+                          buttonText: "See More",
                           onTap: () {
                             Navigator.pushNamed(
-                                context, FeatureProduct.routeName);
+                                context, PopularProduct.routeName);
                           }),
                     ),
                     SizedBox(
@@ -69,8 +70,7 @@ class FeatureProductSection extends StatelessWidget {
                                           arguments: {
                                             "type": true,
                                             "ds": "0",
-                                            "product": _homeController
-                                                .popularProductList[index]
+                                            "product": result
                                           });
                                     },
                                     child: SizedBox(

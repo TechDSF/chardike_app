@@ -82,8 +82,8 @@ class FlashSaleDetails extends StatelessWidget {
                     Navigator.pushNamed(context, ProductDetails.routeName,
                         arguments: {
                           "type": false,
-                          "ds": result.productElement.flashPrice.toString(),
-                          "product": result.productElement.flashProduct
+                          "ds": result.flashPrice.toString(),
+                          "product": result.flashProduct
                         });
                   },
                   child: SizedBox(
@@ -115,8 +115,8 @@ class FlashSaleDetails extends StatelessWidget {
                                       SizeConfig.screenWidth * 0.02),
                                 ),
                                 image: DecorationImage(
-                                    image: NetworkImage(result.productElement
-                                        .flashProduct.featureImage),
+                                    image: NetworkImage(
+                                        result.flashProduct.featureImage),
                                     fit: BoxFit.fill)),
                             child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +135,7 @@ class FlashSaleDetails extends StatelessWidget {
                                                     0.015)),
                                         color: Colors.green),
                                     child: Text(
-                                      "${result.discount}%",
+                                      "${result.flashDiscount}%",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -183,8 +183,7 @@ class FlashSaleDetails extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Text(
-                                  result
-                                      .productElement.flashProduct.productName,
+                                  result.flashProduct.productName,
                                   maxLines: 2,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -204,9 +203,7 @@ class FlashSaleDetails extends StatelessWidget {
                                           fontSize: isTab
                                               ? SizeConfig.screenWidth * 0.025
                                               : SizeConfig.screenWidth * 0.03),
-                                      text: "₺" +
-                                          result.productElement.flashPrice
-                                              .toString()),
+                                      text: "₺" + result.flashPrice.toString()),
                                   TextSpan(
                                       style: TextStyle(
                                           color: Colors.black,
@@ -217,8 +214,7 @@ class FlashSaleDetails extends StatelessWidget {
                                               ? SizeConfig.screenWidth * 0.018
                                               : SizeConfig.screenWidth * 0.022),
                                       text: " ₺" +
-                                          result.productElement.flashProduct
-                                              .regularPrice
+                                          result.flashProduct.regularPrice
                                               .toString())
                                 ])),
                                 Row(
@@ -226,8 +222,7 @@ class FlashSaleDetails extends StatelessWidget {
                                   children: [
                                     RatingBar.builder(
                                       initialRating: CommonData.calculateRating(
-                                          result.productElement.flashProduct
-                                              .reviews),
+                                          result.flashProduct.reviews),
                                       minRating: 1,
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
@@ -246,7 +241,7 @@ class FlashSaleDetails extends StatelessWidget {
                                       },
                                     ),
                                     Text(
-                                      "(${result.productElement.flashProduct.reviews.length})",
+                                      "(${result.flashProduct.reviews.length})",
                                       style: TextStyle(
                                         fontSize: isTab
                                             ? SizeConfig.screenWidth * 0.02
@@ -263,6 +258,5 @@ class FlashSaleDetails extends StatelessWidget {
                 );
               }),
         ));
-  
   }
 }

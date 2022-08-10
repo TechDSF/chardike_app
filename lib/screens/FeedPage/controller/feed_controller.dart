@@ -54,7 +54,13 @@ class FeedController extends GetxController {
       print("Blog review fetch Error");
       isReviewBlogLoading(false);
     } else {
-      reviewList.value = result;
+      List<ReviewModel> list = result;
+      list.forEach((element) {
+        if (element.isActive) {
+          reviewList.value.add(element);
+        }
+      });
+
       isReviewBlogLoading(false);
     }
   }

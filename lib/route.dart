@@ -5,15 +5,16 @@ import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
-import 'package:chardike/screens/FeatureProduct/screens/feature_products.dart';
 import 'package:chardike/screens/FlashSaleDetails/screens/flash_sale_details.dart';
 import 'package:chardike/screens/MainScreen/main_screen.dart';
 import 'package:chardike/screens/PaymentMethodPage/screen/payment_screen.dart';
+import 'package:chardike/screens/PopularProduct/popular_product.dart';
 import 'package:chardike/screens/ProductDetails/product_details.dart';
 import 'package:chardike/screens/SearchPage/screen/main_search_screen.dart';
 import 'package:chardike/screens/SplashScreen/splash_screen.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_main.dart';
 import 'package:chardike/screens/TopProduct/screens/top_product_page.dart';
+import 'package:chardike/screens/TopRankProduct/screens/top_rank_product.dart';
 import 'package:chardike/screens/UserPage/components/MyAddress/add_new_address.dart';
 import 'package:chardike/screens/UserPage/components/MyAddress/my_address.dart';
 import 'package:chardike/screens/UserPage/components/MyLikes/my_likes.dart';
@@ -58,7 +59,8 @@ var routes = <String, WidgetBuilder>{
   ChangePasswordScreen.routeName: (context) => ChangePasswordScreen(),
   HelpCenter.routeName: (context) => HelpCenter(),
   TopProductMain.routeName: (context) => TopProductMain(),
-  FeatureProduct.routeName: (context) => FeatureProduct(),
+  TopRankProduct.routeName: (context) => TopRankProduct(),
+  PopularProduct.routeName: (context) => PopularProduct(),
   MyLikes.routeName: (context) => MyLikes(),
   FreeVouchers.routeName: (context) => FreeVouchers(),
   FreeGifts.routeName: (context) => FreeGifts(),

@@ -104,9 +104,21 @@ class AllSearchProducts extends StatelessWidget {
                 });
           } else {
             if (_searchController.searchProductList.value.isEmpty) {
-              return Center(
-                child: Text("No Product available under this key"),
-              );
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: double.infinity,
+                    ),
+                    Container(
+                      height: SizeConfig.screenWidth * 0.7,
+                      width: SizeConfig.screenWidth * 0.7,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image:
+                                  AssetImage("asset/images/empty_cart.png"))),
+                    ),
+                  ]);
             } else {
               return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -267,6 +279,7 @@ class AllSearchProducts extends StatelessWidget {
                       ),
                     );
                   });
+          
             }
           }
         }));

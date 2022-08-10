@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:chardike/screens/ProductDetails/model/review_model.dart';
@@ -15,6 +16,7 @@ import '../../screens/CheckOutPage/model/item_id_model.dart';
 import '../../screens/FeedPage/model/feed_model.dart';
 import '../../screens/FlashSaleDetails/flash_sale_model.dart';
 import '../../screens/HomePage/model/banner_model.dart';
+import '../../screens/HomePage/model/discount_product_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
 import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
@@ -25,13 +27,10 @@ class ApiService {
 
   ///fetch main categories
   static dynamic fetchCategories() async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response = await client.get(Uri.parse(categoriesUrl), headers: headers);
     if (response.statusCode == 200) {
-      return categoryModelFromJson(response.body);
+      return categoryModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -43,7 +42,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(subCategoriesUrl), headers: headers);
     if (response.statusCode == 200) {
-      return subCategoryModelFromJson(response.body);
+      return subCategoryModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -55,7 +54,7 @@ class ApiService {
     var response = await client.get(Uri.parse(brandUrl), headers: headers);
     if (response.statusCode == 200) {
       print("work");
-      return brandModelFromJson(response.body);
+      return brandModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -67,19 +66,19 @@ class ApiService {
     var response = await client.get(Uri.parse(bannerUrl), headers: headers);
     if (response.statusCode == 200) {
       print("work");
-      return bannerModelFromJson(response.body);
+      return bannerModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
   }
 
   ///fetch popular products
-  static dynamic fetchPopularProducts() async {
+  static dynamic fetchFeatureProducts() async {
     var headers = {'Content-Type': 'application/json'};
     var response =
-        await client.get(Uri.parse(popularProductUrl), headers: headers);
+        await client.get(Uri.parse(featureProductUrl), headers: headers);
     if (response.statusCode == 200) {
-      return productModelFromJson(response.body);
+      return productModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -90,7 +89,7 @@ class ApiService {
     var headers = {'Content-Type': 'application/json'};
     var response = await client.get(Uri.parse(falshSaleUrl), headers: headers);
     if (response.statusCode == 200) {
-      return flashSaleModelFromJson(response.body);
+      return flashSaleModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -98,14 +97,23 @@ class ApiService {
 
   ///fetch latest products
   static dynamic fetchLatestProducts() async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response =
         await client.get(Uri.parse(latestProductUrl), headers: headers);
     if (response.statusCode == 200) {
-      return productModelFromJson(response.body);
+      return productModelFromJson(utf8.decode(response.bodyBytes));
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch latest products
+  static dynamic fetchTopSaleProducts() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response =
+        await client.get(Uri.parse(topSaleProductUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return productModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -113,14 +121,11 @@ class ApiService {
 
   ///get query product
   static dynamic fetchQueryProducts() async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response =
         await client.get(Uri.parse(queryProductUrl), headers: headers);
     if (response.statusCode == 200) {
-      return productModelFromJson(response.body);
+      return productModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -128,13 +133,10 @@ class ApiService {
 
   ///get country list
   static dynamic fetchCountry() async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response = await client.get(Uri.parse(countryUrl), headers: headers);
     if (response.statusCode == 200) {
-      return countryModelFromJson(response.body);
+      return countryModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -142,15 +144,12 @@ class ApiService {
 
   ///fetch category product by id
   static dynamic fetchCategoryProductById({required String id}) async {
-    var headers = {
-      'Cookie':
-          'csrftoken=b5Agy7kbhlA1IR4YDJzOK3MUBty739mrPIbiepJxY6Na2bjbOPKG3GzodAWJLjIg'
-    };
+    var headers = {'Content-Type': 'application/json'};
     var response = await client.get(
         Uri.parse(baseUrl + "queries/products/category/$id/"),
         headers: headers);
     if (response.statusCode == 200) {
-      return categoryProductModelFromJson(response.body);
+      return categoryProductModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -170,72 +169,77 @@ class ApiService {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
+    try {
+      if (image) {
+        print("image e dhukse $imageData");
+        print(fullName + " " + dob + " " + gender + " " + address + " " + bio);
+        var request =
+            http.MultipartRequest('POST', Uri.parse(updateProfileUrl));
+        request.fields.addAll({
+          'full_name': fullName,
+          'dob': dob,
+          'gender': gender,
+          'address': address,
+          'bio': bio,
+        });
+        request.files.add(
+            await http.MultipartFile.fromPath('profile_picture', imageData));
+        request.headers.addAll(headers);
 
-    if (image) {
-      print("image e dhukse $imageData");
-      var request = http.MultipartRequest('POST', Uri.parse(updateProfileUrl));
-      request.fields.addAll({
-        'full_name': fullName,
-        'dob': dob,
-        'gender': gender,
-        'address': address,
-        'bio': bio,
-      });
-      request.files
-          .add(await http.MultipartFile.fromPath('profile_picture', imageData));
-      request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
 
-      http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        var responseString = await response.stream.bytesToString();
-        final jsonData = json.decode(responseString);
-        Map<String, String> map = {
-          "full_name": jsonData["full_name"] ?? "Demo User",
-          "dob": jsonData["dob"] ?? "",
-          "gender": jsonData["gender"] ?? "",
-          "profile_picture": jsonData["profile_picture"] ?? "",
-          "address": jsonData["address"] ?? "",
-          "city": jsonData["city"] ?? "",
-          "zipcode": jsonData["zipcode"] ?? "",
-          "country": jsonData["country"] ?? "",
-          "phone": jsonData["phone"] ?? ""
-        };
-        return map;
+        if (response.statusCode == 200) {
+          var responseString = await response.stream.bytesToString();
+          final jsonData = json.decode(responseString);
+          Map<String, String> map = {
+            "full_name": jsonData["full_name"] ?? "Demo User",
+            "dob": jsonData["dob"].toString() ?? "",
+            "gender": jsonData["gender"] ?? "",
+            "profile_picture": jsonData["profile_picture"] ?? "",
+            "address": jsonData["address"] ?? "",
+            "city": jsonData["city"] ?? "",
+            "zipcode": jsonData["zipcode"] ?? "",
+            "country": jsonData["country"] ?? "",
+            "phone": jsonData["phone"] ?? ""
+          };
+          return map;
+        } else {
+          return false;
+        }
       } else {
-        return false;
-      }
-    } else {
-      print("image e dhuke ni");
-      print(fullName + " " + dob + " " + gender + " " + address + " " + bio);
-      var body = jsonEncode({
-        'full_name': fullName,
-        'dob': dob,
-        'gender': gender,
-        'address': "Address",
-        'bio': bio,
-      });
+        print("image e dhuke ni");
+        print(fullName + " " + dob + " " + gender + " " + address + " " + bio);
+        var body = jsonEncode({
+          'full_name': fullName,
+          'dob': dob,
+          'gender': gender,
+          'address': "Address",
+          'bio': bio,
+        });
 
-      var response = await client.post(Uri.parse(updateProfileUrl),
-          body: body, headers: headers);
-      if (response.statusCode == 200) {
-        var jsonData = json.decode(response.body);
-        print(jsonData);
-        Map<String, String> map = {
-          "full_name": jsonData["full_name"] ?? "Demo User",
-          "dob": jsonData["dob"] ?? "",
-          "gender": jsonData["gender"] ?? "",
-          "profile_picture": jsonData["profile_picture"] ?? "",
-          "address": jsonData["address"] ?? "",
-          "city": jsonData["city"] ?? "",
-          "zipcode": jsonData["zipcode"] ?? "",
-          "country": jsonData["country"] ?? "",
-          "phone": jsonData["phone"] ?? ""
-        };
-        return map;
-      } else {
-        return false;
+        var response = await client.post(Uri.parse(updateProfileUrl),
+            body: body, headers: headers);
+        if (response.statusCode == 200) {
+          var jsonData = json.decode(utf8.decode(response.bodyBytes));
+          print(jsonData);
+          Map<String, String> map = {
+            "full_name": jsonData["full_name"] ?? "Demo User",
+            "dob": jsonData['dob'].toString() ?? "",
+            "gender": jsonData["gender"] ?? "",
+            "profile_picture": jsonData["profile_picture"] ?? "",
+            "address": jsonData["address"] ?? "",
+            "city": jsonData["city"] ?? "",
+            "zipcode": jsonData["zipcode"] ?? "",
+            "country": jsonData["country"] ?? "",
+            "phone": jsonData["phone"] ?? ""
+          };
+          return map;
+        } else {
+          return false;
+        }
       }
+    } on Exception catch (e) {
+      return false;
     }
   }
 
@@ -249,7 +253,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(profileDataUrl), headers: headers);
     if (response.statusCode == 200) {
-      var jsonData = json.decode(response.body);
+      var jsonData = json.decode(utf8.decode(response.bodyBytes));
       Map<String, String> map = {
         "full_name": jsonData["full_name"] ?? "Demo User",
         "dob": jsonData["dob"] ?? "",
@@ -310,7 +314,7 @@ class ApiService {
     };
     var response = await client.get(Uri.parse(sliderUrl), headers: headers);
     if (response.statusCode == 200) {
-      return sliderModelFromMap(response.body);
+      return sliderModelFromMap(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -385,7 +389,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(queryProductUrl), headers: headers);
     if (response.statusCode == 200) {
-      return productModelFromJson(response.body);
+      return productModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -405,6 +409,7 @@ class ApiService {
       var data = {"refresh": jsonData['refresh'], "access": jsonData['access']};
       return data;
     } else {
+      print("Error to get update profile token");
       return response.statusCode;
     }
   }
@@ -470,7 +475,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(billingAddressUrl), headers: headers);
     if (response.statusCode == 200) {
-      return addressModelFromJson(response.body);
+      return addressModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -483,7 +488,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(shippingAddressUrl), headers: headers);
     if (response.statusCode == 200) {
-      return addressModelFromJson(response.body);
+      return addressModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -502,7 +507,7 @@ class ApiService {
         headers: headers, body: body);
     if (response.statusCode == 200) {
       print("Cart item add success ${response.body}");
-      return itemIdModelFromJson(response.body);
+      return itemIdModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       print("Add cart item error ${response.reasonPhrase}");
       return false;
@@ -532,10 +537,11 @@ class ApiService {
     var date =
         "${datetime.year}-${datetime.month}-${datetime.day}T${datetime.hour}:${datetime.minute}:22Z";
 
-    var ref = DateTime.now().millisecondsSinceEpoch;
-    print(coupen + " " + email);
+    var ref = DateTime.now().microsecondsSinceEpoch.toString();
+    var refCode = ref.substring(0, 12);
+
     var body = json.encode({
-      "ref_code": ref.toString(),
+      "ref_code": refCode,
       "address_shipping": address,
       "address_billing": billingAddress,
       "coupon": coupen,
@@ -545,6 +551,7 @@ class ApiService {
       "order_status": "Pending",
       "is_order": true,
       "mobile": mobile,
+      "user_device": Platform.isIOS ? "IOS" : "ANDROID",
       "email": email,
       "fast_delivery": firstDeliverry
     });
@@ -580,7 +587,7 @@ class ApiService {
     var response =
         await client.get(Uri.parse(orderStatusUrl), headers: headers);
     if (response.statusCode == 200) {
-      return orderStatusModelFromJson(response.body);
+      return orderStatusModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -591,7 +598,7 @@ class ApiService {
     var headers = {'Content-Type': 'application/json'};
     var response = await client.get(Uri.parse(blogUrl), headers: headers);
     if (response.statusCode == 200) {
-      return feedModelFromJson(response.body);
+      return feedModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -603,7 +610,7 @@ class ApiService {
     var response = await client.get(Uri.parse(adminBlogUrl), headers: headers);
 
     if (response.statusCode == 200) {
-      return feedModelFromJson(response.body);
+      return feedModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       print(response.reasonPhrase);
     }
@@ -638,12 +645,14 @@ class ApiService {
   }
 
   ///fetch all coupon
-  static dynamic getAllCoupon() async {
+  static dynamic getAllCoupon({required String couponName}) async {
     var headers = {'Content-Type': 'application/json'};
-    var response = await client.get(Uri.parse(couponUrl), headers: headers);
+    var response = await client.get(
+        Uri.parse(baseUrl + "order/coupon/singleview/$couponName/"),
+        headers: headers);
 
     if (response.statusCode == 200) {
-      return couponModelFromJson(response.body);
+      return couponModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       print(response.statusCode);
     }
@@ -655,7 +664,7 @@ class ApiService {
     var response = await client.get(Uri.parse(reviewListUrl), headers: headers);
 
     if (response.statusCode == 200) {
-      return reviewModelFromJson(response.body);
+      return reviewModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       print(response.statusCode);
     }
@@ -672,6 +681,7 @@ class ApiService {
     print("$profileId , $productId, $star, $message");
 
     var body = jsonEncode({
+      "is_active": false,
       "profile": profileId,
       "product": productId,
       "star_count": star,
@@ -686,6 +696,19 @@ class ApiService {
     } else {
       print("${response.reasonPhrase}  ${response.statusCode.toString()}");
       return false;
+    }
+  }
+
+  ///fetch all reviews
+  static dynamic getDiscountProduct() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response =
+        await client.get(Uri.parse(discountProductUrl), headers: headers);
+
+    if (response.statusCode == 200) {
+      return discountProductModelFromJson(utf8.decode(response.bodyBytes));
+    } else {
+      print(response.statusCode);
     }
   }
 }

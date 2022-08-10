@@ -18,6 +18,9 @@ class FlashDealSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        SizedBox(
+          height: getProportionateScreenHeight(10),
+        ),
         Obx(() {
           if (_homeController.isFlashProductLoading.value) {
             return SizedBox(
@@ -46,7 +49,7 @@ class FlashDealSection extends StatelessWidget {
               return SizedBox();
             } else {
               return Container(
-                color: Color(0xFFF4F2F2),
+                color: Colors.grey.withOpacity(0.1),
                 child: Column(
                   children: [
                     SizedBox(
@@ -81,11 +84,8 @@ class FlashDealSection extends StatelessWidget {
                                           context, ProductDetails.routeName,
                                           arguments: {
                                             "type": false,
-                                            "ds": result
-                                                .productElement.flashPrice
-                                                .toString(),
-                                            "product": result
-                                                .productElement.flashProduct
+                                            "ds": result.flashPrice.toString(),
+                                            "product": result.flashProduct
                                           });
                                     },
                                     child: SizedBox(
@@ -120,9 +120,7 @@ class FlashDealSection extends StatelessWidget {
                                                                 0.02)),
                                                     image: DecorationImage(
                                                         image: NetworkImage(
-                                                            result
-                                                                .productElement
-                                                                .flashProduct
+                                                            result.flashProduct
                                                                 .featureImage),
                                                         fit: BoxFit.fill)),
                                                 child: Row(
@@ -161,7 +159,7 @@ class FlashDealSection extends StatelessWidget {
                                                                 0.005,
                                                           ),
                                                           Text(
-                                                            "${CommonData.calculateRating(result.productElement.flashProduct.reviews)}",
+                                                            "${CommonData.calculateRating(result.flashProduct.reviews)}",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
@@ -207,9 +205,7 @@ class FlashDealSection extends StatelessWidget {
                                                           .spaceAround,
                                                   children: [
                                                     Text(
-                                                      result
-                                                          .productElement
-                                                          .flashProduct
+                                                      result.flashProduct
                                                           .productName,
                                                       maxLines: 2,
                                                       textAlign:
@@ -242,9 +238,7 @@ class FlashDealSection extends StatelessWidget {
                                                                       .screenWidth *
                                                                   0.027),
                                                           text: "₺" +
-                                                              result
-                                                                  .productElement
-                                                                  .flashPrice
+                                                              result.flashPrice
                                                                   .toString()),
                                                       TextSpan(
                                                           style: TextStyle(
@@ -261,7 +255,6 @@ class FlashDealSection extends StatelessWidget {
                                                                   0.019),
                                                           text: " ₺" +
                                                               result
-                                                                  .productElement
                                                                   .flashProduct
                                                                   .regularPrice
                                                                   .toString())
@@ -277,7 +270,7 @@ class FlashDealSection extends StatelessWidget {
                                                               .spaceBetween,
                                                       children: <Widget>[
                                                         Text(
-                                                          "${result.discount}%",
+                                                          "${result.flashDiscount}%",
                                                           //"${CommonData.calculateDiscount(regularPrice: double.parse(result.flashProduct.regularPrice), sellingPrice: result.flashPrice)}%",
                                                           style: TextStyle(
                                                               color: AllColors

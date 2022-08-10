@@ -9,9 +9,6 @@ import 'dart:convert';
 CategoryProductModel categoryProductModelFromJson(String str) =>
     CategoryProductModel.fromJson(json.decode(str));
 
-String categoryProductModelToJson(CategoryProductModel data) =>
-    json.encode(data.toJson());
-
 class CategoryProductModel {
   CategoryProductModel({
     required this.id,
@@ -30,11 +27,4 @@ class CategoryProductModel {
         categoryProducts: List<ProductModel>.from(
             json["Category_products"].map((x) => ProductModel.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_name": categoryName,
-        "Category_products":
-            List<dynamic>.from(categoryProducts.map((x) => x.toJson())),
-      };
 }

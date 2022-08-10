@@ -36,6 +36,7 @@ class CategorySection extends StatelessWidget {
           ///category section
           SectionTitle(
               title: "Category",
+              buttonText: "View All",
               onTap: () {
                 Navigator.push(
                     context,
@@ -163,7 +164,7 @@ class CategorySection extends StatelessWidget {
             }
           }),
           SizedBox(
-            height: getProportionateScreenHeight(10),
+            height: getProportionateScreenHeight(5),
           ),
         ],
       ),

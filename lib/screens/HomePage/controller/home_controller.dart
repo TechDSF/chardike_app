@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'package:chardike/CommonData/common_data.dart';
+import 'dart:math';
 import 'package:chardike/Service/ApiService/api_service.dart';
-import 'package:chardike/screens/FlashSaleDetails/flash_model.dart';
 import 'package:chardike/screens/FlashSaleDetails/flash_sale_model.dart';
 import 'package:chardike/screens/HomePage/model/banner_model.dart';
+import 'package:chardike/screens/HomePage/model/discount_product_model.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../size_config.dart';
 import '../../CategoryPage/model/category_model.dart';
 
 class HomeController extends GetxController {
@@ -29,18 +28,24 @@ class HomeController extends GetxController {
   var isBannerLoading = false.obs;
   List<BannerModel> bannerList = List<BannerModel>.empty(growable: true).obs;
 
-  late BannerModel banner1;
-  late BannerModel banner2;
-  late BannerModel banner3;
-  late BannerModel banner4;
-  late BannerModel banner5;
+  BannerModel? customOfferBanner;
+  BannerModel? onlyForYouBanner;
+  BannerModel? squreBanner;
+  BannerModel? sideBanner1;
+  BannerModel? sideBanner2;
+  BannerModel? newArrivalsBanner;
+  BannerModel? dontMissBanner;
+  BannerModel? todayHotSaleBanner;
 
   var isFlashProductLoading = false.obs;
   List<FlashSaleModel> allFlashList =
       List<FlashSaleModel>.empty(growable: true).obs;
+  List<FlashProduct> flashProductList =
+      List<FlashProduct>.empty(growable: true).obs;
 
-  List<FlashModel> flashProductList =
-      List<FlashModel>.empty(growable: true).obs;
+  var isTopProductLoading = false.obs;
+  List<ProductModel> topProductList =
+      List<ProductModel>.empty(growable: true).obs;
 
   var isPopularProductLoading = false.obs;
   List<ProductModel> popularProductList =
@@ -62,11 +67,18 @@ class HomeController extends GetxController {
 
   List<TopLinkModel> topLinkList = List<TopLinkModel>.empty(growable: true).obs;
 
+  var isDiscountDataLoading = false.obs;
+  List<DiscountProductModel> discountProductList =
+      List<DiscountProductModel>.empty(growable: true).obs;
+  List<DiscountProductModel> sixtyDiscountProductList =
+      List<DiscountProductModel>.empty(growable: true).obs;
+
   @override
   void onInit() {
     getTopLinkData();
     getSliderItem();
     getPopularProduct();
+    getTopSaleProduct();
     getLatestProduct();
     getQueryProduct();
     getCategoryProduct();
@@ -75,26 +87,93 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
+  ///discount products
+  getDiscountProducts() async {
+    isDiscountDataLoading(true);
+    try {
+      var result = await ApiService.getDiscountProduct();
+      if (result.runtimeType == int) {
+        print("Error to get Discount Product");
+        isDiscountDataLoading(false);
+      } else {
+        discountProductList = result;
+        sixtyDiscountProductList.clear();
+        discountProductList.forEach((element) {
+          if (element.discount >= 60) {
+            sixtyDiscountProductList.add(element);
+          }
+        });
+      }
+    } on Exception catch (e) {
+      // TODO
+      print("Error to get Discount Product");
+      isDiscountDataLoading(false);
+    } finally {
+      isDiscountDataLoading(false);
+    }
+  }
+
+  ///get top sale product
+  getTopSaleProduct() async {
+    isTopProductLoading(true);
+    try {
+      var result = await ApiService.fetchTopSaleProducts();
+      if (result.runtimeType == int) {
+        isTopProductLoading(false);
+        print("Top Sale Product fetch Error");
+      } else {
+        topProductList = result;
+        isTopProductLoading(false);
+      }
+    } on Exception catch (e) {
+      isTopProductLoading(false);
+      print("Error top sale = $e");
+    }
+  }
+
   ///for banner product
   getBannerProduct() async {
     isBannerLoading(true);
-    var result = await ApiService.fetchBanners();
-    if (result.runtimeType == int) {
+    try {
+      var result = await ApiService.fetchBanners();
+      if (result.runtimeType == int) {
+        isBannerLoading(false);
+        print("Banner get error");
+      } else {
+        bannerList = result;
+        bannerList.forEach((element) {
+          if (element.name.toLowerCase().trim() ==
+              ("Summer sale").toLowerCase().trim()) {
+            customOfferBanner = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("Only for you").toLowerCase().trim()) {
+            onlyForYouBanner = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("Squre Banner").toLowerCase().trim()) {
+            squreBanner = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("Side Banner1").toLowerCase().trim()) {
+            sideBanner1 = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("Side Banner2").toLowerCase().trim()) {
+            sideBanner2 = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("New Arrivals").toLowerCase().trim()) {
+            newArrivalsBanner = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("Today Hot Sale").toLowerCase().trim()) {
+            todayHotSaleBanner = element;
+          } else if (element.name.toLowerCase().trim() ==
+              ("Do not Miss").toLowerCase().trim()) {
+            dontMissBanner = element;
+          }
+        });
+      }
+    } on Exception catch (e) {
+      // TODO
       isBannerLoading(false);
-      print("Banner get error");
-    } else {
+    } finally {
       isBannerLoading(false);
-      bannerList = result;
-      bannerList.forEach((element) {
-        if (element.name == "Skinfood Sale") {
-          banner1 = element;
-          banner3 = element;
-          banner5 = element;
-        } else {
-          banner2 = element;
-          banner4 = element;
-        }
-      });
     }
   }
 
@@ -111,14 +190,13 @@ class HomeController extends GetxController {
           if (element.startTime.isBefore(DateTime.now()) &&
               element.endTime.isAfter(DateTime.now())) {
             allFlashList.add(element);
-            element.products.forEach((e) {
-              flashProductList.add(FlashModel(
-                  discount: element.discount.toInt(), productElement: e));
-            });
           }
         });
-
-        print("Flash Length = ${flashProductList.length}");
+        allFlashList.forEach((e) {
+          e.products.forEach((element) {
+            flashProductList.add(element);
+          });
+        });
       }
     } on Exception catch (e) {
       print("Flash get error : ${e.toString()}");
@@ -145,15 +223,22 @@ class HomeController extends GetxController {
     });
   }
 
+  ///get all feature product
   getPopularProduct() async {
     isPopularProductLoading(true);
-    var data = await ApiService.fetchPopularProducts();
-    if (data.runtimeType == int) {
+    try {
+      var data = await ApiService.fetchFeatureProducts();
+      if (data.runtimeType == int) {
+        isPopularProductLoading(false);
+        Fluttertoast.showToast(msg: "Popular Product fetch error");
+      } else {
+        popularProductList = data;
+        isPopularProductLoading(false);
+      }
+    } on Exception catch (e) {
       isPopularProductLoading(false);
       Fluttertoast.showToast(msg: "Popular Product fetch error");
-    } else {
-      popularProductList = data;
-      isPopularProductLoading(false);
+      // TODO
     }
   }
 
@@ -190,40 +275,23 @@ class HomeController extends GetxController {
 
   getTopLinkData() {
     var list = [
-      TopLinkModel(
-          title: "60% OFF Everything", color: Colors.teal.withOpacity(0.3)),
+      TopLinkModel(title: "60% OFF Everything", color: Color(0xFFA8E8C2)),
       TopLinkModel(
           title: "All Offers",
-          color: Colors.orange.withOpacity(0.3),
-          icon: Icon(
-            Icons.account_balance,
-            color: Colors.deepOrange,
-            size: SizeConfig.screenWidth * 0.06,
-          )),
+          color: Color(0xFFFDAE87),
+          icon: "asset/icons/all-offer.png"),
       TopLinkModel(
           title: "Top Ranking",
-          color: Colors.blue.withOpacity(0.3),
-          icon: Icon(
-            Icons.settings,
-            color: Colors.blue,
-            size: SizeConfig.screenWidth * 0.06,
-          )),
+          color: Color(0xFFF49BE8),
+          icon: "asset/icons/top-ranking.png"),
       TopLinkModel(
           title: "Top Brands",
-          color: Colors.purpleAccent.withOpacity(0.3),
-          icon: Icon(
-            Icons.settings,
-            color: Colors.purpleAccent,
-            size: SizeConfig.screenWidth * 0.06,
-          )),
+          color: Color(0xFFA4DEFB),
+          icon: "asset/icons/top-brands.png"),
       TopLinkModel(
           title: "New Arrival",
-          color: Colors.cyanAccent.withOpacity(0.3),
-          icon: Icon(
-            Icons.settings,
-            color: Colors.cyanAccent,
-            size: SizeConfig.screenWidth * 0.06,
-          )),
+          color: Color(0xFFBDD05C),
+          icon: "asset/icons/new-arrival.png"),
     ];
 
     topLinkList = list;
@@ -258,7 +326,11 @@ class HomeController extends GetxController {
 class TopLinkModel {
   String title;
   Color color;
-  Icon? icon;
+  String? icon;
 
-  TopLinkModel({required this.title, required this.color, this.icon});
+  TopLinkModel({
+    required this.title,
+    required this.color,
+    this.icon,
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:chardike/screens/AuthenticationPage/controller/login_controllr.dart';
+import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class RegisterScreen extends StatelessWidget {
         appBar: AppBar(
           leading: InkWell(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -302,19 +304,27 @@ class RegisterScreen extends StatelessWidget {
                   height: height * 0.030,
                 ),
                 Center(
-                  child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: "Joined us before? ",
-                            style: TextStyle(
-                                color: Colors.black.withOpacity(0.7))),
-                        TextSpan(
-                            text: "Login ",
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold)),
-                      ])),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    },
+                    child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text: "Joined us before? ",
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(0.7))),
+                          TextSpan(
+                              text: "Login ",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold)),
+                        ])),
+                  ),
                 ),
               ],
             ),

@@ -1,9 +1,8 @@
-import 'package:chardike/screens/BannerProducts/banner_products.dart';
 import 'package:chardike/screens/HomePage/components/Look_galance.dart';
 import 'package:chardike/screens/HomePage/components/all_product_section.dart';
 import 'package:chardike/screens/HomePage/components/banner_section.dart';
 import 'package:chardike/screens/HomePage/components/category_section.dart';
-import 'package:chardike/screens/HomePage/components/feature_product.dart';
+import 'package:chardike/screens/HomePage/components/popular_product_section.dart';
 import 'package:chardike/screens/HomePage/components/flash_deal_section.dart';
 import 'package:chardike/screens/HomePage/components/slider_widget.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
@@ -116,7 +115,7 @@ class HomeScreen extends StatelessWidget {
                   if (_homeController.isBannerLoading.value) {
                     return SizedBox();
                   } else {
-                    if (_homeController.bannerList.length < 1) {
+                    if (_homeController.customOfferBanner == null) {
                       return SizedBox();
                     } else {
                       return Padding(
@@ -126,38 +125,21 @@ class HomeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.screenWidth * 0.01),
                           child: BannerSection(
-                              image: "",
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => BannerProducts(
-                                            bannerModel:
-                                                _homeController.banner1)));
-                              }),
+                            bannerModel: _homeController.customOfferBanner,
+                          ),
                         ),
                       );
                     }
                   }
                 }),
                 FlashDealSection(),
-                FeatureProductSection(),
+                PopularProductSection(),
                 SizedBox(
                   height: getProportionateScreenHeight(15),
                 ),
                 CategorySection(),
                 JustForYouSection(),
-                MultiPartBannerSection(
-                    bigImage: "",
-                    smallImage1: "",
-                    smallImage2: "",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => BannerProducts(
-                                  bannerModel: _homeController.bannerList[0])));
-                    }),
+                MultiPartBannerSection(),
                 AllProductSection(),
                 SizedBox(
                   height: getProportionateScreenHeight(10),

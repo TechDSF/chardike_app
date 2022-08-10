@@ -23,7 +23,6 @@ class CheckOutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _checkOutController.getCoupon();
     _checkOutController.onInit();
     _checkOutController.isCouponApplied.value = false;
     _checkOutController.isCouponMatched.value = true;
@@ -88,7 +87,8 @@ class CheckOutPage extends StatelessWidget {
                       .mobileTextEditingController.value.text.isEmpty) {
                     Fluttertoast.showToast(
                         msg: "Please enter your mobile number!");
-                  } else if (_checkOutController.userAddress.value.isEmpty) {
+                  } else if (_checkOutController
+                      .userShippingAddress.value.isEmpty) {
                     Fluttertoast.showToast(
                         msg: "Please enter your delivery address!");
                   } else {
@@ -375,7 +375,7 @@ class CheckOutPage extends StatelessWidget {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            if (_checkOutController.freeShipiing.value ==
+                            if (_checkOutController.isFreeShipiing.value ==
                                 false) {
                               _checkOutController.deliverOptionIsHome.value =
                                   true;
@@ -462,7 +462,7 @@ class CheckOutPage extends StatelessWidget {
                         Expanded(
                           child: InkWell(
                               onTap: () {
-                                if (_checkOutController.freeShipiing.value ==
+                                if (_checkOutController.isFreeShipiing.value ==
                                     false) {
                                   _checkOutController
                                       .deliverOptionIsHome.value = false;
@@ -677,11 +677,17 @@ class CheckOutPage extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         if (_checkOutController.isCouponApplied.value) {
-                          Fluttertoast.showToast(
-                              msg: "You allready applied coupon!");
+                          _couponTextController.clear();
+                          _checkOutController.clearCoupon();
                         } else {
-                          _checkOutController.checkCoupon(
-                              coupon: _couponTextController.text);
+                          _checkOutController.getCoupon(
+                              context: context,
+                              couponName: _couponTextController.text,
+                              type: args['type'],
+                              list:
+                                  _cartController.subTotalAmount.value.toInt());
+                          // _checkOutController.getCoupon(
+                          //     couponName: _couponTextController.text);
                         }
                       },
                       child: Container(
@@ -695,31 +701,19 @@ class CheckOutPage extends StatelessWidget {
                                 bottomRight: Radius.circular(
                                     getProportionateScreenWidth(10)))),
                         child: Center(
-                            child: Text(
-                          "Apply Coupen",
-                          style: TextStyle(color: Colors.white),
-                        )),
+                            child: Obx(() => Text(
+                                  _checkOutController.isCouponApplied.value
+                                      ? "Clear Coupon"
+                                      : "Apply Coupen",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ))),
                       ),
                     ),
                   ]),
                 ),
               ),
-              SizedBox(
-                height: getProportionateScreenWidth(5),
-              ),
-              Obx(() {
-                if (_checkOutController.isCouponMatched.value &&
-                    _checkOutController.isCouponApplied.value) {
-                  return Text(
-                    "You got ${_checkOutController.couponResult.value}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AllColors.mainColor),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              }),
               SizedBox(
                 height: getProportionateScreenWidth(30),
               ),
@@ -753,6 +747,77 @@ class CheckOutPage extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: getProportionateScreenWidth(10),
+              ),
+              Obx(() {
+                if (!_checkOutController.isCouponApplied.value) {
+                  return SizedBox();
+                } else {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Coupon",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(18),
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Obx(() => _checkOutController.isCouponApplied.value
+                            ? Text(
+                                "- " +
+                                    CommonData.takaSign +
+                                    " " +
+                                    "${_checkOutController.discountPrice.value}",
+                                style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(18),
+                                    fontWeight: FontWeight.w600),
+                              )
+                            : Text(
+                                "- " +
+                                    CommonData.takaSign +
+                                    " " +
+                                    "${_checkOutController.discountPrice.value}",
+                                style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(18),
+                                    fontWeight: FontWeight.w600),
+                              ))
+                      ],
+                    ),
+                  );
+                }
+              }),
+              SizedBox(
+                height: getProportionateScreenWidth(10),
+              ),
+              Obx(() {
+                if (!_checkOutController.isCouponApplied.value) {
+                  return SizedBox();
+                } else {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Obx(
+                          () => Text(
+                            _checkOutController.isFreeShipiing.value
+                                ? "You Got Free Shipping"
+                                : "",
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(18),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+              }),
               SizedBox(
                 height: getProportionateScreenWidth(10),
               ),

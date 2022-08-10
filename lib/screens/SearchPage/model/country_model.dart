@@ -9,8 +9,6 @@ import 'dart:convert';
 List<CountryModel> countryModelFromJson(String str) => List<CountryModel>.from(
     json.decode(str).map((x) => CountryModel.fromJson(x)));
 
-String countryModelToJson(CountryModel data) => json.encode(data.toJson());
-
 class CountryModel {
   CountryModel({
     required this.id,
@@ -28,10 +26,4 @@ class CountryModel {
         country: List<ProductModel>.from(
             json["country"].map((x) => ProductModel.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "country": List<dynamic>.from(country.map((x) => x.toJson())),
-      };
 }

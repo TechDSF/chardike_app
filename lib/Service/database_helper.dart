@@ -14,6 +14,9 @@ class DatabaseHelper {
   static const String name = "name";
   static const String newPrice = "newPrice";
   static const String oldPrice = "oldPrice";
+  static const String categoryId = "categoryId";
+  static const String brandId = "brandId";
+  static const String totalQuantity = "totalQnty";
 
   static const String title = "title";
   static const String quantity = "quantity";
@@ -34,7 +37,7 @@ class DatabaseHelper {
             'CREATE TABLE $favouriteTable($id TEXT, $slug TEXT, $image TEXT, $name TEXT, $newPrice TEXT, $oldPrice TEXT)',
           );
           db.execute(
-            'CREATE TABLE $cartTable($id TEXT, $title TEXT, $image TEXT, $quantity INTEGER, $price REAL, $totalPrice REAL)',
+            'CREATE TABLE $cartTable($id TEXT, $title TEXT, $image TEXT, $quantity INTEGER, $price REAL, $totalPrice REAL, $brandId INTEGER, $categoryId INTEGER,$totalQuantity INTEGER)',
           );
         },
         version: 1,
@@ -86,7 +89,10 @@ class DatabaseHelper {
           image: maps[i][image],
           quantity: maps[i][quantity],
           price: maps[i][price],
-          totalPrice: maps[i][totalPrice]);
+          totalPrice: maps[i][totalPrice],
+          brandId: maps[i][brandId],
+          categoryId: maps[i][categoryId],
+          totalQty: maps[i][totalQuantity]);
     });
   }
 

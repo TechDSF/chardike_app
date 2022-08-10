@@ -1,3 +1,4 @@
+import 'package:bangla_utilities/bangla_utilities.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chardike/CommonData/CommonController.dart';
 import 'package:chardike/Service/database_helper.dart';
@@ -116,7 +117,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
   @override
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context)!.settings.arguments as Map;
-    final productModel = data['product'];
+    ProductModel productModel = data['product'];
     bool priceType = data['type'];
     var flPrice = data['ds'];
 
@@ -207,6 +208,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                     //       : true;
 
                     // }
+
                     if (_cartController.isHaveCart.value) {
                       if (priceType) {
                         print(
@@ -235,6 +237,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               id: productModel.id.toString(),
                               title: productModel.productName.toString(),
                               image: productModel.featureImage,
+                              brandId: productModel.brand.id,
+                              categoryId: productModel.category[0].id,
                               quantity: _detailsController.quantityItem.value,
                               price: priceType
                                   ? double.parse(productModel.sellingPrice)
@@ -246,7 +250,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                       .toDouble()
                                   : (_detailsController.quantityItem.value *
                                           double.parse(flPrice.toString()))
-                                      .toDouble()));
+                                      .toDouble(),
+                              totalQty: productModel.totalQuantity));
                       _cartController.isHaveCart.value = true;
                     }
                   },
@@ -612,7 +617,8 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                   : Row(
                                       children: [
                                         RatingBarIndicator(
-                                          rating: 3,
+                                          rating: CommonData.calculateRating(
+                                              productModel.reviews),
                                           itemBuilder: (context, index) =>
                                               const Icon(
                                             Icons.star,
@@ -711,6 +717,23 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 ],
                               ),
                               SizedBox(
+                                height: getProportionateScreenHeight(10),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Stock : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    productModel.totalQuantity.toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
                                 height: getProportionateScreenHeight(20),
                               ),
                               Row(
@@ -723,11 +746,13 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     children: <Widget>[
                                       InkWell(
                                         onTap: () {
-                                          if (_detailsController
-                                                  .quantityItem.value >
-                                              1) {
-                                            _detailsController
-                                                .quantityItem.value--;
+                                          if (productModel.totalQuantity != 0) {
+                                            if (_detailsController
+                                                    .quantityItem.value >
+                                                1) {
+                                              _detailsController
+                                                  .quantityItem.value--;
+                                            }
                                           }
                                         },
                                         child: Container(
@@ -764,8 +789,18 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          _detailsController
-                                              .quantityItem.value++;
+                                          if (productModel.totalQuantity != 0) {
+                                            if (productModel.totalQuantity - 1 <
+                                                _detailsController
+                                                    .quantityItem.value) {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "There is no much more product");
+                                            } else {
+                                              _detailsController
+                                                  .quantityItem.value++;
+                                            }
+                                          }
                                         },
                                         child: Container(
                                           height:
@@ -793,7 +828,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 height: getProportionateScreenHeight(10),
                               ),
                               Text(
-                                productModel.shortDescriptions,
+                                productModel.shortDescriptions.toString(),
                                 style:
                                     TextStyle(color: Colors.black, height: 1.2),
                               ),
@@ -803,8 +838,14 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               Html(
                                 data: productModel.longDescription,
                                 style: {
-                                  "p":
-                                      Style(lineHeight: LineHeight.number(1.2)),
+                                  "span": Style(
+                                    lineHeight: LineHeight.number(1.2),
+                                    fontFamily: "HindSiliguri",
+                                  ),
+                                  "p": Style(
+                                    lineHeight: LineHeight.number(1.2),
+                                    fontFamily: "HindSiliguri",
+                                  ),
                                 },
                               )
                             ],
@@ -842,102 +883,115 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    itemCount: productModel.reviews.length,
+                                    itemCount: productModel.reviews.length < 4
+                                        ? productModel.reviews.length
+                                        : 4,
                                     itemBuilder: (context, index) {
                                       var result = productModel.reviews[index];
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                getProportionateScreenHeight(
-                                                    10)),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            result.profile.profilePicture == ""
-                                                ? Container(
-                                                    height:
-                                                        getProportionateScreenHeight(
-                                                            50),
-                                                    width:
-                                                        getProportionateScreenHeight(
-                                                            50),
-                                                    child: Icon(
-                                                      Icons.person,
-                                                      size:
-                                                          getProportionateScreenHeight(
-                                                              30),
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.5)),
-                                                  )
-                                                : Container(
-                                                    height:
-                                                        getProportionateScreenHeight(
-                                                            50),
-                                                    width:
-                                                        getProportionateScreenHeight(
-                                                            50),
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                result.profile
-                                                                    .profilePicture
-                                                                    .toString())),
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.5)),
-                                                  ),
-                                            SizedBox(
-                                              width:
-                                                  getProportionateScreenWidth(
-                                                      10),
-                                            ),
-                                            Expanded(
-                                                child: Column(
-                                              children: <Widget>[
-                                                Text(
-                                                  result.profile.fullName
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  height:
+                                      return result.isActive
+                                          ? Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical:
                                                       getProportionateScreenHeight(
-                                                          3),
-                                                ),
-                                                RatingBarIndicator(
-                                                  rating: result.starCount
-                                                      .toDouble(),
-                                                  itemBuilder:
-                                                      (context, index) =>
-                                                          const Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
+                                                          10)),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  result.profile
+                                                              .profilePicture ==
+                                                          ""
+                                                      ? Container(
+                                                          height:
+                                                              getProportionateScreenHeight(
+                                                                  50),
+                                                          width:
+                                                              getProportionateScreenHeight(
+                                                                  50),
+                                                          child: Icon(
+                                                            Icons.person,
+                                                            size:
+                                                                getProportionateScreenHeight(
+                                                                    30),
+                                                          ),
+                                                          decoration: BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.5)),
+                                                        )
+                                                      : Container(
+                                                          height:
+                                                              getProportionateScreenHeight(
+                                                                  50),
+                                                          width:
+                                                              getProportionateScreenHeight(
+                                                                  50),
+                                                          decoration: BoxDecoration(
+                                                              image: DecorationImage(
+                                                                  image: NetworkImage(result
+                                                                      .profile
+                                                                      .profilePicture
+                                                                      .toString())),
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.5)),
+                                                        ),
+                                                  SizedBox(
+                                                    width:
+                                                        getProportionateScreenWidth(
+                                                            10),
                                                   ),
-                                                  itemCount: 5,
-                                                  itemSize:
-                                                      getProportionateScreenWidth(
-                                                          15),
-                                                  direction: Axis.horizontal,
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      getProportionateScreenHeight(
-                                                          3),
-                                                ),
-                                                Text(result.review)
-                                              ],
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                            ))
-                                          ],
-                                        ),
-                                      );
+                                                  Expanded(
+                                                      child: Column(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        result.profile.fullName
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      SizedBox(
+                                                        height:
+                                                            getProportionateScreenHeight(
+                                                                3),
+                                                      ),
+                                                      RatingBarIndicator(
+                                                        rating: result.starCount
+                                                            .toDouble(),
+                                                        itemBuilder:
+                                                            (context, index) =>
+                                                                const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                        itemCount: 5,
+                                                        itemSize:
+                                                            getProportionateScreenWidth(
+                                                                15),
+                                                        direction:
+                                                            Axis.horizontal,
+                                                      ),
+                                                      SizedBox(
+                                                        height:
+                                                            getProportionateScreenHeight(
+                                                                3),
+                                                      ),
+                                                      Text(result.review)
+                                                    ],
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                  ))
+                                                ],
+                                              ),
+                                            )
+                                          : SizedBox();
                                     },
                                   )
                                 ],

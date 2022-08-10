@@ -23,11 +23,16 @@ class TopOffer extends StatelessWidget {
               itemBuilder: (context, index) {
                 var result = _newHomeController.topLinkList[index];
                 return result.icon == null
-                    ? TopLinkCard(title: result.title, color: result.color)
+                    ? TopLinkCard(
+                        title: result.title,
+                        color: result.color,
+                        index: index,
+                      )
                     : TopLinkCard(
                         title: result.title,
                         color: result.color,
                         icon: result.icon,
+                        index: index,
                       );
               }),
         ),

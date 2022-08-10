@@ -1,10 +1,6 @@
 import 'dart:io';
-
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/user_data.dart';
-import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
-import 'package:chardike/screens/UserPage/components/edit_phone_page.dart';
-import 'package:chardike/screens/UserPage/components/link_social_media.dart';
 import 'package:chardike/screens/UserPage/controller/edit_profile_controller.dart';
 import 'package:chardike/screens/UserPage/screen/inputbox_page.dart';
 import 'package:chardike/size_config.dart';
@@ -136,7 +132,7 @@ class EditProfile extends StatelessWidget {
                         context: context, isImageSelect: true);
                   } else {
                     _editProfileController.setProfileData(
-                      context: context, isImageSelect: false);
+                        context: context, isImageSelect: false);
                   }
                 },
                 child: const Center(child: FaIcon(FontAwesomeIcons.check))),
@@ -336,7 +332,7 @@ class EditProfile extends StatelessWidget {
               const Divider(),
               ListTile(
                   onTap: () {
-                    Navigator.pushNamed(context, EditPhone.routeName);
+                    //Navigator.pushNamed(context, EditPhone.routeName);
                   },
                   title: const Text("Phone"),
                   trailing: RichText(
@@ -380,42 +376,42 @@ class EditProfile extends StatelessWidget {
                       ],
                     ),
                   )),
-              const Divider(),
-              ListTile(
-                  onTap: () {
-                    Navigator.pushNamed(context, LinkSocialMedia.routeName);
-                  },
-                  title: Text("Social Media Accounts"),
-                  trailing: RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: Icon(Icons.arrow_forward_ios,
-                              size: getProportionateScreenWidth(15)),
-                        ),
-                      ],
-                    ),
-                  )),
-              Container(
-                height: getProportionateScreenHeight(20),
-                width: double.infinity,
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              ListTile(
-                  onTap: () {
-                    Navigator.pushNamed(context, OtpScreen.routeName);
-                  },
-                  title: Text("Set Password"),
-                  trailing: RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: Icon(Icons.arrow_forward_ios,
-                              size: getProportionateScreenWidth(15)),
-                        ),
-                      ],
-                    ),
-                  )),
+              // const Divider(),
+              // ListTile(
+              //     onTap: () {
+              //       Navigator.pushNamed(context, LinkSocialMedia.routeName);
+              //     },
+              //     title: Text("Social Media Accounts"),
+              //     trailing: RichText(
+              //       text: TextSpan(
+              //         children: [
+              //           WidgetSpan(
+              //             child: Icon(Icons.arrow_forward_ios,
+              //                 size: getProportionateScreenWidth(15)),
+              //           ),
+              //         ],
+              //       ),
+              //     )),
+              // Container(
+              //   height: getProportionateScreenHeight(20),
+              //   width: double.infinity,
+              //   color: Colors.grey.withOpacity(0.1),
+              // ),
+              // ListTile(
+              //     onTap: () {
+              //       Navigator.pushNamed(context, ForgotPassword.routeName);
+              //     },
+              //     title: Text("Set Password"),
+              //     trailing: RichText(
+              //       text: TextSpan(
+              //         children: [
+              //           WidgetSpan(
+              //             child: Icon(Icons.arrow_forward_ios,
+              //                 size: getProportionateScreenWidth(15)),
+              //           ),
+              //         ],
+              //       ),
+              //     )),
             ],
           ),
         ),

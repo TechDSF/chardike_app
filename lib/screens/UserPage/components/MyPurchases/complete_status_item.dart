@@ -164,11 +164,11 @@ class CompleteStatusItem extends StatelessWidget {
             padding: EdgeInsets.all(SizeConfig.screenWidth * 0.05),
             child: LoaderOverlay(
               child: Scaffold(
-                  body: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                    Expanded(
-                      child: Column(
+                  body: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -216,36 +216,36 @@ class CompleteStatusItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Cancel")),
-                        TextButton(
-                            onPressed: () {
-                              if (reviewTextField.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Please enter your message!");
-                              } else if (ratingNumber.value == 0.0) {
-                                Fluttertoast.showToast(
-                                    msg: "Please select your star!");
-                              } else {
-                                int st = (ratingNumber.value).toInt();
-                                setReview(
-                                    context: context,
-                                    productId: productId,
-                                    reviewMessage: reviewTextField.text,
-                                    star: st);
-                              }
-                            },
-                            child: Text("Review"))
-                      ],
-                    )
-                  ])),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("Cancel")),
+                          TextButton(
+                              onPressed: () {
+                                if (reviewTextField.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please enter your message!");
+                                } else if (ratingNumber.value == 0.0) {
+                                  Fluttertoast.showToast(
+                                      msg: "Please select your star!");
+                                } else {
+                                  int st = (ratingNumber.value).toInt();
+                                  setReview(
+                                      context: context,
+                                      productId: productId,
+                                      reviewMessage: reviewTextField.text,
+                                      star: st);
+                                }
+                              },
+                              child: Text("Review"))
+                        ],
+                      )
+                    ]),
+              )),
             ),
             margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(

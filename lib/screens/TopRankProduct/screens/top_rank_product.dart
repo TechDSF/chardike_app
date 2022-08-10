@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../../CommonData/all_colors.dart';
 import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
 import '../../HomePage/model/product_model.dart';
 import '../../ProductDetails/product_details.dart';
 
-class FeatureProduct extends StatelessWidget {
-  FeatureProduct({Key? key}) : super(key: key);
-  static const String routeName = "/feature_product";
+class TopRankProduct extends StatelessWidget {
+  TopRankProduct({Key? key}) : super(key: key);
+  static const String routeName = "/top_rank_product";
   final HomeController _homeController = Get.put(HomeController());
   bool isTab = SizeConfig.screenWidth > 768;
 
@@ -21,7 +19,7 @@ class FeatureProduct extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text("Popular Product"),
+        title: Text("Top Rank Product"),
       ),
       body: Padding(
         padding: EdgeInsets.all(10),

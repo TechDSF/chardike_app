@@ -317,6 +317,7 @@ class LoginController extends GetxController {
     bool result = await ApiService.updatePassword(
         password: password, profileId: profileId);
     if (result) {
+      _userDataController.setPassword(passwordData: password);
       context.loaderOverlay.hide();
       Navigator.pop(context);
     } else {

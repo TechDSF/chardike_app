@@ -2,7 +2,6 @@ import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/FeedPage/model/feed_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/html_parser.dart';
 
 import '../../../CommonData/all_colors.dart';
 import '../../../size_config.dart';

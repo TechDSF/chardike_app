@@ -168,7 +168,7 @@ class SearchController extends GetxController {
     var result = await ApiService.fetchCategoryProductById(id: id);
     if (result.runtimeType == int) {
       isFilterLoading(false);
-      Fluttertoast.showToast(msg: "Category id related product fetch error!");
+      //Fluttertoast.showToast(msg: "Category id related product fetch error!");
     } else if (result.runtimeType == CategoryProductModel) {
       CategoryProductModel model = result;
       searchProductList.value = model.categoryProducts;

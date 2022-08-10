@@ -1,15 +1,7 @@
-// To parse this JSON data, do
-//
-//     final productModel = productModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(
     json.decode(str).map((x) => ProductModel.fromJson(x)));
-
-String productModelToJson(List<ProductModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProductModel {
   ProductModel({
@@ -36,6 +28,7 @@ class ProductModel {
     required this.resellerPrice,
     required this.isStock,
     required this.reviews,
+    required this.totalQuantity,
   });
 
   int id;
@@ -61,6 +54,7 @@ class ProductModel {
   dynamic resellerPrice;
   bool isStock;
   List<Review> reviews;
+  int totalQuantity;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json["id"],
@@ -93,34 +87,8 @@ class ProductModel {
         isStock: json["is_stock"],
         reviews:
             List<Review>.from(json["reviews"].map((x) => Review.fromJson(x))),
+        totalQuantity: json["total_quantity"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "brand": brand.toJson(),
-        "country": country.toJson(),
-        "sku": sku,
-        "category": List<dynamic>.from(category.map((x) => x.toJson())),
-        "sub_category": List<dynamic>.from(subCategory.map((x) => x.toJson())),
-        "product_name": productName,
-        "slug": slug,
-        "meta": meta,
-        "short_descriptions": shortDescriptions,
-        "long_description": longDescription,
-        "alter_text": alterText,
-        "tags": tags,
-        "feature_image": featureImage,
-        "product_image":
-            List<dynamic>.from(productImage.map((x) => x.toJson())),
-        "sold_count": soldCount,
-        "expire_date": expireDate,
-        "regular_price": regularPrice,
-        "selling_price": sellingPrice,
-        "attribute": attribute,
-        "reseller_price": resellerPrice,
-        "is_stock": isStock,
-        "reviews": List<dynamic>.from(reviews.map((x) => x.toJson())),
-      };
 }
 
 class Brand {
@@ -152,16 +120,6 @@ class Brand {
             json["brand_website"] == null ? "" : json["brand_website"],
         description: json["description"] ?? "",
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "name": name,
-        "brand_website": brandWebsite == null ? null : brandWebsite,
-        "description": description,
-      };
 }
 
 class Category {
@@ -195,17 +153,6 @@ class Category {
         slug: json["slug"],
         categoryCode: json["category_code"] ?? "",
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "image": image,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "category_name": categoryName,
-        "slug": slug,
-        "category_code": categoryCode,
-      };
 }
 
 class ProductImage {
@@ -218,10 +165,6 @@ class ProductImage {
   factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
         image: json["image"] ?? "",
       );
-
-  Map<String, dynamic> toJson() => {
-        "image": image,
-      };
 }
 
 class Review {
@@ -249,15 +192,6 @@ class Review {
         starCount: json["star_count"],
         review: json["review"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "is_active": isActive,
-        "profile": profile.toJson(),
-        "product": product.toJson(),
-        "star_count": starCount,
-        "review": review,
-      };
 }
 
 class Product {

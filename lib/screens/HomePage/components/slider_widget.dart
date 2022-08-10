@@ -20,8 +20,8 @@ class SliderWidget extends StatelessWidget {
         Obx(() {
           if (_homeController.isSliderDataLoading.value) {
             return Shimmer.fromColors(
-              baseColor: Colors.grey.withOpacity(0.1),
-              highlightColor: Colors.grey.withOpacity(0.5),
+              baseColor: Colors.grey.withOpacity(0.07),
+              highlightColor: Colors.grey.withOpacity(0.2),
               child: Container(
                 height: getProportionateScreenHeight(170),
                 color: Colors.yellow,
@@ -45,7 +45,9 @@ class SliderWidget extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => SliderDetails()));
+                                        builder: (_) => SliderDetails(
+                                              name: result.slidername,
+                                            )));
                               },
                               child: Container(
                                 width: double.infinity,

@@ -6,10 +6,6 @@ import 'package:chardike/Service/database_helper.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/CheckOutPage/model/coupon_model.dart';
 import 'package:chardike/screens/CheckOutPage/screens/order_confirm.dart';
-import 'package:chardike/screens/MainScreen/main_screen.dart';
-
-import 'package:chardike/screens/UserPage/controller/address_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -33,12 +29,14 @@ class CheckOutController extends GetxController {
   var isCouponApplied = false.obs;
   var isCouponMatched = true.obs;
   var couponResult = "".obs;
-  var freeShipiing = false.obs;
+  var isFreeShipiing = false.obs;
+  var discountPrice = 0.obs;
+  var couponId = 0.obs;
   List<CartItemModel> dataList = [];
 
   Rx<List<AddressModel>> userAddress = Rx<List<AddressModel>>([]);
   Rx<List<AddressModel>> userShippingAddress = Rx<List<AddressModel>>([]);
-  Rx<List<CouponModel>> couponList = Rx<List<CouponModel>>([]);
+  CouponModel? couponModel;
   var firstAddressValue = "".obs;
   var firstBillingAddress = "".obs;
   var addressId = 0.obs;
@@ -165,47 +163,193 @@ class CheckOutController extends GetxController {
     }
   }
 
-  getCoupon() async {
-    var result = await ApiService.getAllCoupon();
+  getCoupon(
+      {required String couponName,
+      required BuildContext context,
+      required bool type,
+      required int list}) async {
+    context.loaderOverlay.show();
+    var result = await ApiService.getAllCoupon(couponName: couponName);
     if (result.runtimeType == int) {
+      isCouponMatched.value = false;
+      isCouponApplied.value = false;
+      context.loaderOverlay.hide();
       print("Coupon Get Error");
+    } else if (result.runtimeType == CouponModel) {
+      couponModel = result;
+      print("Coupon data : ${result!.couponName}");
+      checkCoupon(context: context, type: type, singleList: list);
     } else {
-      couponList.value = result;
-      print("Coupon length ${couponList.value.length}");
+      isCouponMatched.value = false;
+      isCouponApplied.value = false;
+      print("Coupon Get Error d");
+      context.loaderOverlay.hide();
     }
   }
 
-  checkCoupon({required String coupon}) {
-    var value =
-        couponList.value.where((element) => element.couponName == coupon);
-    if (value.isEmpty) {
+  checkCoupon(
+      {required BuildContext context,
+      required bool type,
+      required int singleList}) {
+    var value = couponModel;
+    discountPrice.value = 0;
+    // var value = CouponModel(
+    //     id: 3,
+    //     couponName: "afg",
+    //     couponType: "Fixed Cart Discountt",
+    //     couponAmount: 34.0,
+    //     freeShipping: false,
+    //     expireDate: DateTime.parse("2022-08-23"),
+    //     maximumUser: 34523,
+    //     minimumSale: 14512341,
+    //     maximumSale: 235234,
+    //     category: [1, 2],
+    //     brand: [2, 3],
+    //     product: [1, 2],
+    //     couponCount: 0);
+    var myList = _cartController.cartList.value;
+    print(myList.length);
+    // var myList = [
+    //   CartModel(
+    //       id: "2",
+    //       title: "Hei This is product!",
+    //       image: "",
+    //       quantity: 2,
+    //       price: 120,
+    //       totalPrice: 240,
+    //       brandId: 2,
+    //       categoryId: 2),
+    //   CartModel(
+    //       id: "5",
+    //       title: "Hei This is product 2!",
+    //       image: "",
+    //       quantity: 2,
+    //       price: 120,
+    //       totalPrice: 240,
+    //       brandId: 3,
+    //       categoryId: 2),
+    // ];
+    if (value == null) {
       isCouponMatched.value = false;
       isCouponApplied.value = false;
     } else {
       isCouponMatched.value = true;
       isCouponApplied.value = true;
-      freeShipiing.value = value.first.freeShipping;
-      couponResult.value = value.first.couponAmount.toInt == 0 &&
-              value.first.freeShipping == true
-          ? "Free Shipping"
-          : value.first.couponAmount.toInt != 0 &&
-                  value.first.freeShipping == true
-              ? "${value.first.couponAmount} tk discount and Free Shipping"
-              : value.first.couponAmount.toInt != 0 &&
-                      value.first.freeShipping == false
-                  ? "${value.first.couponAmount} tk discount"
-                  : "";
-      if (deliverOptionIsHome.value &&
-          value.first.freeShipping &&
-          value.first.couponAmount.toInt != 0) {
-        totalAmount.value = totalAmount.value - (60 + value.first.couponAmount);
-      } else if (deliverOptionIsHome.value == false &&
-          value.first.freeShipping &&
-          value.first.couponAmount.toInt != 0) {
-        totalAmount.value =
-            totalAmount.value - (150 + value.first.couponAmount);
+      couponId.value = value.id;
+      isFreeShipiing.value = value.freeShipping;
+      couponResult.value = "Nothing";
+      if (value.expireDate.isAfter(DateTime.now()) &&
+          value.maximumUser != 0 &&
+          value.minimumSale <= 2000 &&
+          value.maximumSale >= 10000) {
+        print("Coupon is valid");
+        if (value.couponType == "Fixed Cart Discount") {
+          print("Coupon type is Fiexed Card");
+          if (value.brand.isEmpty &&
+              value.category.isEmpty &&
+              value.product.isEmpty) {
+            print("everything is empty");
+            if (type) {
+              discountPrice.value = myList.length * value.couponAmount.toInt();
+            } else {
+              discountPrice.value = value.couponAmount.toInt();
+            }
+          } else {
+            if (type) {
+              myList.forEach((element) {
+                // print(
+                //     "${element.brandId} , ${element.categoryId}, brand list ${value.brand[0]}");
+                // bool haveValue =
+                //     value.brand.where((elt) => elt == element.brandId);
+
+                bool isHaveBrand = value.brand.isEmpty
+                    ? false
+                    : value.brand.contains(element.brandId);
+
+                bool isHaveCategory = value.category.isEmpty
+                    ? false
+                    : value.category.contains(element.categoryId);
+                bool isHaveProduct = value.product.isEmpty
+                    ? false
+                    : value.product.contains(int.parse(element.id));
+                print(
+                    "Brand $isHaveBrand , Category $isHaveCategory, Product $isHaveProduct");
+                if (isHaveProduct || isHaveCategory || isHaveBrand) {
+                  discountPrice.value =
+                      value.couponAmount.toInt() + discountPrice.value;
+                }
+              });
+            } else {
+              discountPrice.value = value.couponAmount.toInt();
+            }
+          }
+        } else {
+          if (value.brand.isEmpty &&
+              value.category.isEmpty &&
+              value.product.isEmpty) {
+            if (type) {
+              myList.forEach((element) {
+                discountPrice.value =
+                    element.totalPrice.toInt() % value.couponAmount.toInt();
+                print("$discountPrice");
+              });
+            } else {
+              discountPrice.value =
+                  singleList % value.couponAmount.toInt();
+            }
+          } else {
+            if (type) {
+              myList.forEach((element) {
+                bool isHaveBrand = value.brand.isEmpty
+                    ? false
+                    : value.brand.contains(element.brandId);
+
+                bool isHaveCategory = value.category.isEmpty
+                    ? false
+                    : value.category.contains(element.categoryId);
+
+                bool isHaveProduct = value.product.isEmpty
+                    ? false
+                    : value.product.contains(int.parse(element.id));
+                print(
+                    " ggBrand $isHaveBrand , Category $isHaveCategory, Product $isHaveProduct");
+                if (isHaveProduct || isHaveCategory || isHaveBrand) {
+                  var tt =
+                      (element.totalPrice.toInt()) * value.couponAmount.toInt();
+                  int newPrice = tt ~/ 100;
+                  discountPrice = discountPrice + newPrice;
+                }
+              });
+            } else {
+              discountPrice.value =
+                  singleList % value.couponAmount.toInt();
+            }
+          }
+        }
+        if (deliverOptionIsHome.value &&
+            value.freeShipping &&
+            value.couponAmount.toInt != 0) {
+          totalAmount.value = totalAmount.value - (60 + discountPrice.value);
+        } else if (deliverOptionIsHome.value == false &&
+            value.freeShipping &&
+            value.couponAmount.toInt != 0) {
+          totalAmount.value = totalAmount.value - (150 + discountPrice.value);
+        }
+        print("${value.couponAmount} and ${discountPrice}");
+      } else {
+        print("Coupon is not valid");
       }
-      print("${value.first.couponAmount}");
+    }
+    context.loaderOverlay.hide();
+  }
+
+  clearCoupon() {
+    isCouponApplied.value = false;
+    isFreeShipiing.value = false;
+    if (deliverOptionIsHome.value) {
+      totalAmount.value = totalAmount.value + (60 + discountPrice.value);
+    } else {
+      totalAmount.value = totalAmount.value + (150 + discountPrice.value);
     }
   }
 
@@ -255,7 +399,7 @@ class CheckOutController extends GetxController {
               accessToken: d['access'],
               address: address,
               billingAddress: billingAddress,
-              coupen: coupen,
+              coupen: isCouponApplied.value ? couponId.value : null,
               total: total,
               items: result,
               orderStatus: orderStatus,

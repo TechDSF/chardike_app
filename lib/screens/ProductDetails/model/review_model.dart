@@ -1,11 +1,7 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<ReviewModel> reviewModelFromJson(String str) => List<ReviewModel>.from(
     json.decode(str).map((x) => ReviewModel.fromJson(x)));
-
-String reviewModelToJson(List<ReviewModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ReviewModel {
   ReviewModel({
@@ -29,18 +25,9 @@ class ReviewModel {
         isActive: json["is_active"] ?? false,
         profile: Profile.fromJson(json["profile"]),
         product: Product.fromJson(json["product"]),
-        starCount: json["star_count"],
+        starCount: json["star_count"] ?? 0,
         review: json["review"] ?? "",
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "is_active": isActive,
-        "profile": profile.toJson(),
-        "product": product.toJson(),
-        "star_count": starCount,
-        "review": review,
-      };
 }
 
 class Product {
@@ -59,15 +46,9 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         updatedAt: DateTime.parse(json["updated_at"]),
-        productName: json["product_name"],
-        featureImage: json["feature_image"],
+        productName: json["product_name"] ?? "",
+        featureImage: json["feature_image"] ?? "",
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "product_name": productName,
-        "feature_image": featureImage,
-      };
 }
 
 class Profile {
@@ -86,10 +67,4 @@ class Profile {
         fullName: json["full_name"],
         profilePicture: json["profile_picture"] ?? "",
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "full_name": fullName,
-        "profile_picture": profilePicture,
-      };
 }

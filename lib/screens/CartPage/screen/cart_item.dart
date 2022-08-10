@@ -136,7 +136,7 @@ class _CartItemState extends State<CartItem> {
                       ),
                       InkWell(
                         onTap: () {
-                          if (widget.itemCount < 5) {
+                          if (widget.itemCount < widget.cartModel.totalQty) {
                             setState(() {
                               _cartController.subTotalAmount.value +=
                                   widget.cartModel.price.toInt();

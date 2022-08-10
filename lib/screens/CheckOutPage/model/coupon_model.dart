@@ -1,15 +1,7 @@
-// To parse this JSON data, do
-//
-//     final couponModel = couponModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<CouponModel> couponModelFromJson(String str) => List<CouponModel>.from(
-    json.decode(str).map((x) => CouponModel.fromJson(x)));
-
-String couponModelToJson(List<CouponModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+CouponModel couponModelFromJson(String str) =>
+    CouponModel.fromJson(json.decode(str));
 
 class CouponModel {
   CouponModel({
@@ -19,9 +11,13 @@ class CouponModel {
     required this.couponAmount,
     required this.freeShipping,
     required this.expireDate,
-    required this.minimumUser,
+    required this.maximumUser,
     required this.minimumSale,
     required this.maximumSale,
+    required this.category,
+    required this.brand,
+    required this.product,
+    required this.couponCount,
   });
 
   int id;
@@ -30,32 +26,27 @@ class CouponModel {
   double couponAmount;
   bool freeShipping;
   DateTime expireDate;
-  int minimumUser;
-  double minimumSale;
-  double maximumSale;
+  int maximumUser;
+  int minimumSale;
+  int maximumSale;
+  List<int> category;
+  List<int> brand;
+  List<int> product;
+  int couponCount;
 
   factory CouponModel.fromJson(Map<String, dynamic> json) => CouponModel(
         id: json["id"],
-        couponName: json["coupon_name"] ?? "",
-        couponType: json["coupon_type"] ?? "",
-        couponAmount: json["coupon_amount"] ?? 0.0,
+        couponName: json["coupon_name"],
+        couponType: json["coupon_type"],
+        couponAmount: json["coupon_amount"],
         freeShipping: json["free_shipping"] ?? false,
         expireDate: DateTime.parse(json["expire_date"]),
-        minimumUser: json["minimum_user"] ?? 0,
-        minimumSale: json["minimum_sale"].toDouble() ?? 0.0,
-        maximumSale: json["maximum_sale"].toDouble() ?? 0.0,
+        maximumUser: json["maximum_user"] ?? 0,
+        minimumSale: json["minimum_sale"] ?? 0,
+        maximumSale: json["maximum_sale"] ?? 0,
+        category: List<int>.from(json["category"].map((x) => x)),
+        brand: List<int>.from(json["brand"].map((x) => x)),
+        product: List<int>.from(json["product"].map((x) => x)),
+        couponCount: json["coupon_count"] ?? 0,
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "coupon_name": couponName,
-        "coupon_type": couponType,
-        "coupon_amount": couponAmount,
-        "free_shipping": freeShipping,
-        "expire_date":
-            "${expireDate.year.toString().padLeft(4, '0')}-${expireDate.month.toString().padLeft(2, '0')}-${expireDate.day.toString().padLeft(2, '0')}",
-        "minimum_user": minimumUser,
-        "minimum_sale": minimumSale,
-        "maximum_sale": maximumSale,
-      };
 }

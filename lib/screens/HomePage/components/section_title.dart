@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 
 class SectionTitle extends StatelessWidget {
-  SectionTitle({Key? key, required this.title, required this.onTap})
+  SectionTitle(
+      {Key? key,
+      required this.title,
+      required this.buttonText,
+      required this.onTap})
       : super(key: key);
   String title;
+  String buttonText;
   VoidCallback onTap;
 
   @override
@@ -23,11 +28,11 @@ class SectionTitle extends StatelessWidget {
         InkWell(
             onTap: onTap,
             child: Text(
-              "See More",
+              buttonText,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: SizeConfig.screenWidth * 0.04),
+                  fontSize: SizeConfig.screenWidth * 0.03),
             ))
       ],
     );

@@ -95,4 +95,10 @@ class UserDataController extends GetxController {
     zipcode.value = zipcodeData;
     country.value = countryData;
   }
+
+  setPassword({required String passwordData}) async {
+    preferences = await SharedPreferences.getInstance();
+    preferences.setString(CommonData.password, passwordData);
+    password.value = passwordData;
+  }
 }

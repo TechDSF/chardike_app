@@ -32,11 +32,13 @@ class Product {
     required this.isActive,
   });
 
-  ProductModel bannerProduct;
+  ProductModel? bannerProduct;
   bool isActive;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        bannerProduct: ProductModel.fromJson(json["banner_product"]),
+        bannerProduct: json["banner_product"] == null
+            ? null
+            : ProductModel.fromJson(json["banner_product"]),
         isActive: json["is_active"],
       );
 }

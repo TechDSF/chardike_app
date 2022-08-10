@@ -1,92 +1,29 @@
-import 'package:chardike/CommonData/all_colors.dart';
-import 'package:chardike/CommonData/common_data.dart';
-import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
+import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
-import '../../HomePage/model/product_model.dart';
-import '../../ProductDetails/product_details.dart';
+import '../HomePage/model/product_model.dart';
+import '../ProductDetails/product_details.dart';
 
-class SliderDetails extends StatelessWidget {
-  SliderDetails({Key? key, required this.name}) : super(key: key);
-  String name;
+class PopularProduct extends StatelessWidget {
+  PopularProduct({Key? key}) : super(key: key);
+  static const String routeName = "/popular_product_section";
   final HomeController _homeController = Get.put(HomeController());
-
-  Widget SectionTitle(String text, VoidCallback onTap) {
-    return Column(
-      children: [
-        Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              RichText(
-                  text: TextSpan(
-                      style: TextStyle(color: Colors.black),
-                      children: <TextSpan>[
-                    TextSpan(
-                        text: text + " ",
-                        style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14),
-                            fontWeight: FontWeight.w600)),
-                    TextSpan(
-                        text: "SALE",
-                        style: TextStyle(
-                            fontSize: getProportionateScreenWidth(16),
-                            fontWeight: FontWeight.bold)),
-                  ])),
-              InkWell(
-                  onTap: onTap,
-                  child: Text("See More",
-                      style: TextStyle(color: AllColors.mainColor)))
-            ],
-          ),
-        ),
-        Divider(
-          color: Colors.grey.withOpacity(0.5),
-        )
-      ],
-    );
-  }
+  bool isTab = SizeConfig.screenWidth > 768;
 
   @override
   Widget build(BuildContext context) {
-    var _aspectRatio;
-    bool isTab = SizeConfig.screenWidth > 768;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        titleSpacing: 0,
-        centerTitle: false,
-        title: Text("$name"),
-        actions: <Widget>[
-          Center(
-              child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, CartScreen.routeName);
-                  },
-                  child: CommonData.icon(
-                      icon: "asset/icons/cart.png",
-                      color: Colors.grey,
-                      isTab: isTab))),
-          SizedBox(
-            width: getProportionateScreenWidth(10),
-          )
-        ],
+        title: Text("Feature Product"),
       ),
       body: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-        child:
-
-            ///all product
-            Obx(() {
+        padding: EdgeInsets.all(10),
+        child: Obx(() {
           if (_homeController.isPopularProductLoading.value) {
             return Shimmer.fromColors(
               baseColor: Colors.grey.withOpacity(0.1),
@@ -127,11 +64,9 @@ class SliderDetails extends StatelessWidget {
                           crossAxisCount: 2,
                           crossAxisSpacing: 5)),
                   itemCount: _homeController.popularProductList.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     ProductModel result =
-                        _homeController.latestProductList[index];
+                        _homeController.popularProductList[index];
                     return InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, ProductDetails.routeName,
