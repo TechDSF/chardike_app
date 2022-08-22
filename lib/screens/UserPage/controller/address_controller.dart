@@ -10,11 +10,14 @@ class AddressController extends GetxController {
 
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
   TextEditingController regionController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  TextEditingController postCodeTextController = TextEditingController();
   TextEditingController areaCodeController = TextEditingController();
   TextEditingController addressDetailsController = TextEditingController();
   final UserDataController _userDataController = Get.put(UserDataController());
+  
   var isLabel = 0.obs;
   Rx<List<AddressModel>> userAddress = Rx<List<AddressModel>>([]);
   List<String> regionList = List<String>.empty(growable: true).obs;
@@ -152,6 +155,28 @@ class AddressController extends GetxController {
               element.regionId == regionId.value)
           .toList();
     }
+  }
+
+  ///update address
+  final TextEditingController nameUpdateController = TextEditingController();
+  final TextEditingController emailUpdateController = TextEditingController();
+  final TextEditingController phoneUpdateController = TextEditingController();
+  final TextEditingController regionUpdateController = TextEditingController();
+  final TextEditingController cityUpdateController = TextEditingController();
+  final TextEditingController areaUpdateController = TextEditingController();
+  final TextEditingController addressUpdateController = TextEditingController();
+  final TextEditingController postCodeUpdateController =
+      TextEditingController();
+
+  setValue({required AddressModel addressModel}) async {
+    nameUpdateController.text = addressModel.name;
+    emailUpdateController.text = addressModel.email;
+    phoneUpdateController.text = addressModel.phone;
+    regionUpdateController.text = addressModel.region;
+    cityUpdateController.text = addressModel.city;
+    areaUpdateController.text = addressModel.area;
+    addressUpdateController.text = addressModel.address;
+    postCodeUpdateController.text = addressModel.postCode;
   }
 
   clearTextField() {

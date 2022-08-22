@@ -11,6 +11,7 @@ class CartController extends GetxController {
   var subTotalAmount = (0.0).obs;
   var mainTotalAmount = 0.0.obs;
   var shippingPreviousPrice = 60.obs;
+  
 
   Rx<List<CartModel>> cartList = Rx<List<CartModel>>([]);
 
@@ -63,6 +64,7 @@ class CartController extends GetxController {
       }
     }
     print("Sub total = ${subTotalAmount.value}");
+    isHaveCart.value = false;
   }
 
   var isHaveCart = false.obs;
@@ -77,7 +79,7 @@ class CartController extends GetxController {
 
   updateCartItem(
       {required String id,
-      required double quantity,
+      required int quantity,
       required double price,
       required double totalPrice}) async {
     var helper = DatabaseHelper();
@@ -86,13 +88,17 @@ class CartController extends GetxController {
         quantityData: quantity,
         priceData: price,
         totalPriceData: totalPrice);
+    print(restult);
     if (restult != 0) {
       try {
         getCartProduct();
       } finally {
         // TODO
         //getTotalAmount();
+        Fluttertoast.showToast(msg: "Updated", toastLength: Toast.LENGTH_LONG);
       }
+    } else {
+      print("Not updating");
     }
     print("Sub total = ${subTotalAmount.value}");
   }

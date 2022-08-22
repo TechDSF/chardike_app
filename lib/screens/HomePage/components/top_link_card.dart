@@ -1,8 +1,7 @@
-import 'package:chardike/screens/BannerProducts/banner_products.dart';
 import 'package:chardike/screens/HomePage/components/all_offers.dart';
+import 'package:chardike/screens/HomePage/components/products_of_you_details.dart';
 import 'package:chardike/screens/HomePage/components/top_product.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
-import 'package:chardike/screens/PopularProduct/popular_product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../size_config.dart';
@@ -26,22 +25,21 @@ class TopLinkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (index == 4 && _homeController.newArrivalsBanner != null) {
+        if (index == 4) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => BannerProducts(
-                      bannerModel: _homeController.newArrivalsBanner!)));
+                  builder: (_) => ProductsYouDetails(
+                        type: false,
+                      )));
         } else if (index == 1) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => AllOfferProducts(isAllType: true)));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => AllOfferProducts(type: "60")));
         } else if (index == 0) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => AllOfferProducts(isAllType: false)));
+                  builder: (_) => AllOfferProducts(type: "AllOffer")));
         } else if (index == 3) {
           Navigator.push(
               context, MaterialPageRoute(builder: (_) => BrandPage()));
@@ -53,7 +51,7 @@ class TopLinkCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(left: SizeConfig.screenWidth * 0.02),
         padding: EdgeInsets.all(SizeConfig.screenWidth * 0.005),
-        height: SizeConfig.screenWidth / 3,
+        height: SizeConfig.screenWidth / 2,
         width: SizeConfig.screenWidth / 3.25,
         child: Column(
           children: [
@@ -73,7 +71,7 @@ class TopLinkCard extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: SizeConfig.screenWidth * 0.024,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -100,14 +98,15 @@ class TopLinkCard extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: Center(
                               child: Container(
                             height: SizeConfig.screenWidth * 0.13,
                             width: SizeConfig.screenWidth * 0.13,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(icon!), fit: BoxFit.fill),
+                                    image: AssetImage(icon!),
+                                    fit: BoxFit.cover),
                                 shape: BoxShape.circle),
                           )),
                         ),
@@ -136,7 +135,9 @@ class TopLinkCard extends StatelessWidget {
                   color: Colors.deepOrange,
                   borderRadius:
                       BorderRadius.circular(SizeConfig.screenWidth * 0.005)),
-              padding: EdgeInsets.all(SizeConfig.screenWidth * 0.002),
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.screenWidth * 0.007,
+                  vertical: SizeConfig.screenWidth * 0.002),
               child: Text(
                 "Explore",
                 style: TextStyle(

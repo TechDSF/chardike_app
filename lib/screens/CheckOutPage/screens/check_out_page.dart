@@ -20,23 +20,40 @@ class CheckOutPage extends StatelessWidget {
   final CheckOutController _checkOutController = Get.put(CheckOutController());
   final UserDataController _userDataController = Get.put(UserDataController());
   final TextEditingController _couponTextController = TextEditingController();
+  final TextEditingController _pointsTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     _checkOutController.onInit();
     _checkOutController.isCouponApplied.value = false;
     _checkOutController.isCouponMatched.value = true;
+    _checkOutController.isPointApplied.value = false;
 
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     _checkOutController.deliverOptionIsHome.value = true;
+    bool productType = args['productType'];
+    _checkOutController.myCheckoutType.value = args['type'];
+    var productQuantity = args['quantity'];
+    _checkOutController.totalAmount.value = 0;
+
+    ///if productType = true, then it's not a discount or falsh deal product
+    ///otherwise the productType come from simple product
+    ///if type = true, then it come from cart screen
+    ///if type = false, then it come from direct buy button
     if (args['type'] == true) {
       _checkOutController.totalAmount.value =
           _cartController.subTotalAmount.value + 60;
     } else {
       _checkOutController.totalAmount.value = double.parse(args['amount']) + 60;
       _checkOutController.dataList.clear();
+      _checkOutController.orderFromValue.value = productType;
+      print("Order type = ${_checkOutController.orderFromValue.value}");
       _checkOutController.dataList.add(args['data']);
     }
+
+    _checkOutController.mySubtotalAmmount.value = args['type']
+        ? _cartController.subTotalAmount.value
+        : double.parse(args['amount']);
 
     return LoaderOverlay(
       child: Scaffold(
@@ -99,30 +116,45 @@ class CheckOutPage extends StatelessWidget {
                           msg: "Please enter valid mobile number!");
                     } else {
                       _checkOutController.confirmOrder(
-                          context: context,
-                          orderType: args['type'],
-                          refCode: "string",
-                          address: _checkOutController.addressId.value,
-                          billingAddress:
-                              _checkOutController.firstBillingId.value == 0
-                                  ? _checkOutController.addressId.value
-                                  : _checkOutController.firstBillingId.value,
-                          coupen: _checkOutController.isCouponMatched.value
-                              ? _couponTextController.text
-                              : null,
-                          total: _checkOutController.totalAmount.value
-                              .toInt()
-                              .toString(),
-                          orderStatus: "Order Processing",
-                          isOrder: true,
-                          mobile: _checkOutController
-                              .mobileTextEditingController.value.text,
-                          email: _checkOutController
-                              .emailTextEditingController.value.text,
-                          firstDeliverry:
-                              _checkOutController.deliverOptionIsHome.value
-                                  ? false
-                                  : true);
+                        context: context,
+                        orderType: args['type'],
+                        refCode: "string",
+                        address: _checkOutController.addressId.value,
+                        billingAddress:
+                            _checkOutController.firstBillingId.value == 0
+                                ? _checkOutController.addressId.value
+                                : _checkOutController.firstBillingId.value,
+                        coupen: _checkOutController.isCouponMatched.value
+                            ? _couponTextController.text
+                            : null,
+                        total: _checkOutController.totalAmount.value
+                            .toInt()
+                            .toString(),
+                        shippingFee: _checkOutController.isFreeShipiing.value
+                            ? 0
+                            : _checkOutController.deliverySystem.value ==
+                                    "Dhaka"
+                                ? _checkOutController.deliverOptionIsHome.value
+                                    ? 60
+                                    : 150
+                                : _checkOutController.deliverOptionIsHome.value
+                                    ? 150
+                                    : 120,
+                        discountPrice: _checkOutController.discountPrice.value,
+                        subTotal: args['type']
+                            ? _cartController.subTotalAmount.value.toInt()
+                            : double.parse(args['amount']).toInt(),
+                        orderFrom: "Flash Deal",
+                        orderStatus: "Order Processing",
+                        isOrder: true,
+                        points: _pointsTextController.text.isEmpty
+                            ? 0
+                            : int.parse(_pointsTextController.text),
+                        mobile: _checkOutController
+                            .mobileTextEditingController.value.text,
+                        email: _checkOutController
+                            .emailTextEditingController.value.text,
+                      );
                     }
 
                     // Navigator.pushNamed(context, PaymentScreen.routeName);
@@ -183,7 +215,12 @@ class CheckOutPage extends StatelessWidget {
                             Obx(() {
                               if (_checkOutController
                                   .firstAddressValue.value.isEmpty) {
-                                return SizedBox();
+                                return Text(
+                                  "Add Shipping Location",
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: SizeConfig.screenWidth * 0.03),
+                                );
                               } else {
                                 return RichText(
                                     text: TextSpan(
@@ -231,7 +268,11 @@ class CheckOutPage extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, MyAddress.routeName,
-                                arguments: 1);
+                                arguments: {
+                                  "data": 1,
+                                  "type": args['type'],
+                                  "amount": double.parse(args['amount'])
+                                });
                           },
                           child: Text(
                             "EDIT",
@@ -276,7 +317,11 @@ class CheckOutPage extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, MyAddress.routeName,
-                                arguments: 2);
+                                arguments: {
+                                  "data": 2,
+                                  "type": args['type'],
+                                  "amount": double.parse(args['amount'])
+                                });
                           },
                           child: Text(
                             "EDIT",
@@ -370,110 +415,33 @@ class CheckOutPage extends StatelessWidget {
                       height: getProportionateScreenWidth(5),
                       width: double.infinity,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: InkWell(
-                          onTap: () {
-                            if (_checkOutController.isFreeShipiing.value ==
-                                false) {
-                              _checkOutController.deliverOptionIsHome.value =
-                                  true;
-                              if (args['type']) {
-                                _checkOutController.totalAmount.value =
-                                    _cartController.subTotalAmount.value + 60;
-                              } else {
-                                _checkOutController.totalAmount.value =
-                                    double.parse(args['amount']) + 60;
-                              }
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: "You got Free Shipping Coupon");
-                            }
-                          },
-                          child: Obx(
-                            () => Container(
-                                padding: EdgeInsets.all(
-                                    getProportionateScreenWidth(5)),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: _checkOutController
-                                                .deliverOptionIsHome.value
-                                            ? AllColors.mainColor
-                                            : Colors.grey),
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(5))),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.check_circle,
-                                      color: _checkOutController
-                                              .deliverOptionIsHome.value
-                                          ? AllColors.mainColor
-                                          : Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      width: getProportionateScreenWidth(10),
-                                    ),
-                                    Expanded(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          CommonData.takaSign + " 60",
-                                          style: TextStyle(
-                                              fontSize:
-                                                  getProportionateScreenWidth(
-                                                      13)),
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              getProportionateScreenWidth(5),
-                                        ),
-                                        Text(
-                                          "Home Delivery",
-                                          style: TextStyle(
-                                              fontSize:
-                                                  getProportionateScreenWidth(
-                                                      13)),
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              getProportionateScreenWidth(5),
-                                        ),
-                                        Text(
-                                          "Est. Arrival: 7 days",
-                                          style: TextStyle(
-                                              fontSize:
-                                                  getProportionateScreenWidth(
-                                                      13)),
-                                        )
-                                      ],
-                                    ))
-                                  ],
-                                )),
-                          ),
-                        )),
-                        SizedBox(
-                          width: getProportionateScreenWidth(10),
-                        ),
-                        Expanded(
-                          child: InkWell(
+                    Obx(() {
+                      if (_checkOutController.deliverySystem.value == "Dhaka") {
+                        return Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: InkWell(
                               onTap: () {
+                                _checkOutController.deliveryType.value =
+                                    "Dhaka Fast Delivery";
                                 if (_checkOutController.isFreeShipiing.value ==
                                     false) {
                                   _checkOutController
-                                      .deliverOptionIsHome.value = false;
-
+                                      .deliverOptionIsHome.value = true;
                                   if (args['type']) {
                                     _checkOutController.totalAmount.value =
                                         _cartController.subTotalAmount.value +
-                                            150;
+                                            60 -
+                                            _checkOutController
+                                                .discountPrice.value
+                                                .toDouble();
                                   } else {
                                     _checkOutController.totalAmount.value =
-                                        double.parse(args['amount']) + 150;
+                                        double.parse(args['amount']) +
+                                            60 -
+                                            _checkOutController
+                                                .discountPrice.value
+                                                .toDouble();
                                   }
                                 } else {
                                   Fluttertoast.showToast(
@@ -488,8 +456,8 @@ class CheckOutPage extends StatelessWidget {
                                         border: Border.all(
                                             color: _checkOutController
                                                     .deliverOptionIsHome.value
-                                                ? Colors.grey
-                                                : AllColors.mainColor),
+                                                ? AllColors.mainColor
+                                                : Colors.grey),
                                         borderRadius: BorderRadius.circular(
                                             getProportionateScreenWidth(5))),
                                     child: Row(
@@ -500,8 +468,211 @@ class CheckOutPage extends StatelessWidget {
                                           Icons.check_circle,
                                           color: _checkOutController
                                                   .deliverOptionIsHome.value
-                                              ? Colors.grey
-                                              : AllColors.mainColor,
+                                              ? AllColors.mainColor
+                                              : Colors.grey,
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              getProportionateScreenWidth(10),
+                                        ),
+                                        Expanded(
+                                            child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              CommonData.takaSign + " 60",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      getProportionateScreenWidth(
+                                                          13)),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  getProportionateScreenWidth(
+                                                      5),
+                                            ),
+                                            Text(
+                                              "Delivery Charge",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      getProportionateScreenWidth(
+                                                          13)),
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  getProportionateScreenWidth(
+                                                      5),
+                                            ),
+                                          ],
+                                        ))
+                                      ],
+                                    )),
+                              ),
+                            )),
+                            SizedBox(
+                              width: getProportionateScreenWidth(10),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                  onTap: () {
+                                    _checkOutController.deliveryType.value =
+                                        "Dhaka Slow Delivery";
+                                    if (_checkOutController
+                                            .isFreeShipiing.value ==
+                                        false) {
+                                      _checkOutController
+                                          .deliverOptionIsHome.value = false;
+
+                                      if (args['type']) {
+                                        _checkOutController.totalAmount.value =
+                                            (_cartController
+                                                        .subTotalAmount.value +
+                                                    150) -
+                                                _checkOutController
+                                                    .discountPrice.value
+                                                    .toDouble();
+                                      } else {
+                                        _checkOutController.totalAmount.value =
+                                            double.parse(args['amount']) +
+                                                150 -
+                                                _checkOutController
+                                                    .discountPrice.value
+                                                    .toDouble();
+                                      }
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "You got Free Shipping Coupon");
+                                    }
+                                  },
+                                  child: Obx(
+                                    () => Container(
+                                        padding: EdgeInsets.all(
+                                            getProportionateScreenWidth(5)),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: _checkOutController
+                                                        .deliverOptionIsHome
+                                                        .value
+                                                    ? Colors.grey
+                                                    : AllColors.mainColor),
+                                            borderRadius: BorderRadius.circular(
+                                                getProportionateScreenWidth(
+                                                    5))),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.check_circle,
+                                              color: _checkOutController
+                                                      .deliverOptionIsHome.value
+                                                  ? Colors.grey
+                                                  : AllColors.mainColor,
+                                            ),
+                                            SizedBox(
+                                              width:
+                                                  getProportionateScreenWidth(
+                                                      10),
+                                            ),
+                                            Expanded(
+                                                child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  CommonData.takaSign + " 150",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenWidth(
+                                                              13)),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      getProportionateScreenWidth(
+                                                          5),
+                                                ),
+                                                Text(
+                                                  "8 Hours Delivery",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenWidth(
+                                                              13)),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      getProportionateScreenWidth(
+                                                          5),
+                                                ),
+                                                Text(
+                                                  "Dhaka City Only",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenWidth(
+                                                              13)),
+                                                )
+                                              ],
+                                            ))
+                                          ],
+                                        )),
+                                  )),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: InkWell(
+                              onTap: () {
+                                _checkOutController.deliveryType.value =
+                                    "Cash On Delivery";
+                                if (_checkOutController.isFreeShipiing.value ==
+                                    false) {
+                                  _checkOutController
+                                      .deliverOptionIsHome.value = true;
+                                  if (args['type']) {
+                                    _checkOutController.totalAmount.value =
+                                        _cartController.subTotalAmount.value +
+                                            150 -
+                                            _checkOutController
+                                                .discountPrice.value
+                                                .toDouble();
+                                  } else {
+                                    _checkOutController.totalAmount.value =
+                                        double.parse(args['amount']) +
+                                            150 -
+                                            _checkOutController
+                                                .discountPrice.value
+                                                .toDouble();
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "You got Free Shipping Coupon");
+                                }
+                              },
+                              child: Obx(
+                                () => Container(
+                                    padding: EdgeInsets.all(
+                                        getProportionateScreenWidth(5)),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: _checkOutController
+                                                    .deliverOptionIsHome.value
+                                                ? AllColors.mainColor
+                                                : Colors.grey),
+                                        borderRadius: BorderRadius.circular(
+                                            getProportionateScreenWidth(5))),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check_circle,
+                                          color: _checkOutController
+                                                  .deliverOptionIsHome.value
+                                              ? AllColors.mainColor
+                                              : Colors.grey,
                                         ),
                                         SizedBox(
                                           width:
@@ -525,32 +696,117 @@ class CheckOutPage extends StatelessWidget {
                                                       5),
                                             ),
                                             Text(
-                                              "Fast Home Delivery",
+                                              "Cash On Delivery",
                                               style: TextStyle(
                                                   fontSize:
                                                       getProportionateScreenWidth(
                                                           13)),
                                             ),
-                                            SizedBox(
-                                              height:
-                                                  getProportionateScreenWidth(
-                                                      5),
-                                            ),
-                                            Text(
-                                              "12 hours delivery",
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      getProportionateScreenWidth(
-                                                          13)),
-                                            )
                                           ],
                                         ))
                                       ],
                                     )),
-                              )),
-                        ),
-                      ],
-                    )
+                              ),
+                            )),
+                            SizedBox(
+                              width: getProportionateScreenWidth(10),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                  onTap: () {
+                                    _checkOutController.deliveryType.value =
+                                        "Sundarban";
+                                    if (_checkOutController
+                                            .isFreeShipiing.value ==
+                                        false) {
+                                      _checkOutController
+                                          .deliverOptionIsHome.value = false;
+
+                                      if (args['type']) {
+                                        _checkOutController.totalAmount.value =
+                                            (_cartController
+                                                        .subTotalAmount.value +
+                                                    120) -
+                                                _checkOutController
+                                                    .discountPrice.value
+                                                    .toDouble();
+                                      } else {
+                                        _checkOutController.totalAmount.value =
+                                            double.parse(args['amount']) +
+                                                120 -
+                                                _checkOutController
+                                                    .discountPrice.value
+                                                    .toDouble();
+                                      }
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "You got Free Shipping Coupon");
+                                    }
+                                  },
+                                  child: Obx(
+                                    () => Container(
+                                        padding: EdgeInsets.all(
+                                            getProportionateScreenWidth(5)),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: _checkOutController
+                                                        .deliverOptionIsHome
+                                                        .value
+                                                    ? Colors.grey
+                                                    : AllColors.mainColor),
+                                            borderRadius: BorderRadius.circular(
+                                                getProportionateScreenWidth(
+                                                    5))),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.check_circle,
+                                              color: _checkOutController
+                                                      .deliverOptionIsHome.value
+                                                  ? Colors.grey
+                                                  : AllColors.mainColor,
+                                            ),
+                                            SizedBox(
+                                              width:
+                                                  getProportionateScreenWidth(
+                                                      10),
+                                            ),
+                                            Expanded(
+                                                child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  CommonData.takaSign + " 120",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenWidth(
+                                                              13)),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      getProportionateScreenWidth(
+                                                          5),
+                                                ),
+                                                Text(
+                                                  "Sundarban Curier",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenWidth(
+                                                              13)),
+                                                ),
+                                              ],
+                                            ))
+                                          ],
+                                        )),
+                                  )),
+                            ),
+                          ],
+                        );
+                      }
+                    })
                   ],
                 ),
               ),
@@ -678,14 +934,27 @@ class CheckOutPage extends StatelessWidget {
                       onTap: () {
                         if (_checkOutController.isCouponApplied.value) {
                           _couponTextController.clear();
-                          _checkOutController.clearCoupon();
+                          _checkOutController.clearCoupon(
+                              amount: double.parse(args['amount']),
+                              type: args['type']);
                         } else {
-                          _checkOutController.getCoupon(
-                              context: context,
-                              couponName: _couponTextController.text,
-                              type: args['type'],
-                              list:
-                                  _cartController.subTotalAmount.value.toInt());
+                          print("SubTotal ${args['amount']}");
+                          if (productType) {
+                            _checkOutController.getCoupon(
+                                context: context,
+                                productType: productType,
+                                quantity: productQuantity,
+                                couponName: _couponTextController.text,
+                                type: args['type'],
+                                subTotal: args['type']
+                                    ? _cartController.subTotalAmount.value
+                                        .toInt()
+                                    : double.parse(args['amount']).toInt());
+                          } else {
+                            Fluttertoast.showToast(
+                                msg:
+                                    "You can not apply any coupon on this product!");
+                          }
                           // _checkOutController.getCoupon(
                           //     couponName: _couponTextController.text);
                         }
@@ -713,6 +982,84 @@ class CheckOutPage extends StatelessWidget {
                     ),
                   ]),
                 ),
+              ),
+              SizedBox(
+                height: getProportionateScreenWidth(30),
+              ),
+              _userDataController.points.value > 10
+                  ? Container(
+                      height: getProportionateScreenHeight(50),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: _checkOutController.isCouponMatched.value
+                                  ? Colors.grey
+                                  : Colors.red),
+                          borderRadius: BorderRadius.circular(
+                              getProportionateScreenWidth(10))),
+                      padding:
+                          EdgeInsets.only(left: getProportionateScreenWidth(5)),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(10)),
+                      child: Row(children: <Widget>[
+                        Expanded(
+                            child: TextField(
+                          controller: _pointsTextController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              hintText: "Points",
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none),
+                        )),
+                        
+                        InkWell(
+                          onTap: () {
+                            if (_pointsTextController.text.isEmpty) {
+                              Fluttertoast.showToast(
+                                  msg: "Please enter your points");
+                            } else if (int.parse(_pointsTextController.text) >
+                                10) {
+                              Fluttertoast.showToast(
+                                  msg: "You can apply only 10 point.");
+                            } else {
+                              if (_checkOutController.isPointApplied.value) {
+                                _checkOutController.clearPoint(
+                                    points:
+                                        int.parse(_pointsTextController.text));
+                                _pointsTextController.clear();
+                              } else {
+                                _checkOutController.applyPoint(
+                                    points:
+                                        int.parse(_pointsTextController.text));
+                              }
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: getProportionateScreenWidth(10)),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(
+                                        getProportionateScreenWidth(10)),
+                                    bottomRight: Radius.circular(
+                                        getProportionateScreenWidth(10)))),
+                            child: Center(
+                                child: Obx(() => Text(
+                                      _checkOutController.isPointApplied.value
+                                          ? "Clear Point"
+                                          : "Apply Point",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ))),
+                          ),
+                        ),
+                      ]),
+                    )
+                  : SizedBox(),
+              Text(
+                "You can apply only 10 Poins",
+                style: TextStyle(color: Colors.black54),
               ),
               SizedBox(
                 height: getProportionateScreenWidth(30),
@@ -751,7 +1098,9 @@ class CheckOutPage extends StatelessWidget {
                 height: getProportionateScreenWidth(10),
               ),
               Obx(() {
-                if (!_checkOutController.isCouponApplied.value) {
+                if (!_checkOutController.isCouponApplied.value ||
+                    !_checkOutController.isCouponValid.value ||
+                    _checkOutController.discountPrice.value == 0) {
                   return SizedBox();
                 } else {
                   return Padding(
@@ -785,6 +1134,36 @@ class CheckOutPage extends StatelessWidget {
                                     fontSize: getProportionateScreenWidth(18),
                                     fontWeight: FontWeight.w600),
                               ))
+                      ],
+                    ),
+                  );
+                }
+              }),
+              SizedBox(
+                height: getProportionateScreenWidth(10),
+              ),
+              Obx(() {
+                if (_checkOutController.isPointApplied.value == false) {
+                  return SizedBox();
+                } else {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Points",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(18),
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          "- " + _pointsTextController.text,
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(18),
+                              fontWeight: FontWeight.w600),
+                        )
                       ],
                     ),
                   );

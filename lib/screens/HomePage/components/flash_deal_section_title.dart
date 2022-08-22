@@ -30,18 +30,19 @@ class FlashDealSectionTitle extends StatelessWidget {
               Text(
                 "Ending in",
                 style: TextStyle(
-                    fontSize: SizeConfig.screenWidth * 0.03,
+                    fontSize: SizeConfig.screenWidth * 0.032,
+                    fontWeight: FontWeight.w500,
                     color: Colors.black),
               ),
               SizedBox(
                 width: getProportionateScreenWidth(5),
               ),
               SlideCountdownSeparated(
-                height: SizeConfig.screenWidth * 0.03,
-                width: SizeConfig.screenWidth * 0.03,
+                height: SizeConfig.screenWidth * 0.034,
+                width: SizeConfig.screenWidth * 0.034,
                 separatorStyle: TextStyle(color: Colors.deepOrange),
                 textStyle: TextStyle(
-                    fontSize: SizeConfig.screenWidth * 0.018,
+                    fontSize: SizeConfig.screenWidth * 0.022,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
                 decoration: BoxDecoration(

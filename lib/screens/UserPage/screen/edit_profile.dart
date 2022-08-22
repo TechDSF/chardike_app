@@ -5,6 +5,7 @@ import 'package:chardike/screens/UserPage/controller/edit_profile_controller.dar
 import 'package:chardike/screens/UserPage/screen/inputbox_page.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -129,10 +130,14 @@ class EditProfile extends StatelessWidget {
                 onTap: () {
                   if (_editProfileController.isAssetImage.value) {
                     _editProfileController.setProfileData(
-                        context: context, isImageSelect: true);
+                        context: context,
+                        isImageSelect: true,
+                        bioData: _editProfileController.bio.value);
                   } else {
                     _editProfileController.setProfileData(
-                        context: context, isImageSelect: false);
+                        context: context,
+                        isImageSelect: false,
+                        bioData: _editProfileController.bio.value);
                   }
                 },
                 child: const Center(child: FaIcon(FontAwesomeIcons.check))),
@@ -141,6 +146,7 @@ class EditProfile extends StatelessWidget {
             )
           ],
         ),
+        
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -238,8 +244,12 @@ class EditProfile extends StatelessWidget {
                       ))),
               const Divider(),
               ListTile(
-                onTap: () {},
-                title: Text("Username"),
+                onTap: () {
+                  Fluttertoast.showToast(
+                      msg: "You can not change your user Id",
+                      toastLength: Toast.LENGTH_LONG);
+                },
+                title: Text("User Id"),
                 trailing: RichText(
                   text: TextSpan(
                     children: [
@@ -333,6 +343,8 @@ class EditProfile extends StatelessWidget {
               ListTile(
                   onTap: () {
                     //Navigator.pushNamed(context, EditPhone.routeName);
+                    Fluttertoast.showToast(
+                        msg: "You can not change the mobile number!");
                   },
                   title: const Text("Phone"),
                   trailing: RichText(
@@ -351,31 +363,31 @@ class EditProfile extends StatelessWidget {
                       ],
                     ),
                   )),
-              const Divider(),
-              ListTile(
-                  title: const Text("Email"),
-                  trailing: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "${_userDataController.email.value} ",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: getProportionateScreenWidth(13)),
-                        ),
-                        TextSpan(
-                          text: "Verify Now ",
-                          style: TextStyle(
-                              color: AllColors.mainColor,
-                              fontSize: getProportionateScreenWidth(13)),
-                        ),
-                        WidgetSpan(
-                          child: Icon(Icons.arrow_forward_ios,
-                              size: getProportionateScreenWidth(15)),
-                        ),
-                      ],
-                    ),
-                  )),
+              // const Divider(),
+              // ListTile(
+              //     title: const Text("Email"),
+              //     trailing: RichText(
+              //       text: TextSpan(
+              //         children: [
+              //           TextSpan(
+              //             text: "${_userDataController.email.value} ",
+              //             style: TextStyle(
+              //                 color: Colors.black,
+              //                 fontSize: getProportionateScreenWidth(13)),
+              //           ),
+              //           TextSpan(
+              //             text: "Verify Now ",
+              //             style: TextStyle(
+              //                 color: AllColors.mainColor,
+              //                 fontSize: getProportionateScreenWidth(13)),
+              //           ),
+              //           WidgetSpan(
+              //             child: Icon(Icons.arrow_forward_ios,
+              //                 size: getProportionateScreenWidth(15)),
+              //           ),
+              //         ],
+              //       ),
+              //     )),
               // const Divider(),
               // ListTile(
               //     onTap: () {

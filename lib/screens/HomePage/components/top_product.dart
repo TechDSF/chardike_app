@@ -127,7 +127,7 @@ class TopProduct extends StatelessWidget {
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize:
-                                                SizeConfig.screenWidth * 0.023),
+                                                SizeConfig.screenWidth * 0.03),
                                       ),
                                     ),
                                     Row(

@@ -1,16 +1,19 @@
 import 'package:chardike/CommonData/all_colors.dart';
+import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/FeedPage/screens/chardike_blogs.dart';
 import 'package:chardike/screens/FeedPage/screens/review_page.dart';
 import 'package:chardike/screens/FeedPage/screens/time_line_screen.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 import '../../../CommonData/common_data.dart';
 import '../../CartPage/screen/cart_screen.dart';
 
 class FeedPage extends StatelessWidget {
-  const FeedPage({Key? key}) : super(key: key);
+  FeedPage({Key? key}) : super(key: key);
+  final CartController _cartController = Get.put(CartController());
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class FeedPage extends StatelessWidget {
         appBar: AppBar(
           leading: Center(
               child: Icon(
-            Icons.search,
+            Icons.feed,
             color: AllColors.mainColor,
           )),
           title: const Text("Feed"),
@@ -29,10 +32,35 @@ class FeedPage extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, CartScreen.routeName);
                 },
-                child: CommonData.icon(
-                    icon: "asset/icons/cart.png",
-                    color: AllColors.mainColor,
-                    isTab: isTab)),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    CommonData.icon(
+                        icon: "asset/icons/cart.png",
+                        color: AllColors.mainColor,
+                        isTab: isTab),
+                    Positioned(
+                      left: -5,
+                      top: 0,
+                      child: Container(
+                        width: SizeConfig.screenWidth * 0.035,
+                        height: SizeConfig.screenWidth * 0.035,
+                        decoration: BoxDecoration(
+                            color: Colors.red, shape: BoxShape.circle),
+                        child: Center(
+                          child: Obx(() => Text(
+                                _cartController.cartList.value.length
+                                    .toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: SizeConfig.screenWidth * 0.03),
+                              )),
+                        ),
+                      ),
+                    )
+                  ],
+                )),
             SizedBox(
               width: getProportionateScreenWidth(15),
             ),

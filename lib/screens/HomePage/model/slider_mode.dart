@@ -8,9 +8,6 @@ import 'dart:convert';
 List<SliderModel> sliderModelFromMap(String str) =>
     List<SliderModel>.from(json.decode(str).map((x) => SliderModel.fromMap(x)));
 
-String sliderModelToMap(List<SliderModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toMap())));
-
 class SliderModel {
   SliderModel({
     required this.id,
@@ -48,17 +45,4 @@ class SliderModel {
         homeShown: json["home_shown"] ?? false,
         category: json["category"],
       );
-
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "is_active": isActive,
-        "slidername": slidername,
-        "slider_image": sliderImage,
-        "url_link": urlLink,
-        "position": position,
-        "home_shown": homeShown,
-        "category": category,
-      };
 }

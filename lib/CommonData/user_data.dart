@@ -22,6 +22,7 @@ class UserDataController extends GetxController {
   var zipcode = "".obs;
   var country = "".obs;
   var bio = "".obs;
+  var points = 0.obs;
 
   getData() async {
     preferences = await SharedPreferences.getInstance();
@@ -41,6 +42,7 @@ class UserDataController extends GetxController {
     zipcode.value = preferences.getString(CommonData.zipcode) ?? "";
     country.value = preferences.getString(CommonData.country) ?? "";
     bio.value = preferences.getString(CommonData.bio) ?? "";
+    points.value = preferences.getInt(CommonData.points) ?? 0;
   }
 
   setData(
@@ -59,7 +61,8 @@ class UserDataController extends GetxController {
       required String addressData,
       required String cityData,
       required String zipcodeData,
-      required String countryData}) async {
+      required String countryData,
+      required int pointData}) async {
     preferences = await SharedPreferences.getInstance();
     preferences.setString(CommonData.fullName, fullNameData);
     preferences.setString(CommonData.email, emailData);
@@ -77,6 +80,7 @@ class UserDataController extends GetxController {
     preferences.setString(CommonData.city, cityData);
     preferences.setString(CommonData.zipcode, zipcodeData);
     preferences.setString(CommonData.country, countryData);
+    preferences.setInt(CommonData.points, pointData);
 
     fullName.value = fullNameData;
     email.value = emailData;
@@ -94,6 +98,7 @@ class UserDataController extends GetxController {
     city.value = cityData;
     zipcode.value = zipcodeData;
     country.value = countryData;
+    points.value = pointData;
   }
 
   setPassword({required String passwordData}) async {

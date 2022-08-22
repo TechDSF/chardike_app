@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final categoryProductModel = categoryProductModelFromJson(jsonString);
-
 import 'package:chardike/screens/HomePage/model/product_model.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
@@ -23,7 +19,7 @@ class CategoryProductModel {
   factory CategoryProductModel.fromJson(Map<String, dynamic> json) =>
       CategoryProductModel(
         id: json["id"],
-        categoryName: json["category_name"],
+        categoryName: json["category_name"] ?? "",
         categoryProducts: List<ProductModel>.from(
             json["Category_products"].map((x) => ProductModel.fromJson(x))),
       );

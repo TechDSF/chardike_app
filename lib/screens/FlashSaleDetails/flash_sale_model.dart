@@ -25,9 +25,13 @@ class FlashSaleModel {
   factory FlashSaleModel.fromJson(Map<String, dynamic> json) => FlashSaleModel(
         id: json["id"],
         flashSaleId: json["flash_sale_ID"],
-        name: json["name"],
-        startTime: DateTime.parse(json["start_time"]),
-        endTime: DateTime.parse(json["end_time"]),
+        name: json["name"] ?? "",
+        startTime: json["start_time"] == null
+            ? DateTime.now()
+            : DateTime.parse(json["start_time"]),
+        endTime: json["end_time"] == null
+            ? DateTime.now()
+            : DateTime.parse(json["end_time"]),
         products: List<FlashProduct>.from(
             json["products"].map((x) => FlashProduct.fromJson(x))),
       );
@@ -51,8 +55,8 @@ class FlashProduct {
   factory FlashProduct.fromJson(Map<String, dynamic> json) => FlashProduct(
         id: json["id"],
         flashProduct: ProductModel.fromJson(json["flash_product"]),
-        flashDiscount: json["flash_discount"],
-        flashPrice: json["flash_price"],
-        isActive: json["is_active"],
+        flashDiscount: json["flash_discount"] ?? 0,
+        flashPrice: json["flash_price"] ?? 0.0,
+        isActive: json["is_active"] ?? false,
       );
 }

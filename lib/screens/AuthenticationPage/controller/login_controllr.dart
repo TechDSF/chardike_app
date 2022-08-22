@@ -5,6 +5,7 @@ import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/Service/ApiService/api_components.dart';
 import 'package:chardike/Service/ApiService/api_service.dart';
+import 'package:chardike/screens/AuthenticationPage/login_model.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/change_password_screen.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/otp_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,21 +71,22 @@ class LoginController extends GetxController {
           headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        var jsonData = json.decode(response.body);
-        print(jsonData);
-        if (jsonData['Error'] == "Sorry Password mismatch") {
+        var jd = json.decode(response.body);
+        var model = loginModelFromJson(utf8.decode(response.bodyBytes));
+        print(model.username);
+        if (jd['Error'] == "Sorry Password mismatch") {
           Fluttertoast.showToast(
-              msg: "${jsonData['Error']}", toastLength: Toast.LENGTH_LONG);
+              msg: "${jd['Error']}", toastLength: Toast.LENGTH_LONG);
           isSingUpLoading(false);
           context.loaderOverlay.hide();
-        } else if (jsonData['Error'] != null) {
+        } else if (jd['Error'] != null) {
           Fluttertoast.showToast(
-              msg: "${jsonData['Error']}", toastLength: Toast.LENGTH_LONG);
+              msg: "${jd['Error']}", toastLength: Toast.LENGTH_LONG);
           isSingUpLoading(false);
           context.loaderOverlay.hide();
         } else {
           var resultt = await ApiService.getUserToken(
-              userName: jsonData['username'], password: password);
+              userName: model.username, password: password);
           if (resultt.runtimeType == int) {
             Fluttertoast.showToast(
                 msg: "Token get error", toastLength: Toast.LENGTH_LONG);
@@ -105,14 +107,13 @@ class LoginController extends GetxController {
               isSingUpLoading(false);
               context.loaderOverlay.hide();
             } else {
-              print("user name = ${jsonData}");
               _userDataController.setData(
-                  fullNameData: jsonData['fullName'] ?? "",
+                  fullNameData: model.fullName ?? "",
                   emailData: "",
                   mobileData: email,
-                  userObjIdData: jsonData['user_obj_ID'].toString() ?? "",
-                  profileIdData: jsonData['profile_ID'].toString() ?? "",
-                  userNameData: jsonData['username'] ?? "",
+                  userObjIdData: model.userObjId.toString() ?? "",
+                  profileIdData: model.profileId.toString() ?? "",
+                  userNameData: model.username ?? "",
                   tokenData: d['refresh'],
                   passwordData: password,
                   imageData: userDataResult['profile_picture'],
@@ -122,7 +123,8 @@ class LoginController extends GetxController {
                   addressData: userDataResult['address'],
                   cityData: userDataResult['city'],
                   zipcodeData: userDataResult['zipcode'],
-                  countryData: userDataResult['country']);
+                  countryData: userDataResult['country'],
+                  pointData: userDataResult['points_gained'] ?? 0);
               _commonController.isLogin.value = true;
               prefs.setBool("isLogin", true);
               context.loaderOverlay.hide();

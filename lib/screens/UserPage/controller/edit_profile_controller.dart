@@ -51,6 +51,7 @@ class EditProfileController extends GetxController {
     }
   }
 
+
   cropImage({required File imageFile}) async {
     CroppedFile? croppedFile =
         await ImageCropper().cropImage(sourcePath: imageFile.path);
@@ -77,7 +78,9 @@ class EditProfileController extends GetxController {
   }
 
   setProfileData(
-      {required BuildContext context, required bool isImageSelect}) async {
+      {required BuildContext context,
+      required bool isImageSelect,
+      required String bioData}) async {
     context.loaderOverlay.show();
     try {
       var tokenResult = await ApiService.getUserToken(
@@ -93,7 +96,7 @@ class EditProfileController extends GetxController {
             image: isImageSelect,
             imageData: selectImage.value,
             address: "",
-            bio: bio.value,
+            bio: bioData,
             token: tokenResult['access']);
         if (result.runtimeType != false) {
           print("Work here 2");
@@ -114,7 +117,8 @@ class EditProfileController extends GetxController {
               addressData: result['address'],
               cityData: result['city'],
               zipcodeData: result['zipcode'],
-              countryData: result['country']);
+              countryData: result['country'],
+              pointData: int.parse(result['points_gained']) ?? 0);
 
           isAssetImage.value = false;
           _dataController.image.value = result['profile_picture'];

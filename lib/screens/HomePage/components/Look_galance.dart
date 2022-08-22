@@ -54,6 +54,7 @@ class LookAtGlance extends StatelessWidget {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.screenWidth * 0.01),
                           child: BannerSection(
+                            type: "NewArrival",
                             bannerModel: _homeController.newArrivalsBanner,
                           )),
                     ),
@@ -74,6 +75,7 @@ class LookAtGlance extends StatelessWidget {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.screenWidth * 0.01),
                           child: BannerSection(
+                            type: "DontMiss",
                             bannerModel: _homeController.dontMissBanner,
                           )),
                     ),
@@ -94,6 +96,7 @@ class LookAtGlance extends StatelessWidget {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.screenWidth * 0.01),
                           child: BannerSection(
+                            type: "TodayHotSale",
                             bannerModel: _homeController.todayHotSaleBanner,
                           )),
                     ),

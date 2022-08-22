@@ -63,7 +63,7 @@ class HelpCenter extends StatelessWidget {
               color: AllColors.mainColor,
             ),
             title: const Text(
-                "Sahara Tropical Centre, Bata Signal, New Elephant Road Dhaka."),
+                "Chardike Limited, Floor 11 (Lift 10), 163-164, Sonargaon Road, Hatirpool, Dhaka 1205"),
           ),
           ListTile(
             leading: Icon(
@@ -72,6 +72,7 @@ class HelpCenter extends StatelessWidget {
             ),
             title: const Text("Email: support@chardike.com"),
           ),
+          
           ListTile(
             leading: Icon(
               Icons.phone,

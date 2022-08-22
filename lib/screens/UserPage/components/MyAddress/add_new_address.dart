@@ -48,7 +48,7 @@ class AddNewAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _checkOutController.getShippingAddress();
+    _checkOutController.getShippingAddress(type: false, amount: 0);
     _checkOutController.getUserAddress();
     return LoaderOverlay(
       child: Scaffold(
@@ -75,6 +75,14 @@ class AddNewAddress extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.5),
                 ),
                 customTextForm(
+                    hintText: "Email",
+                    controller: _addressController.emailTextController,
+                    validateValue: "Please provide Email"),
+                Container(
+                  height: getProportionateScreenHeight(1),
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+                customTextForm(
                     hintText: "Phone Number",
                     controller: _addressController.phoneNumberController,
                     validateValue: "Please provide Phone Number"),
@@ -92,7 +100,7 @@ class AddNewAddress extends StatelessWidget {
                           controller: _addressController.regionController,
                           style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                              hintText: "Region", border: InputBorder.none)),
+                              hintText: "Division", border: InputBorder.none)),
                       suggestionsCallback: _addressController.getRegionList,
                       itemBuilder: (context, suggestion) {
                         return ListTile(
@@ -135,6 +143,18 @@ class AddNewAddress extends StatelessWidget {
                     ),
                   ),
                 ),
+                Container(
+                  height: getProportionateScreenHeight(1),
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+                Container(
+                  color: Colors.white,
+                  height: SizeConfig.screenHeight * 0.005,
+                ),
+                customTextForm(
+                    hintText: "Post Code",
+                    controller: _addressController.postCodeTextController,
+                    validateValue: "Please provide your Post Code"),
                 Container(
                   height: getProportionateScreenHeight(1),
                   color: Colors.grey.withOpacity(0.5),
@@ -351,6 +371,7 @@ class AddNewAddress extends StatelessWidget {
                       } else {
                         _checkOutController.setBillingAddress(
                             name: _addressController.fullNameController.text,
+                            email: _addressController.emailTextController.text,
                             phone:
                                 _addressController.phoneNumberController.text,
                             region: _addressController.regionController.text,
@@ -359,7 +380,8 @@ class AddNewAddress extends StatelessWidget {
                             address: _addressController
                                 .addressDetailsController.text,
                             isBilling: _addressController.isBilling.value,
-                            postCode: "",
+                            postCode:
+                                _addressController.postCodeTextController.text,
                             context: context);
                         // var model = AddressModel(id: DateTime.now().microsecondsSinceEpoch.toString(), fullName: _addressController.fullNameController.text, phoneNumber: _addressController.phoneNumberController.text, region: _addressController.regionController.text, city: _addressController.cityController.text, area: _addressController.areaCodeController.text, address: _addressController.addressDetailsController.text, label: _addressController.isLabel.value==1?"OFFICE":"HOME");
                         // _addressController.addAddress(addressModel: model,context: context);

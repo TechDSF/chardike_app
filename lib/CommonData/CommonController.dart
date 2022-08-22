@@ -39,7 +39,7 @@ class CommonController extends GetxController {
       } else {
         var userDataResult =
             await ApiService.getProfileData(accessToken: tokenResult['access']);
-        print(userDataResult);
+        print("User data $userDataResult");
         _userDataController.setData(
             fullNameData: userDataResult['full_name'] ?? "",
             emailData: "",
@@ -57,7 +57,8 @@ class CommonController extends GetxController {
             addressData: userDataResult['address'],
             cityData: userDataResult['city'],
             zipcodeData: userDataResult['zipcode'],
-            countryData: userDataResult['country']);
+            countryData: userDataResult['country'],
+            pointData: userDataResult['points_gained'] ?? 0);
       }
     }
   }

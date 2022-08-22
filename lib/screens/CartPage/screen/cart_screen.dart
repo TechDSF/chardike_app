@@ -3,7 +3,6 @@ import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/AuthenticationPage/screens/login_screen.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
-import 'package:chardike/screens/CartPage/model/cart_model.dart';
 import 'package:chardike/screens/CartPage/screen/cart_item.dart';
 import 'package:chardike/screens/CheckOutPage/screens/check_out_page.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
@@ -12,10 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 import 'package:shimmer/shimmer.dart';
-
+import '../../HomePage/components/all_product_details.dart';
 import '../../HomePage/model/product_model.dart';
 import '../../ProductDetails/product_details.dart';
 import '../model/cart_item_model.dart';
@@ -84,6 +81,8 @@ class CartScreen extends StatelessWidget {
                         Navigator.pushNamed(context, CheckOutPage.routeName,
                             arguments: {
                               "type": true,
+                              "productType": true,
+                              "quantity": 0,
                               "data": CartItemModel(
                                   item: "",
                                   attr: "",
@@ -153,7 +152,10 @@ class CartScreen extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => AllProductDetails()));
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(

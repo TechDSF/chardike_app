@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chardike/CommonData/user_data.dart';
 import 'package:chardike/Service/ApiService/api_service.dart';
 import 'package:chardike/screens/FeedPage/model/feed_model.dart';
@@ -5,8 +7,10 @@ import 'package:chardike/screens/ProductDetails/model/review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FeedController extends GetxController {
   var isLoading = false.obs;
@@ -22,32 +26,34 @@ class FeedController extends GetxController {
   TextEditingController descriptionTextController = TextEditingController();
   final UserDataController _userDataController = Get.put(UserDataController());
 
-  getTimeLineFeed() async {
+  Future<void> getTimeLineFeed() async {
     isBlogLoading(true);
     var result = await ApiService.getAllBlogs();
     if (result.runtimeType == int) {
       isBlogLoading(false);
       print("Blog fetch error");
     } else {
+      timeLineList.value.clear();
       timeLineList.value = result;
       isBlogLoading(false);
     }
   }
 
-  getAdminFeed() async {
+  Future<void> getAdminFeed() async {
     isAdminBlogLoading(true);
     var result = await ApiService.getAdminBlogs();
     if (result.runtimeType == int) {
       isAdminBlogLoading(false);
       print("Blog fetch error");
     } else {
+      adminBlogList.value.clear();
       adminBlogList.value = result;
       print(adminBlogList.value.length);
       isAdminBlogLoading(false);
     }
   }
 
-  getReviewList() async {
+  Future<void> getReviewList() async {
     isReviewBlogLoading(true);
     var result = await ApiService.getALlReview();
     if (result.runtimeType == int) {
@@ -55,6 +61,7 @@ class FeedController extends GetxController {
       isReviewBlogLoading(false);
     } else {
       List<ReviewModel> list = result;
+      reviewList.value.clear();
       list.forEach((element) {
         if (element.isActive) {
           reviewList.value.add(element);
@@ -97,7 +104,35 @@ class FeedController extends GetxController {
   }
 
   openImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    selectImage.value = image!.path;
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      File img = File(image!.path);
+      cropImage(imageFile: img);
+    } on Exception catch (e) {
+      print("Failed to pick image = $e");
+      // TODO
+    }
+  }
+
+  cropImage({required File imageFile}) async {
+    CroppedFile? croppedFile =
+        await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedFile == null) {
+      selectImage.value = croppedFile!.path;
+      print("crop image null");
+    } else {
+      selectImage.value = croppedFile.path;
+      print("crop image ok");
+    }
+  }
+
+  Future<void> launchInstagramUrl({required Uri url}) async {
+    if (await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -1,7 +1,9 @@
 import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/FeedPage/controller/feed_controller.dart';
 import 'package:chardike/screens/FeedPage/model/feed_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 
 import '../../../CommonData/all_colors.dart';
 import '../../../size_config.dart';
@@ -9,6 +11,7 @@ import '../../../size_config.dart';
 class FeedDetails extends StatelessWidget {
   FeedDetails({Key? key, required this.feedModel}) : super(key: key);
   FeedModel feedModel;
+  final FeedController _feedController = Get.put(FeedController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +89,20 @@ class FeedDetails extends StatelessWidget {
                             image: AssetImage("asset/images/blank_image.png"))),
                   )
                 : Container(
-                    height: SizeConfig.screenHeight * 0.5,
+                    height: SizeConfig.screenHeight * 0.4,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(feedModel.image),
                             fit: BoxFit.fill)),
                   ),
+            feedModel.urlField == "http://www.devroben.xyz"
+                ? SizedBox()
+                : InkWell(
+                    onTap: () {
+                      _feedController.launchInstagramUrl(
+                          url: Uri.parse(feedModel.urlField));
+                    },
+                    child: Text(feedModel.urlField)),
             SizedBox(
               height: getProportionateScreenHeight(10),
             ),

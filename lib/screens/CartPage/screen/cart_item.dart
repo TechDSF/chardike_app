@@ -97,6 +97,12 @@ class _CartItemState extends State<CartItem> {
                                   widget.cartModel.price.toInt();
                               widget.itemCount--;
                             });
+                            _cartController.updateCartItem(
+                                id: widget.cartModel.id,
+                                quantity: widget.itemCount,
+                                price: widget.cartModel.price,
+                                totalPrice:
+                                    widget.itemCount * widget.cartModel.price);
                           }
                         },
                         child: Container(
@@ -144,6 +150,12 @@ class _CartItemState extends State<CartItem> {
                                   widget.cartModel.price.toInt();
                               widget.itemCount++;
                             });
+                            _cartController.updateCartItem(
+                                id: widget.cartModel.id,
+                                quantity: widget.itemCount,
+                                price: widget.cartModel.price,
+                                totalPrice:
+                                    widget.itemCount * widget.cartModel.price);
                           }
                         },
                         child: Container(

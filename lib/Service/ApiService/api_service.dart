@@ -17,6 +17,7 @@ import '../../screens/FeedPage/model/feed_model.dart';
 import '../../screens/FlashSaleDetails/flash_sale_model.dart';
 import '../../screens/HomePage/model/banner_model.dart';
 import '../../screens/HomePage/model/discount_product_model.dart';
+import '../../screens/HomePage/model/hot_sale_model.dart';
 import '../../screens/HomePage/model/product_model.dart';
 import '../../screens/SearchPage/model/category_product_model.dart';
 import '../../screens/SearchPage/model/country_model.dart';
@@ -24,6 +25,17 @@ import '../../screens/UserPage/model/order_status_model.dart';
 
 class ApiService {
   static var client = http.Client();
+
+  ///fetch popular products
+  static dynamic fetchAllProducts() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(productUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return productModelFromJson(utf8.decode(response.bodyBytes));
+    } else {
+      return response.statusCode;
+    }
+  }
 
   ///fetch main categories
   static dynamic fetchCategories() async {
@@ -65,7 +77,7 @@ class ApiService {
     var headers = {'Content-Type': 'application/json'};
     var response = await client.get(Uri.parse(bannerUrl), headers: headers);
     if (response.statusCode == 200) {
-      print("work");
+      print("Brand service work");
       return bannerModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
@@ -114,6 +126,17 @@ class ApiService {
         await client.get(Uri.parse(topSaleProductUrl), headers: headers);
     if (response.statusCode == 200) {
       return productModelFromJson(utf8.decode(response.bodyBytes));
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch todays hot sale
+  static dynamic fetchTodayHotSaleProducts() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response = await client.get(Uri.parse(hotSaleUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return hotSaleFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }
@@ -200,7 +223,8 @@ class ApiService {
             "city": jsonData["city"] ?? "",
             "zipcode": jsonData["zipcode"] ?? "",
             "country": jsonData["country"] ?? "",
-            "phone": jsonData["phone"] ?? ""
+            "phone": jsonData["phone"] ?? "",
+            "points_gained": jsonData["points_gained"].toString()
           };
           return map;
         } else {
@@ -231,7 +255,8 @@ class ApiService {
             "city": jsonData["city"] ?? "",
             "zipcode": jsonData["zipcode"] ?? "",
             "country": jsonData["country"] ?? "",
-            "phone": jsonData["phone"] ?? ""
+            "phone": jsonData["phone"] ?? "",
+            "points_gained": jsonData["points_gained"].toString()
           };
           return map;
         } else {
@@ -254,7 +279,7 @@ class ApiService {
         await client.get(Uri.parse(profileDataUrl), headers: headers);
     if (response.statusCode == 200) {
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
-      Map<String, String> map = {
+      Map<String, dynamic> map = {
         "full_name": jsonData["full_name"] ?? "Demo User",
         "dob": jsonData["dob"] ?? "",
         "gender": jsonData["gender"] ?? "",
@@ -263,7 +288,8 @@ class ApiService {
         "city": jsonData["city"] ?? "",
         "zipcode": jsonData["zipcode"] ?? "",
         "country": jsonData["country"] ?? "",
-        "phone": jsonData["phone"] ?? ""
+        "phone": jsonData["phone"] ?? "",
+        "points_gained": jsonData["points_gained"] ?? 0
       };
       return map;
     } else {
@@ -433,6 +459,7 @@ class ApiService {
   static Future<bool> setBillingAddress(
       {required String accessToken,
       required String name,
+      required String email,
       required String phone,
       required String region,
       required String city,
@@ -450,10 +477,11 @@ class ApiService {
     var body = json.encode({
       "name": name,
       "phone": phone,
+      "email": email,
       "region": region,
       "city": city,
       "area": area,
-      "post_code": ",",
+      "post_code": postCode,
       "address": address,
       "is_billing": isBilling
     });
@@ -494,6 +522,47 @@ class ApiService {
     }
   }
 
+  static Future<bool> updateUrseAddress(
+      {required String nameData,
+      required String id,
+      required String emailData,
+      required String phoneData,
+      required String regionData,
+      required String cityData,
+      required String areaData,
+      required String postCodeData,
+      required String addressData,
+      required bool type}) async {
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var body = json.encode({
+        "name": nameData,
+        "email": emailData,
+        "phone": phoneData,
+        "region": regionData,
+        "city": cityData,
+        "area": areaData,
+        "post_code": postCodeData,
+        "address": addressData,
+        "is_billing": type
+      });
+
+      var response = await client.put(Uri.parse(editAddressUrl + "$id/"),
+          headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print("ex ${response.reasonPhrase}");
+        return false;
+      }
+    } on Exception catch (e) {
+      print("ex $e");
+      return false;
+      // TODO
+    }
+  }
+
   ///add cart item
   static dynamic addCartItem({
     required dynamic jsonData,
@@ -523,15 +592,21 @@ class ApiService {
       required dynamic coupen,
       required String total,
       required dynamic items,
+      required int shippingFee,
+      required int discountPrice,
+      required int subTotal,
+      required String orderFrom,
       required String orderStatus,
       required bool isOrder,
       required String mobile,
       required String email,
-      required bool firstDeliverry}) async {
+      required String deliverySystem}) async {
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken'
     };
+
+    print("that is $coupen");
 
     var datetime = DateTime.now();
     var date =
@@ -540,6 +615,8 @@ class ApiService {
     var ref = DateTime.now().microsecondsSinceEpoch.toString();
     var refCode = ref.substring(0, 12);
 
+    print("The delivery system is $deliverySystem");
+
     var body = json.encode({
       "ref_code": refCode,
       "address_shipping": address,
@@ -547,28 +624,18 @@ class ApiService {
       "coupon": coupen,
       "ordered_date": date,
       "items": items,
+      "shipping_fee": shippingFee,
+      "discount_price": discountPrice,
+      "subtotal": subTotal,
+      "order_from": orderFrom,
       "total": total,
       "order_status": "Pending",
       "is_order": true,
       "mobile": mobile,
       "user_device": Platform.isIOS ? "IOS" : "ANDROID",
       "email": email,
-      "fast_delivery": firstDeliverry
+      "delivery_option": deliverySystem
     });
-
-    // var body = json.encode({
-    //   "ref_code": "String",
-    //   "address": 1,
-    //   "coupon": null,
-    //   "ordered_date": date,
-    //   "items": items,
-    //   "total": total,
-    //   "order_status": "Order Received",
-    //   "is_order": true,
-    //   "mobile": mobile,
-    //   "email": null,
-    //   "first_deliverry": firstDeliverry
-    // });
 
     var response =
         await client.post(Uri.parse(orderCreate), headers: headers, body: body);
@@ -709,6 +776,73 @@ class ApiService {
       return discountProductModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       print(response.statusCode);
+    }
+  }
+
+  ///add user points
+  static Future<bool> setUserPoints(
+      {required int profileId, required int points}) async {
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var body = jsonEncode({"profile_ID": profileId, "points": points});
+
+      var response = await client.post(Uri.parse(addPointUrl),
+          headers: headers, body: body);
+
+      if (response.statusCode == 202) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (e) {
+      return false;
+      // TODO
+    }
+  }
+
+  ///add user points
+  static Future<bool> lossUserPoints(
+      {required int profileId, required int points}) async {
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var body = jsonEncode({"profile_ID": profileId, "points": points});
+
+      var response = await client.post(Uri.parse(lossPointUrl),
+          headers: headers, body: body);
+
+      if (response.statusCode == 202) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (e) {
+      return false;
+      // TODO
+    }
+  }
+
+  ///add user points
+  static dynamic paymentProcess({required String accessToken}) async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+
+    var response = await client.get(Uri.parse(sslCommerzUrl), headers: headers);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      print("this is response ${response.body}");
+      var jsonData = json.decode(response.body);
+      if (jsonData['GatewayPageURL'].toString() != "") {
+        print(
+            "$response and ${response.reasonPhrase} and ${jsonData['GatewayPageURL']}");
+        return jsonData['GatewayPageURL'];
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 }

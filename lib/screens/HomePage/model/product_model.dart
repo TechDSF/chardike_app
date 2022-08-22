@@ -76,7 +76,7 @@ class ProductModel {
             "https://firebasestorage.googleapis.com/v0/b/quizer-ff18d.appspot.com/o/Screenshot%202022-07-26%20at%2011.57.26%20AM.png?alt=media&token=addadafb-a5fc-42ed-a351-424e7af30e54",
         productImage: List<ProductImage>.from(
             json["product_image"].map((x) => ProductImage.fromJson(x))),
-        soldCount: json["sold_count"],
+        soldCount: json["sold_count"] ?? 0,
         expireDate: json["expire_date"],
         regularPrice: json["regular_price"] == null
             ? "0.0"

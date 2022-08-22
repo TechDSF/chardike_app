@@ -26,8 +26,8 @@ class DiscountProductModel {
       DiscountProductModel(
         id: json["id"],
         discountProduct: ProductModel.fromJson(json["discount_product"]),
-        discount: json["discount"],
-        price: json["price"],
+        discount: json["discount"] ?? 0,
+        price: json["price"] ?? 0.0,
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );

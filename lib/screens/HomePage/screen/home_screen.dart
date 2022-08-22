@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/screens/HomePage/components/Look_galance.dart';
 import 'package:chardike/screens/HomePage/components/all_product_section.dart';
 import 'package:chardike/screens/HomePage/components/banner_section.dart';
@@ -103,49 +104,53 @@ class HomeScreen extends StatelessWidget {
             height: getProportionateScreenHeight(10),
           ),
           Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SliderWidget(),
-                TopOffer(),
-                SizedBox(
-                  height: getProportionateScreenHeight(15),
-                ),
-                Obx(() {
-                  if (_homeController.isBannerLoading.value) {
-                    return SizedBox();
-                  } else {
-                    if (_homeController.customOfferBanner == null) {
+              child: RefreshIndicator(
+            color: AllColors.mainColor,
+            onRefresh: _homeController.onRefreshIndicator,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SliderWidget(),
+                  TopOffer(),
+                  SizedBox(
+                    height: getProportionateScreenHeight(15),
+                  ),
+                  Obx(() {
+                    if (_homeController.isBannerLoading.value) {
                       return SizedBox();
                     } else {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: SizeConfig.screenWidth * 0.02),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.screenWidth * 0.01),
-                          child: BannerSection(
-                            bannerModel: _homeController.customOfferBanner,
+                      if (_homeController.customOfferBanner == null) {
+                        return SizedBox();
+                      } else {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: SizeConfig.screenWidth * 0.02),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.screenWidth * 0.01),
+                            child: BannerSection(
+                              bannerModel: _homeController.customOfferBanner,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     }
-                  }
-                }),
-                FlashDealSection(),
-                PopularProductSection(),
-                SizedBox(
-                  height: getProportionateScreenHeight(15),
-                ),
-                CategorySection(),
-                JustForYouSection(),
-                MultiPartBannerSection(),
-                AllProductSection(),
-                SizedBox(
-                  height: getProportionateScreenHeight(10),
-                ),
-                LookAtGlance()
-              ],
+                  }),
+                  FlashDealSection(),
+                  PopularProductSection(),
+                  SizedBox(
+                    height: getProportionateScreenHeight(15),
+                  ),
+                  CategorySection(),
+                  JustForYouSection(),
+                  MultiPartBannerSection(),
+                  AllProductSection(),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
+                  LookAtGlance()
+                ],
+              ),
             ),
           ))
         ]),

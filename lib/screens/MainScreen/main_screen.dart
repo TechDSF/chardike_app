@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/MainScreen/controller/main_controller.dart';
@@ -31,7 +32,7 @@ class MainScreen extends StatelessWidget {
                   icon: CommonData.bottomIcon(
                       icon: "asset/icons/newspaper.png",
                       color: _mainController.tapIndex.value == 0
-                          ? Colors.grey
+                          ? AllColors.mainColor
                           : Colors.black.withOpacity(0.6),
                       isTab: isTab),
                   label: 'Feed',
@@ -40,7 +41,7 @@ class MainScreen extends StatelessWidget {
                   icon: CommonData.bottomIcon(
                       icon: "asset/icons/search_icon.png",
                       color: _mainController.tapIndex.value == 1
-                          ? Colors.grey
+                          ? AllColors.mainColor //Colors.grey
                           : Colors.black.withOpacity(0.6),
                       isTab: isTab),
                   label: 'Search',
@@ -49,7 +50,7 @@ class MainScreen extends StatelessWidget {
                   icon: CommonData.bottomIcon(
                       icon: "asset/icons/home.png",
                       color: _mainController.tapIndex.value == 2
-                          ? Colors.grey
+                          ? AllColors.mainColor
                           : Colors.black.withOpacity(0.6),
                       isTab: isTab),
                   label: 'Home',
@@ -58,7 +59,7 @@ class MainScreen extends StatelessWidget {
                   icon: CommonData.bottomIcon(
                       icon: "asset/icons/cart.png",
                       color: _mainController.tapIndex.value == 3
-                          ? Colors.grey
+                          ? AllColors.mainColor
                           : Colors.black.withOpacity(0.6),
                       isTab: isTab),
                   label: 'Cart',
@@ -67,7 +68,7 @@ class MainScreen extends StatelessWidget {
                   icon: CommonData.bottomIcon(
                       icon: "asset/icons/user.png",
                       color: _mainController.tapIndex.value == 4
-                          ? Colors.grey
+                          ? AllColors.mainColor
                           : Colors.black.withOpacity(0.6),
                       isTab: isTab),
                   label: 'User',
@@ -78,10 +79,11 @@ class MainScreen extends StatelessWidget {
               unselectedLabelStyle: const TextStyle(
                   color: Colors.black, fontWeight: FontWeight.w500),
               selectedLabelStyle: TextStyle(
-                  color: Colors.grey,
+                  color: AllColors.mainColor,
+                  fontWeight: FontWeight.bold,
                   fontSize: getProportionateScreenWidth(13)),
               currentIndex: _mainController.tapIndex.value,
-              selectedItemColor: Colors.grey,
+              selectedItemColor: AllColors.mainColor,
               onTap: (value) {
                 if (value == 3) {
                   Navigator.pushNamed(context, CartScreen.routeName);

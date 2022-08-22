@@ -237,7 +237,8 @@ class FlashDealSection extends StatelessWidget {
                                                               fontSize: SizeConfig
                                                                       .screenWidth *
                                                                   0.027),
-                                                          text: "₺" +
+                                                          text: CommonData
+                                                                  .takaSign +
                                                               result.flashPrice
                                                                   .toString()),
                                                       TextSpan(
@@ -253,7 +254,9 @@ class FlashDealSection extends StatelessWidget {
                                                               fontSize: SizeConfig
                                                                       .screenWidth *
                                                                   0.019),
-                                                          text: " ₺" +
+                                                          text: " " +
+                                                              CommonData
+                                                                  .takaSign +
                                                               result
                                                                   .flashProduct
                                                                   .regularPrice

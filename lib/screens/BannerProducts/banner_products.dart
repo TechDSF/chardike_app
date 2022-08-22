@@ -35,6 +35,7 @@ class BannerProducts extends StatelessWidget {
                             image: AssetImage("asset/images/empty_cart.png"))),
                   ),
                 ])
+         
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
@@ -118,7 +119,7 @@ class BannerProducts extends StatelessWidget {
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: SizeConfig.screenWidth *
-                                                  0.023),
+                                                  0.03),
                                         ),
                                       ),
                                       Row(
@@ -188,7 +189,7 @@ class BannerProducts extends StatelessWidget {
                                                       0.025
                                                   : SizeConfig.screenWidth *
                                                       0.03),
-                                          text: "₺" +
+                                          text: CommonData.takaSign +
                                               result
                                                   .bannerProduct!.sellingPrice),
                                       TextSpan(
@@ -202,7 +203,8 @@ class BannerProducts extends StatelessWidget {
                                                       0.018
                                                   : SizeConfig.screenWidth *
                                                       0.022),
-                                          text: " ₺" +
+                                          text: " " +
+                                              CommonData.takaSign +
                                               result.bannerProduct!.regularPrice
                                                   .toString())
                                     ])),
@@ -210,26 +212,17 @@ class BannerProducts extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        RatingBar.builder(
-                                          initialRating:
-                                              CommonData.calculateRating(result
-                                                  .bannerProduct!.reviews),
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 5,
-                                          itemSize: isTab
-                                              ? SizeConfig.screenWidth * 0.02
-                                              : SizeConfig.screenWidth * 0.03,
-                                          itemPadding: EdgeInsets.symmetric(
-                                              horizontal: 1.0),
-                                          itemBuilder: (context, _) => Icon(
+                                        RatingBarIndicator(
+                                          rating: CommonData.calculateRating(
+                                              result.bannerProduct!.reviews),
+                                          itemBuilder: (context, index) => Icon(
                                             Icons.star,
                                             color: Colors.amber,
                                           ),
-                                          onRatingUpdate: (rating) {
-                                            print(rating);
-                                          },
+                                          itemCount: 5,
+                                          itemSize:
+                                              SizeConfig.screenWidth * 0.03,
+                                          direction: Axis.horizontal,
                                         ),
                                         Text(
                                           "(${result.bannerProduct!.reviews.length})",
@@ -249,6 +242,7 @@ class BannerProducts extends StatelessWidget {
                     );
                   }),
             ),
+   
     );
   }
 }

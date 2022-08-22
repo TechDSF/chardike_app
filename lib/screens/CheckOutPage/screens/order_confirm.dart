@@ -29,7 +29,7 @@ class OrderConfirm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text(
-                "Your Order is Complete",
+                "Your Order is Placed.",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: SizeConfig.screenWidth * 0.05),

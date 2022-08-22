@@ -1,17 +1,15 @@
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
-import 'package:chardike/screens/HomePage/model/banner_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../../CommonData/common_data.dart';
 import '../../../size_config.dart';
 import '../../ProductDetails/product_details.dart';
 
 class AllOfferProducts extends StatelessWidget {
-  AllOfferProducts({Key? key, required this.isAllType}) : super(key: key);
-  bool isAllType;
+  AllOfferProducts({Key? key, required this.type}) : super(key: key);
+  String type;
   final HomeController _homeController = Get.put(HomeController());
 
   bool isTab = SizeConfig.screenWidth > 768;
@@ -22,7 +20,11 @@ class AllOfferProducts extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           elevation: 1,
-          title: Text(isAllType ? "All Offers" : "60% OFF"),
+          title: Text(type == "AllOffer"
+              ? "All Offers"
+              : type == "60"
+                  ? "TOP RANKING"
+                  : "DON'T MISS OUT"),
         ),
         body: Obx(() {
           if (_homeController.isDiscountDataLoading.value) {
@@ -45,9 +47,11 @@ class AllOfferProducts extends StatelessWidget {
                   );
                 });
           } else {
-            if (isAllType
+            if (type == "AllOffer"
                 ? _homeController.discountProductList.isEmpty
-                : _homeController.sixtyDiscountProductList.isEmpty) {
+                : type == "60"
+                    ? _homeController.sixtyDiscountProductList.isEmpty
+                    : _homeController.fiftyDiscountProductList.isEmpty) {
               return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -78,13 +82,17 @@ class AllOfferProducts extends StatelessWidget {
                             context: context,
                             crossAxisCount: 2,
                             crossAxisSpacing: 5)),
-                    itemCount: isAllType
+                    itemCount: type == "AllOffer"
                         ? _homeController.discountProductList.length
-                        : _homeController.sixtyDiscountProductList.length,
+                        : type == "60"
+                            ? _homeController.sixtyDiscountProductList.length
+                            : _homeController.fiftyDiscountProductList.length,
                     itemBuilder: (context, index) {
-                      var result = isAllType
+                      var result = type == "AllOffer"
                           ? _homeController.discountProductList[index]
-                          : _homeController.sixtyDiscountProductList[index];
+                          : type == "60"
+                              ? _homeController.sixtyDiscountProductList[index]
+                              : _homeController.fiftyDiscountProductList[index];
                       return InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, ProductDetails.routeName,
@@ -152,7 +160,7 @@ class AllOfferProducts extends StatelessWidget {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize:
                                                     SizeConfig.screenWidth *
-                                                        0.023),
+                                                        0.03),
                                           ),
                                         ),
                                         Row(
@@ -222,8 +230,8 @@ class AllOfferProducts extends StatelessWidget {
                                                         0.025
                                                     : SizeConfig.screenWidth *
                                                         0.03),
-                                            text:
-                                                "₺" + result.price.toString()),
+                                            text: CommonData.takaSign +
+                                                result.price.toString()),
                                         TextSpan(
                                             style: TextStyle(
                                                 color: Colors.black,
@@ -235,7 +243,8 @@ class AllOfferProducts extends StatelessWidget {
                                                         0.018
                                                     : SizeConfig.screenWidth *
                                                         0.022),
-                                            text: " ₺" +
+                                            text: " " +
+                                                CommonData.takaSign +
                                                 result.discountProduct
                                                     .regularPrice
                                                     .toString())
@@ -244,27 +253,18 @@ class AllOfferProducts extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          RatingBar.builder(
-                                            initialRating:
-                                                CommonData.calculateRating(
-                                                    result.discountProduct
-                                                        .reviews),
-                                            minRating: 1,
-                                            direction: Axis.horizontal,
-                                            allowHalfRating: true,
-                                            itemCount: 5,
-                                            itemSize: isTab
-                                                ? SizeConfig.screenWidth * 0.02
-                                                : SizeConfig.screenWidth * 0.03,
-                                            itemPadding: EdgeInsets.symmetric(
-                                                horizontal: 1.0),
-                                            itemBuilder: (context, _) => Icon(
+                                          RatingBarIndicator(
+                                            rating: CommonData.calculateRating(
+                                                result.discountProduct.reviews),
+                                            itemBuilder: (context, index) =>
+                                                Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
-                                            onRatingUpdate: (rating) {
-                                              print(rating);
-                                            },
+                                            itemCount: 5,
+                                            itemSize:
+                                                SizeConfig.screenWidth * 0.03,
+                                            direction: Axis.horizontal,
                                           ),
                                           Text(
                                             "(${result.discountProduct.reviews.length})",

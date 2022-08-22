@@ -22,7 +22,7 @@ class CountryModel {
 
   factory CountryModel.fromJson(Map<String, dynamic> json) => CountryModel(
         id: json["id"],
-        name: json["name"],
+        name: json["name"] ?? "",
         country: List<ProductModel>.from(
             json["country"].map((x) => ProductModel.fromJson(x))),
       );

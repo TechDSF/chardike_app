@@ -18,7 +18,7 @@ class SliderWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         Obx(() {
-          if (_homeController.isSliderDataLoading.value) {
+          if (_homeController.isBannerLoading.value) {
             return Shimmer.fromColors(
               baseColor: Colors.grey.withOpacity(0.07),
               highlightColor: Colors.grey.withOpacity(0.2),
@@ -46,14 +46,14 @@ class SliderWidget extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => SliderDetails(
-                                              name: result.slidername,
+                                              banner: result,
                                             )));
                               },
                               child: Container(
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: NetworkImage(result.sliderImage),
+                                        image: NetworkImage(result.bannerImage),
                                         fit: BoxFit.fill)),
                               ),
                             ),

@@ -24,15 +24,6 @@ class AccountSetting extends StatelessWidget {
         elevation: 1,
         centerTitle: false,
         title: Text("Account Settings"),
-        actions: <Widget>[
-          CommonData.icon(
-              icon: "asset/icons/messenger.png",
-              color: AllColors.mainColor,
-              isTab: isTab),
-          SizedBox(
-            width: getProportionateScreenWidth(10),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: _commonController.isLogin.value
@@ -54,10 +45,11 @@ class AccountSetting extends StatelessWidget {
                     trailing: Icon(Icons.arrow_forward_ios),
                   ),
                   const Divider(),
+
                   ListTile(
                     onTap: () {
                       Navigator.pushNamed(context, MyAddress.routeName,
-                          arguments: 3);
+                          arguments: {"data": 3, "type": false, "amount": 0.0});
                     },
                     title: Text("My Address"),
                     trailing: Icon(Icons.arrow_forward_ios),

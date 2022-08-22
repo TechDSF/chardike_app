@@ -19,8 +19,8 @@ class BrandModel {
 
   factory BrandModel.fromJson(Map<String, dynamic> json) => BrandModel(
         id: json["id"],
-        name: json["name"],
-        description: json["description"],
+        name: json["name"] ?? "",
+        description: json["description"] ?? "",
         brand: List<ProductModel>.from(
             json["brand"].map((x) => ProductModel.fromJson(x))),
       );

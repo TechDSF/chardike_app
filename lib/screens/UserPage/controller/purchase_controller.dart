@@ -51,7 +51,7 @@ class PurchaseController extends GetxController {
     super.onInit();
   }
 
-  getMyOrders() async {
+  Future<void> getMyOrders() async {
     isOrderStausLoading(true);
     var tokenResult = await ApiService.getUserToken(
         userName: _userDataController.userName.value,
@@ -78,12 +78,13 @@ class PurchaseController extends GetxController {
         statusFailedList.clear();
         statusDeletedList.clear();
         statusList = result;
+        statusList.reversed.toList();
 
         statusList.forEach((element) {
           print(element.orderStatus);
           if (element.orderStatus == "Pending") {
             statusPendingList.add(element);
-          } else if (element.orderStatus == "Received") {
+          } else if (element.orderStatus == "Confirmed") {
             statusReciveList.add(element);
           } else if (element.orderStatus == "Shipped") {
             statusShippedList.add(element);
@@ -101,6 +102,8 @@ class PurchaseController extends GetxController {
             statusDeletedList.add(element);
           }
         });
+
+        statusPendingList.reversed.toList();
       }
       isOrderStausLoading(false);
     }

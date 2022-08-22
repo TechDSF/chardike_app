@@ -24,6 +24,7 @@ class CommonData {
   static String zipcode = "zipcode";
   static String country = "country";
   static String bio = "bio";
+  static String points = "points";
 
   static String currency(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
@@ -82,7 +83,7 @@ class CommonData {
       list.forEach((element) {
         rating = rating + element.starCount.toDouble();
       });
-      return rating / list.length;
+      return (rating / list.length).floorToDouble();
     }
   }
 

@@ -1,7 +1,5 @@
-import 'package:bangla_utilities/bangla_utilities.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chardike/CommonData/CommonController.dart';
-import 'package:chardike/Service/database_helper.dart';
 import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/ProductDetails/components/widgets/fappbar.dart';
@@ -14,7 +12,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -183,76 +180,56 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                 flex: 4,
                 child: InkWell(
                   onTap: () {
-                    // try {
-                    //   _cartController.addToCart(
-                    //       cartModel: CartModel(
-                    //           id: productModel.id.toString(),
-                    //           title: productModel.productName.toString(),
-                    //           image: productModel.featureImage,
-                    //           quantity: _detailsController.quantityItem.value,
-                    //           price: productModel.variant[0].sellingPrice
-                    //               .toDouble(),
-                    //           totalPrice:
-                    //               (_detailsController.quantityItem.value *
-                    //                       productModel.variant[0].sellingPrice)
-                    //                   .toDouble()));
-                    // } finally {
-                    //   // TODO
-                    //   _detailsController.isHaveCart.value = _cartController
-                    //           .cartList
-                    //           .where((element) =>
-                    //               element.title ==
-                    //               productModel.productName.toString())
-                    //           .isEmpty
-                    //       ? false
-                    //       : true;
-
-                    // }
-
-                    if (_cartController.isHaveCart.value) {
-                      if (priceType) {
-                        print(
-                            "${(_detailsController.quantityItem.value * double.parse(productModel.sellingPrice)).toDouble()}");
-                      } else {
-                        print(
-                            "${(_detailsController.quantityItem.value * double.parse(flPrice.toString())).toDouble()}");
-                      }
-                      _cartController.updateCartItem(
-                          id: productModel.id.toString(),
-                          quantity:
-                              _detailsController.quantityItem.value.toDouble(),
-                          price: priceType
-                              ? double.parse(productModel.sellingPrice)
-                              : double.parse(flPrice.toString()),
-                          totalPrice: priceType
-                              ? (_detailsController.quantityItem.value *
-                                      double.parse(productModel.sellingPrice))
-                                  .toDouble()
-                              : (_detailsController.quantityItem.value *
-                                      double.parse(flPrice.toString()))
-                                  .toDouble());
+                    if (productModel.totalQuantity == 0) {
+                      Fluttertoast.showToast(msg: "Stock Over");
                     } else {
-                      _cartController.addToCart(
-                          cartModel: CartModel(
-                              id: productModel.id.toString(),
-                              title: productModel.productName.toString(),
-                              image: productModel.featureImage,
-                              brandId: productModel.brand.id,
-                              categoryId: productModel.category[0].id,
-                              quantity: _detailsController.quantityItem.value,
-                              price: priceType
-                                  ? double.parse(productModel.sellingPrice)
-                                  : double.parse(flPrice.toString()),
-                              totalPrice: priceType
-                                  ? (_detailsController.quantityItem.value *
-                                          double.parse(
-                                              productModel.sellingPrice))
-                                      .toDouble()
-                                  : (_detailsController.quantityItem.value *
-                                          double.parse(flPrice.toString()))
-                                      .toDouble(),
-                              totalQty: productModel.totalQuantity));
-                      _cartController.isHaveCart.value = true;
+                      if (_cartController.isHaveCart.value) {
+                        print("work here");
+                        if (priceType) {
+                          print(
+                              "${(_detailsController.quantityItem.value * double.parse(productModel.sellingPrice)).toDouble()}");
+                        } else {
+                          print(
+                              "${(_detailsController.quantityItem.value * double.parse(flPrice.toString())).toDouble()}");
+                        }
+                        _cartController.updateCartItem(
+                            id: productModel.id.toString(),
+                            quantity: _detailsController.quantityItem.value,
+                            price: priceType
+                                ? double.parse(productModel.sellingPrice)
+                                : double.parse(flPrice.toString()),
+                            totalPrice: priceType
+                                ? (_detailsController.quantityItem.value *
+                                        double.parse(productModel.sellingPrice))
+                                    .toDouble()
+                                : (_detailsController.quantityItem.value *
+                                        double.parse(flPrice.toString()))
+                                    .toDouble());
+                      } else {
+                        print("work here cart");
+                        _cartController.addToCart(
+                            cartModel: CartModel(
+                                id: productModel.id.toString(),
+                                title: productModel.productName.toString(),
+                                image: productModel.featureImage,
+                                brandId: productModel.brand.id,
+                                categoryId: productModel.category[0].id,
+                                quantity: _detailsController.quantityItem.value,
+                                price: priceType
+                                    ? double.parse(productModel.sellingPrice)
+                                    : double.parse(flPrice.toString()),
+                                totalPrice: priceType
+                                    ? (_detailsController.quantityItem.value *
+                                            double.parse(
+                                                productModel.sellingPrice))
+                                        .toDouble()
+                                    : (_detailsController.quantityItem.value *
+                                            double.parse(flPrice.toString()))
+                                        .toDouble(),
+                                totalQty: productModel.totalQuantity,
+                                type: priceType ? 0 : 1));
+                        _cartController.isHaveCart.value = true;
+                      }
                     }
                   },
                   child: Container(
@@ -289,40 +266,56 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                 child: InkWell(
                   onTap: () {
                     if (_commonController.isLogin.value) {
-                      if (priceType) {
-                        var d =
-                            "${double.parse(productModel.sellingPrice).toInt().toString()}";
+                      if (productModel.totalQuantity != 0) {
+                        if (priceType) {
+                          var d =
+                              "${double.parse(productModel.sellingPrice).toInt().toString()}";
 
-                        Navigator.pushNamed(context, CheckOutPage.routeName,
-                            arguments: {
-                              "type": false,
-                              "data": CartItemModel(
-                                  item: productModel.id.toString(),
-                                  quantity: _detailsController.quantityItem
-                                      .toString(),
-                                  attr: "colors:red",
-                                  amount_item: "$d",
-                                  total_price: "100"),
-                              "amount":
-                                  "${_detailsController.quantityItem.value * double.parse(productModel.sellingPrice)}"
-                            });
+                          Navigator.pushNamed(context, CheckOutPage.routeName,
+                              arguments: {
+                                "type": false,
+                                "quantity":
+                                    _detailsController.quantityItem.value,
+                                "productType": true,
+                                "data": CartItemModel(
+                                    item: productModel.id.toString(),
+                                    quantity: _detailsController.quantityItem
+                                        .toString(),
+                                    attr: "colors:red",
+                                    amount_item: "$d",
+                                    total_price: (int.parse(d) *
+                                            _detailsController
+                                                .quantityItem.value)
+                                        .toString()),
+                                "amount":
+                                    "${_detailsController.quantityItem.value * double.parse(productModel.sellingPrice)}"
+                              });
+                        } else {
+                          var d =
+                              "${double.parse(flPrice.toString()).toInt().toString()}";
+
+                          Navigator.pushNamed(context, CheckOutPage.routeName,
+                              arguments: {
+                                "type": false,
+                                "quantity":
+                                    _detailsController.quantityItem.value,
+                                "productType": false,
+                                "data": CartItemModel(
+                                    item: productModel.id.toString(),
+                                    quantity: _detailsController.quantityItem
+                                        .toString(),
+                                    attr: "colors:red",
+                                    amount_item: "$d",
+                                    total_price: (int.parse(d) *
+                                            _detailsController
+                                                .quantityItem.value)
+                                        .toString()),
+                                "amount":
+                                    "${_detailsController.quantityItem.value * double.parse(flPrice.toString())}"
+                              });
+                        }
                       } else {
-                        var d =
-                            "${double.parse(flPrice.toString()).toInt().toString()}";
-
-                        Navigator.pushNamed(context, CheckOutPage.routeName,
-                            arguments: {
-                              "type": false,
-                              "data": CartItemModel(
-                                  item: productModel.id.toString(),
-                                  quantity: _detailsController.quantityItem
-                                      .toString(),
-                                  attr: "colors:red",
-                                  amount_item: "$d",
-                                  total_price: "100"),
-                              "amount":
-                                  "${_detailsController.quantityItem.value * double.parse(flPrice.toString())}"
-                            });
+                        Fluttertoast.showToast(msg: "Stock Over");
                       }
                     } else {
                       Navigator.pushNamed(context, LoginScreen.routeName);
@@ -389,10 +382,39 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                 Navigator.pushNamed(
                                     context, CartScreen.routeName);
                               },
-                              child: CommonData.icon(
-                                  icon: "asset/icons/cart.png",
-                                  color: Colors.grey,
-                                  isTab: isTab))),
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  CommonData.icon(
+                                      icon: "asset/icons/cart.png",
+                                      color: Colors.grey,
+                                      isTab: isTab),
+                                  Positioned(
+                                    left: -5,
+                                    top: 0,
+                                    child: Container(
+                                      width: SizeConfig.screenWidth * 0.035,
+                                      height: SizeConfig.screenWidth * 0.035,
+                                      decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle),
+                                      child: Center(
+                                        child: Obx(() => Text(
+                                              _cartController
+                                                  .cartList.value.length
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      SizeConfig.screenWidth *
+                                                          0.03),
+                                            )),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ))),
                     ),
                   ],
                 ),
@@ -1116,7 +1138,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                       ),
                                       SizedBox(
                                         height:
-                                            getProportionateScreenHeight(220),
+                                            getProportionateScreenHeight(180),
                                         child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           shrinkWrap: true,
@@ -1126,115 +1148,205 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                             var result = _homeController
                                                 .popularProductList[index];
                                             return InkWell(
-                                              onTap: () {
-                                                Navigator.pushNamed(context,
-                                                    ProductDetails.routeName,
-                                                    arguments: result);
-                                              },
-                                              child: Container(
-                                                width:
-                                                    getProportionateScreenWidth(
-                                                        150),
-                                                padding: EdgeInsets.all(
-                                                    getProportionateScreenWidth(
-                                                        8)),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.grey)),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            image: DecorationImage(
-                                                                image: NetworkImage(
-                                                                    result
-                                                                        .featureImage),
-                                                                fit: BoxFit
-                                                                    .fill),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        getProportionateScreenWidth(
-                                                                            5))),
+                                                onTap: () {
+                                                  Navigator.pushNamed(context,
+                                                      ProductDetails.routeName,
+                                                      arguments: {
+                                                        "type": true,
+                                                        "ds": "0",
+                                                        "product": result
+                                                      });
+                                                },
+                                                child: SizedBox(
+                                                  height:
+                                                      SizeConfig.screenWidth *
+                                                          0.45,
+                                                  width:
+                                                      SizeConfig.screenWidth *
+                                                          0.32,
+                                                  child: Card(
+                                                    color: Colors.white,
+                                                    elevation: 1,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      side: BorderSide(
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.3)),
+                                                      borderRadius: BorderRadius
+                                                          .circular(SizeConfig
+                                                                  .screenWidth *
+                                                              0.02),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: EdgeInsets.all(
+                                                          SizeConfig
+                                                                  .screenWidth *
+                                                              0.01),
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          Container(
+                                                            height: SizeConfig
+                                                                    .screenWidth *
+                                                                0.26,
+                                                            padding: EdgeInsets
+                                                                .all(SizeConfig
+                                                                        .screenWidth *
+                                                                    0.01),
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .green
+                                                                    .withOpacity(
+                                                                        0.2),
+                                                                borderRadius: BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        SizeConfig.screenWidth *
+                                                                            0.02)),
+                                                                image: DecorationImage(
+                                                                    image: NetworkImage(
+                                                                        result
+                                                                            .featureImage),
+                                                                    fit: BoxFit
+                                                                        .fill)),
+                                                            child: Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: <
+                                                                  Widget>[
+                                                                Container(
+                                                                  padding: EdgeInsets.all(
+                                                                      SizeConfig
+                                                                              .screenWidth *
+                                                                          0.001),
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(SizeConfig.screenWidth *
+                                                                              0.006),
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .withOpacity(
+                                                                              0.3)),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .star,
+                                                                        size: SizeConfig.screenWidth *
+                                                                            0.02,
+                                                                        color: Colors
+                                                                            .orange,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: SizeConfig.screenWidth *
+                                                                            0.005,
+                                                                      ),
+                                                                      Text(
+                                                                        "${CommonData.calculateRating(result.reviews)}",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize: SizeConfig.screenWidth * 0.02),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  height: SizeConfig
+                                                                          .screenWidth *
+                                                                      0.05,
+                                                                  width: SizeConfig
+                                                                          .screenWidth *
+                                                                      0.05,
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .favorite,
+                                                                    color: Colors
+                                                                        .orange,
+                                                                    size: SizeConfig
+                                                                            .screenWidth *
+                                                                        0.03,
+                                                                  ),
+                                                                  decoration: BoxDecoration(
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .withOpacity(
+                                                                              0.3)),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: SizeConfig
+                                                                    .screenWidth *
+                                                                0.01,
+                                                          ),
+                                                          Expanded(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Text(
+                                                                  result
+                                                                      .productName,
+                                                                  maxLines: 2,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          SizeConfig.screenWidth *
+                                                                              0.028,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: SizeConfig
+                                                                          .screenWidth *
+                                                                      0.003,
+                                                                ),
+                                                                RichText(
+                                                                    text: TextSpan(
+                                                                        children: [
+                                                                      TextSpan(
+                                                                          style: TextStyle(
+                                                                              color: Colors.red,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: SizeConfig.screenWidth * 0.027),
+                                                                          text: CommonData.takaSign + result.sellingPrice.toString()),
+                                                                      TextSpan(
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: Colors.black,
+                                                                              decoration: TextDecoration.lineThrough,
+                                                                              fontSize: SizeConfig.screenWidth * 0.019),
+                                                                          text: " " + CommonData.takaSign + result.regularPrice.toString())
+                                                                    ])),
+                                                                SizedBox(
+                                                                  height: SizeConfig
+                                                                          .screenWidth *
+                                                                      0.005,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      height:
-                                                          getProportionateScreenHeight(
-                                                              5),
-                                                    ),
-                                                    Text(
-                                                      result.productName
-                                                          .toString(),
-                                                      maxLines: 2,
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              getProportionateScreenWidth(
-                                                                  12)),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          getProportionateScreenHeight(
-                                                              5),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "₺ " +
-                                                              result
-                                                                  .sellingPrice
-                                                                  .toString() +
-                                                              " ",
-                                                          style: TextStyle(
-                                                              color: AllColors
-                                                                  .mainColor),
-                                                        ),
-                                                        Text(
-                                                          "₺" +
-                                                              result
-                                                                  .regularPrice
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
-                                                              color:
-                                                                  Colors.grey,
-                                                              fontSize:
-                                                                  getProportionateScreenWidth(
-                                                                      10)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          getProportionateScreenHeight(
-                                                              5),
-                                                    ),
-                                                    RatingBarIndicator(
-                                                      rating: 3,
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              const Icon(
-                                                        Icons.star,
-                                                        color: Colors.amber,
-                                                      ),
-                                                      itemCount: 5,
-                                                      itemSize:
-                                                          getProportionateScreenWidth(
-                                                              15),
-                                                      direction:
-                                                          Axis.horizontal,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
+                                                  ),
+                                                ));
                                           },
                                         ),
                                       )

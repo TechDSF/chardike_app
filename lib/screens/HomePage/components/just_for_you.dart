@@ -33,15 +33,12 @@ class JustForYouSection extends StatelessWidget {
                 EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth * 0.02),
             child: Column(
               children: [
-                SectionTitle(
-                    title: "Products For You",
-                    buttonText: "See More",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ProductsYouDetails()));
-                    }),
+                Text(
+                  "Products For You",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.screenWidth * 0.05),
+                ),
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
@@ -66,7 +63,7 @@ class JustForYouSection extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(
                                     SizeConfig.screenWidth * 0.01),
                                 child: BannerSection(
-                                  isProductForYou: true,
+                                  type: "ProductForYou",
                                   bannerModel: _homeController.onlyForYouBanner,
                                 ),
                               );
@@ -113,14 +110,15 @@ class JustForYouSection extends StatelessWidget {
                                 context: context,
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 5)),
-                        itemCount: _homeController.latestProductList.length > 4
-                            ? 4
-                            : _homeController.latestProductList.length,
+                        itemCount:
+                            _homeController.newLatestProductList.length > 4
+                                ? 4
+                                : _homeController.newLatestProductList.length,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           ProductModel result =
-                              _homeController.latestProductList[index];
+                              _homeController.newLatestProductList[index];
                           return InkWell(
                             onTap: () {
                               Navigator.pushNamed(
@@ -190,7 +188,7 @@ class JustForYouSection extends StatelessWidget {
                                                     fontWeight: FontWeight.bold,
                                                     fontSize:
                                                         SizeConfig.screenWidth *
-                                                            0.023),
+                                                            0.03),
                                               ),
                                             ),
                                             Row(
@@ -267,7 +265,7 @@ class JustForYouSection extends StatelessWidget {
                                                     fontSize:
                                                         SizeConfig.screenWidth *
                                                             0.03),
-                                                text: "₺" +
+                                                text: CommonData.takaSign +
                                                     result.sellingPrice
                                                         .toString()),
                                             TextSpan(
@@ -279,7 +277,8 @@ class JustForYouSection extends StatelessWidget {
                                                     fontSize:
                                                         SizeConfig.screenWidth *
                                                             0.022),
-                                                text: " ₺" +
+                                                text: " " +
+                                                    CommonData.takaSign +
                                                     result.regularPrice
                                                         .toString())
                                           ])),
@@ -287,28 +286,20 @@ class JustForYouSection extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              RatingBar.builder(
-                                                initialRating:
+                                              RatingBarIndicator(
+                                                rating:
                                                     CommonData.calculateRating(
                                                         result.reviews),
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemSize:
-                                                    SizeConfig.screenWidth *
-                                                        0.03,
-                                                itemPadding:
-                                                    EdgeInsets.symmetric(
-                                                        horizontal: 1.0),
-                                                itemBuilder: (context, _) =>
+                                                itemBuilder: (context, index) =>
                                                     Icon(
                                                   Icons.star,
                                                   color: Colors.amber,
                                                 ),
-                                                onRatingUpdate: (rating) {
-                                                  print(rating);
-                                                },
+                                                itemCount: 5,
+                                                itemSize:
+                                                    SizeConfig.screenWidth *
+                                                        0.03,
+                                                direction: Axis.horizontal,
                                               ),
                                               Text(
                                                 "(${result.reviews.length})",
@@ -337,7 +328,9 @@ class JustForYouSection extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => ProductsYouDetails()));
+                            builder: (_) => ProductsYouDetails(
+                                  type: true,
+                                )));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -345,20 +338,22 @@ class JustForYouSection extends StatelessWidget {
                             width: 5,
                             color: AllColors.mainColor.withOpacity(0.1)),
                         borderRadius: BorderRadius.circular(
-                            SizeConfig.screenWidth * 0.04)),
+                            SizeConfig.screenWidth * 0.02)),
                     child: Container(
-                      child: Text("View All"),
+                      child: Text(
+                        "View All",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       padding: EdgeInsets.symmetric(
                           horizontal: SizeConfig.screenWidth * 0.03,
                           vertical: SizeConfig.screenWidth * 0.01),
                       decoration: BoxDecoration(
                           border: Border.all(color: AllColors.mainColor),
                           borderRadius: BorderRadius.circular(
-                              SizeConfig.screenWidth * 0.03)),
+                              SizeConfig.screenWidth * 0.013)),
                     ),
                   ),
                 ),
-                
                 SizedBox(
                   height: getProportionateScreenHeight(5),
                 ),

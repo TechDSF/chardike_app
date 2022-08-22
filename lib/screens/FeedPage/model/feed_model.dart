@@ -1,15 +1,7 @@
-// To parse this JSON data, do
-//
-//     final feedModel = feedModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<FeedModel> feedModelFromJson(String str) =>
     List<FeedModel>.from(json.decode(str).map((x) => FeedModel.fromJson(x)));
-
-String feedModelToJson(List<FeedModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class FeedModel {
   FeedModel({
@@ -45,16 +37,4 @@ class FeedModel {
         userProfileImage: json["user_profile_image"] ?? "",
         userFullName: json["user_full_name"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "description": description,
-        "image": image,
-        "url_field": urlField,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "user_profile_image": userProfileImage,
-        "user_full_name": userFullName,
-      };
 }

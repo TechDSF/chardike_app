@@ -242,7 +242,8 @@ class AllSearchProducts extends StatelessWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "₺ " +
+                                            CommonData.takaSign +
+                                                " " +
                                                 result.sellingPrice.toString() +
                                                 " ",
                                             style: TextStyle(
@@ -253,7 +254,7 @@ class AllSearchProducts extends StatelessWidget {
                                                 color: AllColors.mainColor),
                                           ),
                                           Text(
-                                            "₺" +
+                                            CommonData.takaSign +
                                                 result.regularPrice.toString(),
                                             style: TextStyle(
                                                 decoration:
@@ -279,7 +280,6 @@ class AllSearchProducts extends StatelessWidget {
                       ),
                     );
                   });
-          
             }
           }
         }));

@@ -17,6 +17,7 @@ class DatabaseHelper {
   static const String categoryId = "categoryId";
   static const String brandId = "brandId";
   static const String totalQuantity = "totalQnty";
+  static const String type = "type";
 
   static const String title = "title";
   static const String quantity = "quantity";
@@ -37,7 +38,7 @@ class DatabaseHelper {
             'CREATE TABLE $favouriteTable($id TEXT, $slug TEXT, $image TEXT, $name TEXT, $newPrice TEXT, $oldPrice TEXT)',
           );
           db.execute(
-            'CREATE TABLE $cartTable($id TEXT, $title TEXT, $image TEXT, $quantity INTEGER, $price REAL, $totalPrice REAL, $brandId INTEGER, $categoryId INTEGER,$totalQuantity INTEGER)',
+            'CREATE TABLE $cartTable($id TEXT, $title TEXT, $image TEXT, $quantity INTEGER, $price REAL, $totalPrice REAL, $brandId INTEGER, $categoryId INTEGER,$totalQuantity INTEGER, $type INTEGER)',
           );
         },
         version: 1,
@@ -92,7 +93,8 @@ class DatabaseHelper {
           totalPrice: maps[i][totalPrice],
           brandId: maps[i][brandId],
           categoryId: maps[i][categoryId],
-          totalQty: maps[i][totalQuantity]);
+          totalQty: maps[i][totalQuantity],
+          type: maps[i][type]);
     });
   }
 
@@ -166,7 +168,7 @@ class DatabaseHelper {
   ///delete from Cart
   Future<int> updateCartItem(
       {required String id,
-      required double quantityData,
+      required int quantityData,
       required double priceData,
       required double totalPriceData}) async {
     // Get a reference to the database.

@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          "asset/images/chardike_logo.png",
+          "asset/icons/myl.png",
           height: getProportionateScreenWidth(130),
           width: getProportionateScreenWidth(130),
         ),

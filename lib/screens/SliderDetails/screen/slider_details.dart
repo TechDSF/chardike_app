@@ -1,7 +1,9 @@
 import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/CommonData/common_data.dart';
+import 'package:chardike/screens/CartPage/controller/cart_controller.dart';
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
+import 'package:chardike/screens/HomePage/model/banner_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -12,9 +14,10 @@ import '../../HomePage/model/product_model.dart';
 import '../../ProductDetails/product_details.dart';
 
 class SliderDetails extends StatelessWidget {
-  SliderDetails({Key? key, required this.name}) : super(key: key);
-  String name;
+  SliderDetails({Key? key, required this.banner}) : super(key: key);
+  BannerModel banner;
   final HomeController _homeController = Get.put(HomeController());
+  final CartController _cartController = Get.put(CartController());
 
   Widget SectionTitle(String text, VoidCallback onTap) {
     return Column(
@@ -64,17 +67,42 @@ class SliderDetails extends StatelessWidget {
         elevation: 1,
         titleSpacing: 0,
         centerTitle: false,
-        title: Text("$name"),
+        title: Text("${banner.name}"),
         actions: <Widget>[
           Center(
               child: InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, CartScreen.routeName);
                   },
-                  child: CommonData.icon(
-                      icon: "asset/icons/cart.png",
-                      color: Colors.grey,
-                      isTab: isTab))),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      CommonData.icon(
+                          icon: "asset/icons/cart.png",
+                          color: Colors.grey,
+                          isTab: isTab),
+                      Positioned(
+                        left: -5,
+                        top: 0,
+                        child: Container(
+                          width: SizeConfig.screenWidth * 0.035,
+                          height: SizeConfig.screenWidth * 0.035,
+                          decoration: BoxDecoration(
+                              color: Colors.red, shape: BoxShape.circle),
+                          child: Center(
+                            child: Obx(() => Text(
+                                  _cartController.cartList.value.length
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: SizeConfig.screenWidth * 0.03),
+                                )),
+                          ),
+                        ),
+                      )
+                    ],
+                  ))),
           SizedBox(
             width: getProportionateScreenWidth(10),
           )
@@ -87,7 +115,7 @@ class SliderDetails extends StatelessWidget {
 
             ///all product
             Obx(() {
-          if (_homeController.isPopularProductLoading.value) {
+          if (_homeController.isBannerLoading.value) {
             return Shimmer.fromColors(
               baseColor: Colors.grey.withOpacity(0.1),
               highlightColor: Colors.grey.withOpacity(0.5),
@@ -97,7 +125,7 @@ class SliderDetails extends StatelessWidget {
               ),
             );
           } else {
-            if (_homeController.popularProductList.isEmpty) {
+            if (banner.products.isEmpty) {
               return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -126,12 +154,9 @@ class SliderDetails extends StatelessWidget {
                           context: context,
                           crossAxisCount: 2,
                           crossAxisSpacing: 5)),
-                  itemCount: _homeController.popularProductList.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: banner.products.length,
                   itemBuilder: (context, index) {
-                    ProductModel result =
-                        _homeController.latestProductList[index];
+                    ProductModel result = banner.products[index].bannerProduct!;
                     return InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, ProductDetails.routeName,
@@ -198,7 +223,7 @@ class SliderDetails extends StatelessWidget {
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: SizeConfig.screenWidth *
-                                                  0.023),
+                                                  0.03),
                                         ),
                                       ),
                                       Row(

@@ -362,7 +362,7 @@ class MyLikes extends StatelessWidget {
                                                           0.025
                                                       : SizeConfig.screenWidth *
                                                           0.03),
-                                              text: "₺" +
+                                              text: CommonData.takaSign +
                                                   result.sellingPrice
                                                       .toString()),
                                           TextSpan(
@@ -376,7 +376,8 @@ class MyLikes extends StatelessWidget {
                                                           0.018
                                                       : SizeConfig.screenWidth *
                                                           0.022),
-                                              text: " ₺" +
+                                              text: " " +
+                                                  CommonData.takaSign +
                                                   result.regularPrice
                                                       .toString())
                                         ])),
@@ -384,28 +385,19 @@ class MyLikes extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            RatingBar.builder(
-                                              initialRating:
+                                            RatingBarIndicator(
+                                              rating:
                                                   CommonData.calculateRating(
                                                       result.reviews),
-                                              minRating: 1,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: true,
-                                              itemCount: 5,
-                                              itemSize: isTab
-                                                  ? SizeConfig.screenWidth *
-                                                      0.02
-                                                  : SizeConfig.screenWidth *
-                                                      0.03,
-                                              itemPadding: EdgeInsets.symmetric(
-                                                  horizontal: 1.0),
-                                              itemBuilder: (context, _) => Icon(
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
-                                              onRatingUpdate: (rating) {
-                                                print(rating);
-                                              },
+                                              itemCount: 5,
+                                              itemSize:
+                                                  SizeConfig.screenWidth * 0.03,
+                                              direction: Axis.horizontal,
                                             ),
                                             Text(
                                               "(${result.reviews.length})",
@@ -425,7 +417,6 @@ class MyLikes extends StatelessWidget {
                             ),
                           ),
                         );
-                    
                       });
                 }
               }),

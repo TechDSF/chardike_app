@@ -106,7 +106,8 @@ class CompleteStatusItem extends StatelessWidget {
                               InkWell(
                                 onTap: () {
                                   showReviewDialog(
-                                      context: context, productId: items.id);
+                                      context: context,
+                                      productId: items.item.id);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(
@@ -234,6 +235,8 @@ class CompleteStatusItem extends StatelessWidget {
                                       msg: "Please select your star!");
                                 } else {
                                   int st = (ratingNumber.value).toInt();
+
+                                  Fluttertoast.showToast(msg: "$st");
                                   setReview(
                                       context: context,
                                       productId: productId,
@@ -290,8 +293,8 @@ class CompleteStatusItem extends StatelessWidget {
           star: star,
           message: reviewMessage);
       if (result) {
-        Navigator.pop(context);
         context.loaderOverlay.hide();
+        Navigator.pop(context);
         Fluttertoast.showToast(msg: "Review is created!");
       } else {
         context.loaderOverlay.hide();

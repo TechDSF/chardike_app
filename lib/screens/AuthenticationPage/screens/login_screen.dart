@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                           fit: BoxFit.contain)),
                 ),
                 SizedBox(
-                  height: height * 0.020,
+                  height: height * 0.070,
                 ),
                 Text(
                   "Login",
@@ -194,85 +194,86 @@ class LoginScreen extends StatelessWidget {
                     )),
                   ),
                 ),
-                SizedBox(
-                  height: height * 0.030,
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(child: Divider()),
-                    SizedBox(
-                      width: getProportionateScreenWidth(10),
-                    ),
-                    Text(
-                      "OR",
-                      style: TextStyle(color: Colors.black.withOpacity(0.7)),
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(10),
-                    ),
-                    Expanded(child: Divider()),
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.020,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(
-                                getProportionateScreenWidth(10))),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "asset/icons/auth/social icon-01.png",
-                              height: getProportionateScreenHeight(50),
-                              width: getProportionateScreenHeight(50),
-                            ),
-                            Expanded(
-                                child: Center(
-                                    child: Text(
-                              "Facebook",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                  fontWeight: FontWeight.bold),
-                            ))),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(10),
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(
-                                getProportionateScreenWidth(10))),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "asset/icons/auth/social icon-14.png",
-                              height: getProportionateScreenHeight(50),
-                              width: getProportionateScreenHeight(50),
-                            ),
-                            Expanded(
-                                child: Center(
-                                    child: Text(
-                              "Google",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                  fontWeight: FontWeight.bold),
-                            ))),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // SizedBox(
+                //   height: height * 0.030,
+                // ),
+                // Row(
+                //   children: <Widget>[
+                //     Expanded(child: Divider()),
+                //     SizedBox(
+                //       width: getProportionateScreenWidth(10),
+                //     ),
+                //     Text(
+                //       "OR",
+                //       style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                //     ),
+                //     SizedBox(
+                //       width: getProportionateScreenWidth(10),
+                //     ),
+                //     Expanded(child: Divider()),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: height * 0.020,
+                // ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //             color: Colors.grey.withOpacity(0.2),
+                //             borderRadius: BorderRadius.circular(
+                //                 getProportionateScreenWidth(10))),
+                //         child: Row(
+                //           children: [
+                //             Image.asset(
+                //               "asset/icons/auth/social icon-01.png",
+                //               height: getProportionateScreenHeight(50),
+                //               width: getProportionateScreenHeight(50),
+                //             ),
+                //             Expanded(
+                //                 child: Center(
+                //                     child: Text(
+                //               "Facebook",
+                //               style: TextStyle(
+                //                   color: Colors.black.withOpacity(0.8),
+                //                   fontWeight: FontWeight.bold),
+                //             ))),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: getProportionateScreenWidth(10),
+                //     ),
+                //     Expanded(
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //             color: Colors.grey.withOpacity(0.2),
+                //             borderRadius: BorderRadius.circular(
+                //                 getProportionateScreenWidth(10))),
+                //         child: Row(
+                //           children: [
+                //             Image.asset(
+                //               "asset/icons/auth/social icon-14.png",
+                //               height: getProportionateScreenHeight(50),
+                //               width: getProportionateScreenHeight(50),
+                //             ),
+                //             Expanded(
+                //                 child: Center(
+                //                     child: Text(
+                //               "Google",
+                //               style: TextStyle(
+                //                   color: Colors.black.withOpacity(0.8),
+                //                   fontWeight: FontWeight.bold),
+                //             ))),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 SizedBox(
                   height: height * 0.030,
                 ),

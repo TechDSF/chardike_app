@@ -7,15 +7,15 @@ import 'package:chardike/screens/AuthenticationPage/screens/register_screen.dart
 import 'package:chardike/screens/CartPage/screen/cart_screen.dart';
 import 'package:chardike/screens/UserPage/components/MyLikes/my_likes.dart';
 import 'package:chardike/screens/UserPage/components/MyPurchases/my_purchases.dart';
+import 'package:chardike/screens/UserPage/components/my_review.dart';
 import 'package:chardike/screens/UserPage/controller/purchase_controller.dart';
 import 'package:chardike/screens/UserPage/controller/user_controller.dart';
 import 'package:chardike/screens/UserPage/screen/account_setting.dart';
 import 'package:chardike/screens/UserPage/screen/edit_profile.dart';
 import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../components/help_center.dart';
 
@@ -100,17 +100,6 @@ class UserScreen extends StatelessWidget {
                       SizedBox(
                         width: getProportionateScreenWidth(15),
                       ),
-                      InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, CartScreen.routeName);
-                          },
-                          child: CommonData.icon(
-                              icon: "asset/icons/messenger.png",
-                              color: Colors.black,
-                              isTab: isTab)),
-                      SizedBox(
-                        width: getProportionateScreenWidth(10),
-                      )
                     ],
                   ),
                   SizedBox(
@@ -172,73 +161,25 @@ class UserScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: getProportionateScreenHeight(3),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            getProportionateScreenWidth(10),
-                                        vertical:
-                                            getProportionateScreenWidth(3)),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            getProportionateScreenWidth(15)),
-                                        color: Colors.white),
-                                    child: Text(
-                                      "Classic Member  >",
-                                      style:
-                                          TextStyle(color: AllColors.mainColor),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: getProportionateScreenHeight(3),
+                                    height: getProportionateScreenHeight(5),
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      RichText(
-                                          text: TextSpan(
-                                              text: "Follower ",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize:
-                                                      getProportionateScreenWidth(
-                                                          13)),
-                                              children: <TextSpan>[
-                                            TextSpan(
-                                                text: "0",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        getProportionateScreenWidth(
-                                                            13)))
-                                          ])),
+                                      Image.asset(
+                                        "asset/icons/coins.png",
+                                        height: SizeConfig.screenWidth * 0.05,
+                                        width: SizeConfig.screenWidth * 0.05,
+                                      ),
                                       SizedBox(
-                                          height:
-                                              getProportionateScreenWidth(10),
-                                          width:
-                                              getProportionateScreenWidth(15),
-                                          child: VerticalDivider(
-                                            color: Colors.white,
-                                            width:
-                                                getProportionateScreenWidth(5),
-                                          )),
-                                      RichText(
-                                          text: TextSpan(
-                                              text: "Following ",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize:
-                                                      getProportionateScreenWidth(
-                                                          13)),
-                                              children: <TextSpan>[
-                                            TextSpan(
-                                                text: "1",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        getProportionateScreenWidth(
-                                                            13)))
-                                          ])),
+                                        width: SizeConfig.screenWidth * 0.01,
+                                      ),
+                                      Expanded(
+                                          child: Text(
+                                        _userDataController.points.value
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ))
                                     ],
                                   )
                                 ],
@@ -389,7 +330,7 @@ class UserScreen extends StatelessWidget {
                 if (!_commonController.isLogin.value) {
                   Navigator.pushNamed(context, LoginScreen.routeName);
                 } else {
-                  _purchaseController.tabIndex.value = 1;
+                  _purchaseController.tabIndex.value = 4;
                   Navigator.pushNamed(context, MyPurchases.routeName);
                 }
               },
@@ -429,37 +370,14 @@ class UserScreen extends StatelessWidget {
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "To Pay",
+                                "On Hold",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: getProportionateScreenWidth(10)),
                               ),
                             )),
                             onTap: () {
-                              _purchaseController.tabIndex.value = 0;
-                              Navigator.pushNamed(
-                                  context, MyPurchases.routeName);
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: CommonData.icon(
-                                icon: "asset/icons/postbox.png",
-                                color: Colors.black,
-                                isTab: isTab),
-                            subtitle: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "To Ship",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: getProportionateScreenWidth(10)),
-                              ),
-                            )),
-                            onTap: () {
-                              _purchaseController.tabIndex.value = 1;
+                              _purchaseController.tabIndex.value = 3;
                               Navigator.pushNamed(
                                   context, MyPurchases.routeName);
                             },
@@ -475,7 +393,30 @@ class UserScreen extends StatelessWidget {
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "To Recive",
+                                "Confirmed",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: getProportionateScreenWidth(9)),
+                              ),
+                            )),
+                            onTap: () {
+                              _purchaseController.tabIndex.value = 1;
+                              Navigator.pushNamed(
+                                  context, MyPurchases.routeName);
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            title: CommonData.icon(
+                                icon: "asset/icons/postbox.png",
+                                color: Colors.black,
+                                isTab: isTab),
+                            subtitle: Center(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Shipped",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: getProportionateScreenWidth(10)),
@@ -490,6 +431,11 @@ class UserScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: ListTile(
+                              onTap: () {
+                                _purchaseController.tabIndex.value = 4;
+                                Navigator.pushNamed(
+                                    context, MyPurchases.routeName);
+                              },
                               title: CommonData.icon(
                                   icon: "asset/icons/rate.png",
                                   color: Colors.black,
@@ -551,6 +497,26 @@ class UserScreen extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios_outlined),
             ),
+            // Divider(
+            //   color: Colors.grey.withOpacity(0.5),
+            // ),
+            // ListTile(
+            //   onTap: () {
+            //     if (!_commonController.isLogin.value) {
+            //       Navigator.pushNamed(context, LoginScreen.routeName);
+            //     }
+            //   },
+            //   leading: Icon(
+            //     Icons.mail_outline,
+            //     color: Colors.green,
+            //   ),
+            //   title: Text(
+            //     "Refere a Friend",
+            //     style: TextStyle(color: Colors.black),
+            //   ),
+            //   trailing: Icon(Icons.arrow_forward_ios_outlined),
+            // ),
+
             Divider(
               color: Colors.grey.withOpacity(0.5),
             ),
@@ -558,25 +524,9 @@ class UserScreen extends StatelessWidget {
               onTap: () {
                 if (!_commonController.isLogin.value) {
                   Navigator.pushNamed(context, LoginScreen.routeName);
-                }
-              },
-              leading: Icon(
-                Icons.mail_outline,
-                color: Colors.green,
-              ),
-              title: Text(
-                "Refere a Friend",
-                style: TextStyle(color: Colors.black),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios_outlined),
-            ),
-            Divider(
-              color: Colors.grey.withOpacity(0.5),
-            ),
-            ListTile(
-              onTap: () {
-                if (!_commonController.isLogin.value) {
-                  Navigator.pushNamed(context, LoginScreen.routeName);
+                } else {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => MyReviews()));
                 }
               },
               leading: Icon(
@@ -584,7 +534,7 @@ class UserScreen extends StatelessWidget {
                 color: Colors.blue,
               ),
               title: Text(
-                "My Rating",
+                "My Reviews",
                 style: TextStyle(color: Colors.black),
               ),
               trailing: Icon(Icons.arrow_forward_ios_outlined),
@@ -628,6 +578,25 @@ class UserScreen extends StatelessWidget {
             Divider(
               color: Colors.grey.withOpacity(0.5),
             ),
+
+            ListTile(
+              onTap: () {
+                Share.share("https://chardike.com/");
+              },
+              leading: Icon(
+                Icons.share,
+                color: Colors.greenAccent,
+              ),
+              title: Text(
+                "Share With Friends",
+                style: TextStyle(color: Colors.black),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios_outlined),
+            ),
+            Divider(
+              color: Colors.grey.withOpacity(0.5),
+            ),
+
             const ListTile(
               leading: Icon(
                 Icons.message,
@@ -646,7 +615,12 @@ class UserScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SocialMediaIcon(
-                    image: "asset/icons/social/facebook.png", onTap: () {}),
+                    image: "asset/icons/social/facebook.png",
+                    onTap: () {
+                      userController.launchFacebookUrl(
+                          url:
+                              Uri.parse("https://www.facebook.com/chardikebd"));
+                    }),
                 SizedBox(
                   width: getProportionateScreenWidth(10),
                 ),

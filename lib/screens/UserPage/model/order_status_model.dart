@@ -55,8 +55,8 @@ class OrderStatusModel {
         orderedDate: json["ordered_date"] == null
             ? DateTime.now()
             : DateTime.parse(json["ordered_date"]),
-        total: json["total"],
-        orderStatus: json["order_status"],
+        total: json["total"] ?? 0,
+        orderStatus: json["order_status"] ?? "",
         paymentMethod: json["payment_method"] ?? "",
         paymentComplete: json["payment_complete"] ?? false,
         isOrder: json["is_order"] ?? false,
@@ -204,8 +204,8 @@ class Permission {
         id: json["id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
-        permissionName: json["permission_name"],
+        isActive: json["is_active"] ?? false,
+        permissionName: json["permission_name"] ?? "",
       );
 }
 
@@ -240,15 +240,19 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
-        lastLogin: DateTime.parse(json["last_login"]),
-        isSuperuser: json["is_superuser"],
-        username: json["username"],
-        email: json["email"],
+        lastLogin: json["last_login"] == null
+            ? DateTime.now()
+            : DateTime.parse(json["last_login"]),
+        isSuperuser: json["is_superuser"] ?? false,
+        username: json["username"] ?? "",
+        email: json["email"] ?? "",
         isStaff: json["is_staff"],
-        isActive: json["is_active"],
-        password: json["password"],
-        confirmPassword: json["confirm_password"],
-        dateJoined: DateTime.parse(json["date_joined"]),
+        isActive: json["is_active"] ?? false,
+        password: json["password"] ?? "",
+        confirmPassword: json["confirm_password"] ?? "",
+        dateJoined: json["date_joined"] == null
+            ? DateTime.now()
+            : DateTime.parse(json["date_joined"]),
         groups: List<dynamic>.from(json["groups"].map((x) => x)),
         userPermissions:
             List<dynamic>.from(json["user_permissions"].map((x) => x)),
@@ -284,12 +288,12 @@ class ItemElement {
         id: json["id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
-        quantity: json["quantity"],
-        attr: json["attr"],
-        isOrder: json["is_order"],
-        amountItem: json["amount_item"],
-        totalAmountItem: json["total_amount_item"],
+        isActive: json["is_active"] ?? false,
+        quantity: json["quantity"] ?? 0,
+        attr: json["attr"] ?? "",
+        isOrder: json["is_order"] ?? false,
+        amountItem: json["amount_item"] ?? 0,
+        totalAmountItem: json["total_amount_item"] ?? 0,
         item: ItemItem.fromJson(json["item"]),
       );
 }
@@ -339,19 +343,20 @@ class ItemItem {
         id: json["id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        isActive: json["is_active"],
-        productName: json["product_name"],
-        slug: json["slug"],
-        meta: json["meta"],
-        shortDescriptions: json["short_descriptions"],
-        longDescription: json["long_description"],
-        alterText: json["alter_text"],
-        sku: json["sku"],
-        featureImage: json["feature_image"],
-        soldCount: json["sold_count"],
-        isStock: json["is_stock"],
-        brand: json["brand"],
-        country: json["country"],
+        isActive: json["is_active"] ?? false,
+        productName: json["product_name"] ?? "",
+        slug: json["slug"] ?? "",
+        meta: json["meta"] ?? "",
+        shortDescriptions: json["short_descriptions"] ?? "",
+        longDescription: json["long_description"] ?? "",
+        alterText: json["alter_text"] ?? "",
+        sku: json["sku"] ?? "",
+        featureImage: json["feature_image"] ??
+            "https://firebasestorage.googleapis.com/v0/b/quizer-ff18d.appspot.com/o/Screenshot%202022-07-26%20at%2011.57.26%20AM.png?alt=media&token=addadafb-a5fc-42ed-a351-424e7af30e54",
+        soldCount: json["sold_count"] ?? 0,
+        isStock: json["is_stock"] ?? false,
+        brand: json["brand"] ?? 0,
+        country: json["country"] ?? 0,
         category: List<int>.from(json["category"].map((x) => x)),
         subCategory: List<int>.from(json["sub_category"].map((x) => x)),
       );

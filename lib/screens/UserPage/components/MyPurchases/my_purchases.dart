@@ -31,19 +31,6 @@ class MyPurchases extends StatelessWidget {
           child: Scaffold(
               appBar: AppBar(
                 title: Text("My Purchases"),
-                actions: <Widget>[
-                  InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, CartScreen.routeName);
-                      },
-                      child: CommonData.icon(
-                          icon: "asset/icons/messenger.png",
-                          color: AllColors.mainColor,
-                          isTab: isTab)),
-                  SizedBox(
-                    width: getProportionateScreenWidth(10),
-                  )
-                ],
               ),
               body: Column(
                 children: <Widget>[
@@ -57,7 +44,7 @@ class MyPurchases extends StatelessWidget {
                           text: "Pending",
                         ),
                         Tab(
-                          text: "Received",
+                          text: "Confirmed",
                         ),
                         Tab(
                           text: "Shipped",

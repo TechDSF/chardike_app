@@ -1,3 +1,5 @@
+import 'package:chardike/screens/HomePage/components/all_offers.dart';
+import 'package:chardike/screens/HomePage/components/hot_sale_product.dart';
 import 'package:chardike/screens/HomePage/components/products_of_you_details.dart';
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
 import 'package:chardike/screens/HomePage/model/banner_model.dart';
@@ -9,10 +11,10 @@ import '../../../size_config.dart';
 import '../../BannerProducts/banner_products.dart';
 
 class BannerSection extends StatelessWidget {
-  BannerSection({Key? key, required this.bannerModel, this.isProductForYou})
+  BannerSection({Key? key, required this.bannerModel, this.type})
       : super(key: key);
   BannerModel? bannerModel;
-  bool? isProductForYou;
+  String? type;
   bool isTab = SizeConfig.screenWidth > 768;
   final HomeController _homeController = Get.put(HomeController());
 
@@ -34,10 +36,30 @@ class BannerSection extends StatelessWidget {
         } else {
           return InkWell(
             onTap: () {
-              if (isProductForYou == true) {
+              if (type == "ProductForYou") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ProductsYouDetails(
+                              type: true,
+                            )));
+              } else if (type == "NewArrival") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ProductsYouDetails(
+                              type: false,
+                            )));
+              } else if (type == "DontMiss") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => AllOfferProducts(type: "50")));
+              } else if (type == "TodayHotSale") {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => ProductsYouDetails()));
+                    MaterialPageRoute(builder: (_) => HotSaleProduct()));
               } else {
+                print("");
                 Navigator.push(
                     context,
                     MaterialPageRoute(

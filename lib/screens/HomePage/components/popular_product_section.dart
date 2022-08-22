@@ -220,7 +220,8 @@ class PopularProductSection extends StatelessWidget {
                                                               fontSize: SizeConfig
                                                                       .screenWidth *
                                                                   0.027),
-                                                          text: "₺" +
+                                                          text: CommonData
+                                                                  .takaSign +
                                                               result
                                                                   .sellingPrice
                                                                   .toString()),
@@ -237,7 +238,9 @@ class PopularProductSection extends StatelessWidget {
                                                               fontSize: SizeConfig
                                                                       .screenWidth *
                                                                   0.019),
-                                                          text: " ₺" +
+                                                          text: " " +
+                                                              CommonData
+                                                                  .takaSign +
                                                               result
                                                                   .regularPrice
                                                                   .toString())
