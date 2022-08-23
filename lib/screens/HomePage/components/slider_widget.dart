@@ -30,6 +30,7 @@ class SliderWidget extends StatelessWidget {
           } else {
             return _homeController.sliderList.isEmpty
                 ? SizedBox()
+
                 : Stack(
                     children: [
                       CarouselSlider.builder(
@@ -80,6 +81,7 @@ class SliderWidget extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                         ),
                       ),
+                      
                       Positioned(
                         bottom: 0,
                         child: Container(

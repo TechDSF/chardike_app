@@ -1,3 +1,4 @@
+import 'package:chardike/CommonData/all_colors.dart';
 import 'package:chardike/screens/HomePage/components/all_offers.dart';
 import 'package:chardike/screens/HomePage/components/products_of_you_details.dart';
 import 'package:chardike/screens/HomePage/components/top_product.dart';
@@ -132,18 +133,18 @@ class TopLinkCard extends StatelessWidget {
                   ),
             Container(
               decoration: BoxDecoration(
-                  color: Colors.deepOrange,
+                  color: AllColors.mainColor,
                   borderRadius:
                       BorderRadius.circular(SizeConfig.screenWidth * 0.005)),
               padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.screenWidth * 0.007,
-                  vertical: SizeConfig.screenWidth * 0.002),
+                  horizontal: SizeConfig.screenWidth * 0.008,
+                  vertical: SizeConfig.screenWidth * 0.004),
               child: Text(
                 "Explore",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.screenWidth * 0.025),
+                    fontSize: SizeConfig.screenWidth * 0.027),
               ),
             ),
             SizedBox(

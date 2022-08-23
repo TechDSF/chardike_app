@@ -28,17 +28,7 @@ class UserController extends GetxController {
     print(version.value);
   }
 
-  Future<void> launchFacebookUrl({required Uri url}) async {
-    if (await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  Future<void> launchInstagramUrl({required Uri url}) async {
+  Future<void> launchCustomUrl({required Uri url}) async {
     if (await launchUrl(
       url,
       mode: LaunchMode.externalApplication,

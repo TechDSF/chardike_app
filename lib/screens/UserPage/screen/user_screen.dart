@@ -617,7 +617,7 @@ class UserScreen extends StatelessWidget {
                 SocialMediaIcon(
                     image: "asset/icons/social/facebook.png",
                     onTap: () {
-                      userController.launchFacebookUrl(
+                      userController.launchCustomUrl(
                           url:
                               Uri.parse("https://www.facebook.com/chardikebd"));
                     }),
@@ -625,12 +625,27 @@ class UserScreen extends StatelessWidget {
                   width: getProportionateScreenWidth(10),
                 ),
                 SocialMediaIcon(
-                    image: "asset/icons/social/instagram.png", onTap: () {}),
+                    image: "asset/icons/social/instagram.png",
+                    onTap: () {
+                      userController.launchCustomUrl(
+                          url: Uri.parse(
+                              "https://www.instagram.com/chardike.bd/"));
+                    }),
                 SizedBox(
-                  width: getProportionateScreenWidth(10),
+                  width: getProportionateScreenWidth(20),
                 ),
-                SocialMediaIcon(
-                    image: "asset/icons/social/twitter.png", onTap: () {})
+                InkWell(
+                  onTap: () {
+                    userController.launchCustomUrl(
+                        url: Uri.parse(
+                            "https://www.youtube.com/channel/UCBOh5KsqyuTSLoWpzjN4oJQ"));
+                  },
+                  child: Image.asset(
+                    "asset/icons/social/youtube.png",
+                    height: getProportionateScreenWidth(35),
+                    width: getProportionateScreenWidth(35),
+                  ),
+                ),
               ],
             ),
             SizedBox(
