@@ -1,4 +1,4 @@
-String baseUrl = "https://oyster-app-7ulvb.ondigitalocean.app/";
+String baseUrl = "https://sea-turtle-app-pwxgr.ondigitalocean.app/";
 String categoriesUrl = baseUrl + "products/categories/";
 String subCategoriesUrl = baseUrl + "products/sub_categories/list/";
 String brandUrl = baseUrl + "queries/products/brand/";

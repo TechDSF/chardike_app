@@ -5,7 +5,6 @@ import 'package:chardike/screens/FlashSaleDetails/flash_sale_model.dart';
 import 'package:chardike/screens/HomePage/model/banner_model.dart';
 import 'package:chardike/screens/HomePage/model/discount_product_model.dart';
 import 'package:chardike/screens/HomePage/model/product_model.dart';
-import 'package:chardike/screens/HomePage/model/slider_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -61,6 +60,9 @@ class HomeController extends GetxController {
 
   var isAllProductLoading = false.obs;
   List<ProductModel> allProductList =
+      List<ProductModel>.empty(growable: true).obs;
+
+  List<ProductModel> subCategoryProductList =
       List<ProductModel>.empty(growable: true).obs;
 
   var isSearchClicked = false.obs;
@@ -372,6 +374,26 @@ class HomeController extends GetxController {
       isAllProductLoading(false);
       print("All Product fetch error");
       // TODO
+    }
+  }
+
+  ///filter product by Subcategory
+  var isSubCategoryFilterLoading = false.obs;
+  void filterBySubCategory({required String subCategoryName}) async {
+    isSubCategoryFilterLoading(true);
+    try {
+      subCategoryProductList.clear();
+      allProductList.forEach((element) {
+        if (element.subCategory.first.subCategoryName.toLowerCase() ==
+            subCategoryName.toLowerCase()) {
+          subCategoryProductList.add(element);
+        }
+      });
+    } on Exception catch (e) {
+      isSubCategoryFilterLoading(false);
+      // TODO
+    } finally {
+      isSubCategoryFilterLoading(false);
     }
   }
 

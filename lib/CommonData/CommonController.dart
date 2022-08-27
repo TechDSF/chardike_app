@@ -37,6 +37,7 @@ class CommonController extends GetxController {
       if (tokenResult.runtimeType == int) {
         print("erro");
       } else {
+        print("erro ${tokenResult['access']}");
         var userDataResult =
             await ApiService.getProfileData(accessToken: tokenResult['access']);
         print("User data $userDataResult");

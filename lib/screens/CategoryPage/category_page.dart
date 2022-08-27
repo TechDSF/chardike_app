@@ -146,20 +146,20 @@ class CategoryScreen extends StatelessWidget {
                 vertical: getProportionateScreenHeight(10)),
             child: ListTile(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => AllSearchProducts(
-                              productList: [],
-                              id: result.id.toString(),
-                              searchType: result.subCategoryName,
-                            )));
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
-                //         builder: (_) => AllProduct(
-                //               type: result.subCategoryName,
+                //         builder: (_) => AllSearchProducts(
+                //               productList: [],
+                //               id: result.id.toString(),
+                //               searchType: result.subCategoryName,
                 //             )));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => AllProduct(
+                              type: result.subCategoryName,
+                            )));
               },
               title: Image.network(
                 result.image.toString(),

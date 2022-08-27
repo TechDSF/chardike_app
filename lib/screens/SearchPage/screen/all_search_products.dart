@@ -27,6 +27,7 @@ class AllSearchProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     _searchController.setAllSearchProduct(
         list: productList, searchType: searchType, id: id);
+    print("id = $id, sesarch type = $searchType");
     return Scaffold(
         endDrawer: Drawer(
           child: FilterMenu(),
@@ -82,6 +83,7 @@ class AllSearchProducts extends StatelessWidget {
             ),
           ],
         ),
+       
         body: Obx(() {
           if (_searchController.isFilterLoading.value) {
             return GridView.builder(
@@ -283,5 +285,6 @@ class AllSearchProducts extends StatelessWidget {
             }
           }
         }));
+  
   }
 }

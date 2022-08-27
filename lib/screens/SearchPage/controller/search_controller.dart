@@ -37,6 +37,8 @@ class SearchController extends GetxController {
   final HomeController _homeController = Get.put(HomeController());
   final CategoryController _categoryController = Get.put(CategoryController());
   Rx<List<ProductModel>> filterProductList = Rx<List<ProductModel>>([]);
+  TextEditingController minTextController = TextEditingController();
+  TextEditingController maxTextController = TextEditingController();
 
   @override
   void onInit() {
@@ -157,10 +159,12 @@ class SearchController extends GetxController {
       searchProductList.value.clear();
       searchProductList1.value.clear();
       getCategoryProductById(id: id);
+      print("work list empty");
     } else {
       searchProductList.value = list;
       searchProductList1.value = list;
       isFilterLoading(false);
+      print("work list not empty");
     }
   }
 
@@ -172,6 +176,7 @@ class SearchController extends GetxController {
     } else if (result.runtimeType == CategoryProductModel) {
       CategoryProductModel model = result;
       searchProductList.value = model.categoryProducts;
+      searchProductList1.value = model.categoryProducts;
       isFilterLoading(false);
     } else {
       isFilterLoading(false);
@@ -181,15 +186,26 @@ class SearchController extends GetxController {
 
   filterAllProduct() {
     List<ProductModel> results = [];
-    if (selectRating.value == 10 && selectBrand.value == 100) {
+    print("list ${searchProductList1.value.length}");
+    if (selectRating.value == 10 &&
+        selectBrand.value == 100 &&
+        minTextController.text.isEmpty &&
+        maxTextController.text.isEmpty) {
       results = searchProductList1.value;
+      print("wpork null ${searchProductList1.value.length}");
     } else {
-      if (brandName.value == "" && ratingCount.value != 0.0) {
+      if (brandName.value == "" &&
+          ratingCount.value != 0.0 &&
+          minTextController.text.isEmpty &&
+          maxTextController.text.isEmpty) {
+        print("wpork review ${ratingCount.value}");
         results = searchProductList1.value
             .where((element) =>
-                CommonData.calculateRating(element.reviews) < ratingCount.value)
+                CommonData.calculateRating(element.reviews) ==
+                ratingCount.value)
             .toList();
       } else if (ratingCount.value == 0.0 && brandName.value != "") {
+        print("wpork brand");
         results = searchProductList1.value
             .where((element) => element.brand.name
                 .toLowerCase()

@@ -1,5 +1,4 @@
 import 'package:chardike/CommonData/all_colors.dart';
-import 'package:chardike/screens/CategoryPage/controller/category_controller.dart';
 import 'package:chardike/screens/SearchPage/controller/search_controller.dart';
 import 'package:chardike/size_config.dart';
 import '../../../CommonData/common_data.dart';
@@ -8,10 +7,15 @@ import 'package:get/get.dart';
 
 class FilterMenu extends StatelessWidget {
   FilterMenu({Key? key}) : super(key: key);
+
   final SearchController _searchController = Get.put(SearchController());
 
   @override
   Widget build(BuildContext context) {
+    _searchController.selectRating.value = 10;
+    _searchController.selectBrand.value = 100;
+    _searchController.brandName.value = "";
+    _searchController.ratingCount.value = 0.0;
     return Column(
       children: [
         Expanded(
@@ -243,6 +247,8 @@ class FilterMenu extends StatelessWidget {
                                       color: Colors.grey.withOpacity(0.8))),
                               child: Center(
                                 child: TextField(
+                                  controller:
+                                      _searchController.minTextController,
                                   style: TextStyle(
                                       fontSize:
                                           getProportionateScreenWidth(12)),
@@ -271,6 +277,8 @@ class FilterMenu extends StatelessWidget {
                                       color: Colors.grey.withOpacity(0.8))),
                               child: Center(
                                 child: TextField(
+                                  controller:
+                                      _searchController.maxTextController,
                                   style: TextStyle(
                                       fontSize:
                                           getProportionateScreenWidth(12)),
