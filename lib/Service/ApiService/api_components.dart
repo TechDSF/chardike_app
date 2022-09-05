@@ -1,4 +1,4 @@
-String baseUrl = "https://sea-turtle-app-pwxgr.ondigitalocean.app/";
+String baseUrl = "https://chardikeapi-bvv58.ondigitalocean.app/";
 String categoriesUrl = baseUrl + "products/categories/";
 String subCategoriesUrl = baseUrl + "products/sub_categories/list/";
 String brandUrl = baseUrl + "queries/products/brand/";
@@ -8,6 +8,7 @@ String featureProductUrl = baseUrl + "queries/top-sales-product/";
 String falshSaleUrl = baseUrl + "flash-sale/view/";
 String latestProductUrl = baseUrl + "queries/latest-products/";
 String queryProductUrl = baseUrl + "queries/products/";
+String singleCategoryProductUrl = baseUrl + "queries/products/category/";
 String countryUrl = baseUrl + "queries/products/country/";
 String userCreateUrl = baseUrl + "user/register/";
 String userLoginUrl = baseUrl + "user/login/";

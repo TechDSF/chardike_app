@@ -1138,7 +1138,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                       ),
                                       SizedBox(
                                         height:
-                                            getProportionateScreenHeight(180),
+                                            getProportionateScreenHeight(200),
                                         child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           shrinkWrap: true,

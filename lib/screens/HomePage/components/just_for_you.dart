@@ -119,6 +119,10 @@ class JustForYouSection extends StatelessWidget {
                         itemBuilder: (context, index) {
                           ProductModel result =
                               _homeController.newLatestProductList[index];
+                          var data = CommonData.calculateDiscount(
+                              regularPrice: double.parse(result.regularPrice),
+                              sellingPrice: double.parse(result.sellingPrice));
+
                           return InkWell(
                             onTap: () {
                               Navigator.pushNamed(
@@ -181,7 +185,7 @@ class JustForYouSection extends StatelessWidget {
                                                               0.015)),
                                                   color: Colors.green),
                                               child: Text(
-                                                "${CommonData.calculateDiscount(regularPrice: double.parse(result.regularPrice), sellingPrice: double.parse(result.sellingPrice))}%",
+                                                "${data}%",
                                                 //"${result.regularPrice}",
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -320,6 +324,7 @@ class JustForYouSection extends StatelessWidget {
                         });
                   }
                 }),
+                
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),

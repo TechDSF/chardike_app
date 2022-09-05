@@ -43,6 +43,7 @@ class CategorySection extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (_) => CategoryScreen(
                               slug: _homeController.categoryList[0].slug,
+                              id: _homeController.categoryList[0].id.toString(),
                             )));
               }),
 
@@ -81,6 +82,7 @@ class CategorySection extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (_) => CategoryScreen(
                                             slug: result.slug,
+                                            id: result.id.toString(),
                                           )));
                             },
                             child: Container(

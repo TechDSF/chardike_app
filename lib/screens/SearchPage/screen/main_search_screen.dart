@@ -183,6 +183,8 @@ class SearchScreen extends StatelessWidget {
                                       maxLines: 2,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis,
                                           fontSize:
                                               getProportionateScreenHeight(12)),
                                     ),
@@ -198,22 +200,25 @@ class SearchScreen extends StatelessWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "₺ " +
+                                            CommonData.takaSign +
+                                                " " +
                                                 result.sellingPrice.toString() +
                                                 " ",
                                             style: TextStyle(
+                                                fontWeight: FontWeight.bold,
                                                 color: AllColors.mainColor),
                                           ),
                                           Text(
-                                            "₺" +
+                                            CommonData.takaSign +
+                                                " " +
                                                 result.regularPrice.toString(),
                                             style: TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough,
-                                                color: Colors.grey,
+                                                color: Colors.black,
                                                 fontSize:
                                                     getProportionateScreenHeight(
-                                                        10)),
+                                                        12)),
                                           ),
                                         ],
                                       ),

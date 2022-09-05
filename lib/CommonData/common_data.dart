@@ -89,7 +89,11 @@ class CommonData {
 
   static int calculateDiscount(
       {required double regularPrice, required double sellingPrice}) {
-    return ((regularPrice - sellingPrice) * 100) ~/ regularPrice;
+    if (regularPrice.toInt() == 0) {
+      return 0;
+    } else {
+      return ((regularPrice - sellingPrice) * 100) ~/ regularPrice;
+    }
   }
 
   static Duration calculateEndTime({required DateTime endTime}) {

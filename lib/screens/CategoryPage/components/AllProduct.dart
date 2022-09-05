@@ -20,6 +20,7 @@ class AllProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _homeController.filterBySubCategory(subCategoryName: type);
+    print(type);
     return Scaffold(
         endDrawer: Drawer(
           child: FilterMenu(),

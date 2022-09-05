@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import '../../screens/CategoryPage/model/brand_model.dart';
 import '../../screens/CategoryPage/model/category_model.dart';
+import '../../screens/CategoryPage/model/single_category_product_model.dart';
 import '../../screens/CategoryPage/model/sub_category_model.dart';
 import '../../screens/CheckOutPage/model/address_model.dart';
 import '../../screens/CheckOutPage/model/coupon_model.dart';
@@ -418,6 +419,24 @@ class ApiService {
       return productModelFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
+    }
+  }
+
+  static getSingleCategoryProduct({required String categoryId}) async {
+    try {
+      var response = await client.get(
+        Uri.parse(singleCategoryProductUrl + categoryId + "/"),
+      );
+      if (response.statusCode == 200) {
+        return singleCategoryProductModelFromJson(
+            utf8.decode(response.bodyBytes));
+      } else {
+        return response.statusCode;
+      }
+    } on Exception catch (e) {
+      print("Single category product fetch error! ${e.toString()}");
+      return 1;
+      // TODO
     }
   }
 

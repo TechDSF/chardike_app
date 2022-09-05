@@ -384,9 +384,11 @@ class HomeController extends GetxController {
     try {
       subCategoryProductList.clear();
       allProductList.forEach((element) {
-        if (element.subCategory.first.subCategoryName.toLowerCase() ==
-            subCategoryName.toLowerCase()) {
-          subCategoryProductList.add(element);
+        if (element.subCategory.isNotEmpty) {
+          if (element.subCategory.first.subCategoryName.toLowerCase() ==
+              subCategoryName.toLowerCase()) {
+            subCategoryProductList.add(element);
+          }
         }
       });
     } on Exception catch (e) {
