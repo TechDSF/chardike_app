@@ -54,8 +54,12 @@ class BannerSection extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => AllOfferProducts(type: "50")));
+                        builder: (_) => AllOfferProducts(
+                              type: "50",
+                              bannerModel: bannerModel!,
+                            )));
               } else if (type == "TodayHotSale") {
+                print("work hot sale");
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => HotSaleProduct()));
               } else {

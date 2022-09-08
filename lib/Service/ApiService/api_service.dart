@@ -120,7 +120,7 @@ class ApiService {
     }
   }
 
-  ///fetch latest products
+  ///fetch hot sale products
   static dynamic fetchHotSaleProducts() async {
     var headers = {'Content-Type': 'application/json'};
     var response =
@@ -132,24 +132,13 @@ class ApiService {
     }
   }
 
-  ///fetch latest products
+  ///fetch Top sale products
   static dynamic fetchTopSaleProducts() async {
     var headers = {'Content-Type': 'application/json'};
     var response =
         await client.get(Uri.parse(topSaleProductUrl), headers: headers);
     if (response.statusCode == 200) {
       return productModelFromJson(utf8.decode(response.bodyBytes));
-    } else {
-      return response.statusCode;
-    }
-  }
-
-  ///fetch todays hot sale
-  static dynamic fetchTodayHotSaleProducts() async {
-    var headers = {'Content-Type': 'application/json'};
-    var response = await client.get(Uri.parse(hotSaleUrl), headers: headers);
-    if (response.statusCode == 200) {
-      return hotSaleFromJson(utf8.decode(response.bodyBytes));
     } else {
       return response.statusCode;
     }

@@ -67,13 +67,14 @@ class ProductsYouDetails extends StatelessWidget {
                             crossAxisCount: 2,
                             crossAxisSpacing: 5)),
                     itemCount: type
-                        ? _homeController.latestProductList.length
+                        ? _homeController.newLatestProductList.length
                         : _homeController.latestProductList.length < 20
                             ? _homeController.latestProductList.length
                             : 20,
                     itemBuilder: (context, index) {
-                      ProductModel result =
-                          _homeController.latestProductList[index];
+                      ProductModel result = type
+                          ? _homeController.newLatestProductList[index]
+                          : _homeController.latestProductList[index];
                       return InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, ProductDetails.routeName,

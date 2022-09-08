@@ -1,4 +1,5 @@
 import 'package:chardike/screens/HomePage/controller/home_controller.dart';
+import 'package:chardike/screens/HomePage/model/banner_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -8,8 +9,10 @@ import '../../../size_config.dart';
 import '../../ProductDetails/product_details.dart';
 
 class AllOfferProducts extends StatelessWidget {
-  AllOfferProducts({Key? key, required this.type}) : super(key: key);
+  AllOfferProducts({Key? key, required this.type, this.bannerModel})
+      : super(key: key);
   String type;
+  BannerModel? bannerModel;
   final HomeController _homeController = Get.put(HomeController());
 
   bool isTab = SizeConfig.screenWidth > 768;
@@ -24,7 +27,9 @@ class AllOfferProducts extends StatelessWidget {
               ? "All Offers"
               : type == "60"
                   ? "TOP RANKING"
-                  : "DON'T MISS OUT"),
+                  : bannerModel!.title.isEmpty
+                      ? bannerModel!.name
+                      : bannerModel!.title),
         ),
         body: Obx(() {
           if (_homeController.isDiscountDataLoading.value) {

@@ -18,7 +18,8 @@ class BannerProducts extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text(bannerModel.name),
+        title: Text(
+            bannerModel.title.isEmpty ? bannerModel.name : bannerModel.title),
       ),
       body: bannerModel.products.isEmpty
           ? Column(
@@ -35,7 +36,6 @@ class BannerProducts extends StatelessWidget {
                             image: AssetImage("asset/images/empty_cart.png"))),
                   ),
                 ])
-         
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
@@ -242,7 +242,6 @@ class BannerProducts extends StatelessWidget {
                     );
                   }),
             ),
-   
     );
   }
 }

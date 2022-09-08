@@ -13,6 +13,7 @@ class TopLinkCard extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.color,
+      
       this.icon,
       required this.index})
       : super(key: key);
@@ -35,7 +36,7 @@ class TopLinkCard extends StatelessWidget {
                       )));
         } else if (index == 1) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (_) => AllOfferProducts(type: "60")));
+              MaterialPageRoute(builder: (_) => AllOfferProducts(type: "60",)));
         } else if (index == 0) {
           Navigator.push(
               context,
