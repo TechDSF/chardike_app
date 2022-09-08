@@ -47,6 +47,10 @@ class HomeController extends GetxController {
   List<ProductModel> topProductList =
       List<ProductModel>.empty(growable: true).obs;
 
+  var isHotSaleProductLoading = false.obs;
+  List<ProductModel> hotSaleProductList =
+      List<ProductModel>.empty(growable: true).obs;
+
   var isPopularProductLoading = false.obs;
   List<ProductModel> popularProductList =
       List<ProductModel>.empty(growable: true).obs;
@@ -87,8 +91,6 @@ class HomeController extends GetxController {
       List<DiscountProductModel>.empty(growable: true).obs;
   List<DiscountProductModel> sixtyDiscountProductList =
       List<DiscountProductModel>.empty(growable: true).obs;
-
-  List<HotSaleItem> hotSaleList = List<HotSaleItem>.empty(growable: true).obs;
 
   @override
   void onInit() {
@@ -159,7 +161,9 @@ class HomeController extends GetxController {
         discountProductList.forEach((element) {
           if (element.discount >= 60) {
             sixtyDiscountProductList.add(element);
-          } else if (element.discount >= 50) {
+          }
+
+          if (element.discount >= 50) {
             fiftyDiscountProductList.add(element);
           }
         });
@@ -226,34 +230,6 @@ class HomeController extends GetxController {
     } else if (element.name.toLowerCase().trim() ==
         ("Donot Miss").toLowerCase().trim()) {
       dontMissBanner = element;
-    }
-  }
-
-  ///hot sale product
-  var isTodayHotSaleProductLoading = true.obs;
-  Future<void> getTodayHotSaleProduct() async {
-    isTodayHotSaleProductLoading(true);
-    try {
-      var data = await ApiService.fetchTodayHotSaleProducts();
-      if (data.runtimeType == int) {
-        isTodayHotSaleProductLoading(false);
-        Fluttertoast.showToast(msg: "Today Hot Sale fetch error");
-      } else {
-        List<HotSale> hotList = data;
-        print("work here");
-        hotSaleList.clear();
-        hotList.forEach((element) {
-          element.items.forEach((el) {
-            hotSaleList.add(el.item);
-          });
-        });
-      }
-    } on Exception catch (e) {
-      isTodayHotSaleProductLoading(false);
-      Fluttertoast.showToast(msg: "Popular Product fetch error");
-      // TODO
-    } finally {
-      isTodayHotSaleProductLoading(false);
     }
   }
 
@@ -373,6 +349,25 @@ class HomeController extends GetxController {
     } on Exception catch (e) {
       isAllProductLoading(false);
       print("All Product fetch error");
+      // TODO
+    }
+  }
+
+  ///get hot sale product
+  Future<void> getHotSaleProduct() async {
+    isHotSaleProductLoading(true);
+    try {
+      var data = await ApiService.fetchHotSaleProducts();
+      if (data.runtimeType == int) {
+        isHotSaleProductLoading(false);
+        print("Hot Sale Product fetch error");
+      } else {
+        hotSaleProductList = data;
+        isHotSaleProductLoading(false);
+      }
+    } on Exception catch (e) {
+      isHotSaleProductLoading(false);
+      print("Hot Sale Product fetch error");
       // TODO
     }
   }

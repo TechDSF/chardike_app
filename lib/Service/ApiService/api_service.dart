@@ -121,6 +121,18 @@ class ApiService {
   }
 
   ///fetch latest products
+  static dynamic fetchHotSaleProducts() async {
+    var headers = {'Content-Type': 'application/json'};
+    var response =
+        await client.get(Uri.parse(hotSaleProductUrl), headers: headers);
+    if (response.statusCode == 200) {
+      return productModelFromJson(utf8.decode(response.bodyBytes));
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  ///fetch latest products
   static dynamic fetchTopSaleProducts() async {
     var headers = {'Content-Type': 'application/json'};
     var response =

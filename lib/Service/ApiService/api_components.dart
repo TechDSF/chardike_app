@@ -7,6 +7,7 @@ String topSaleProductUrl = baseUrl + "queries/popular-products/";
 String featureProductUrl = baseUrl + "queries/top-sales-product/";
 String falshSaleUrl = baseUrl + "flash-sale/view/";
 String latestProductUrl = baseUrl + "queries/latest-products/";
+String hotSaleProductUrl = baseUrl + "queries/hot-sales/";
 String queryProductUrl = baseUrl + "queries/products/";
 String singleCategoryProductUrl = baseUrl + "queries/products/category/";
 String countryUrl = baseUrl + "queries/products/country/";

@@ -17,24 +17,24 @@ class HotSaleProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _homeController.getTodayHotSaleProduct();
+    _homeController.getHotSaleProduct();
     return Scaffold(
         appBar: AppBar(
           elevation: 1,
           title: Text("Today Hot Sale"),
         ),
         body: RefreshIndicator(
-          onRefresh: _homeController.getTodayHotSaleProduct,
+          onRefresh: _homeController.getHotSaleProduct,
           color: AllColors.mainColor,
           child: Obx(() {
-            if (_homeController.isTodayHotSaleProductLoading.value) {
+            if (_homeController.isHotSaleProductLoading.value) {
               return Center(
                 child: CircularProgressIndicator(
                   color: AllColors.mainColor,
                 ),
               );
             } else {
-              if (_homeController.hotSaleList.isEmpty) {
+              if (_homeController.hotSaleProductList.isEmpty) {
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -65,9 +65,9 @@ class HotSaleProduct extends StatelessWidget {
                               context: context,
                               crossAxisCount: 2,
                               crossAxisSpacing: 5)),
-                      itemCount: _homeController.hotSaleList.length,
+                      itemCount: _homeController.hotSaleProductList.length,
                       itemBuilder: (context, index) {
-                        var result = _homeController.hotSaleList[index];
+                        var result = _homeController.hotSaleProductList[index];
                         return InkWell(
                           onTap: () {
                             ProductModel model = ProductModel(
