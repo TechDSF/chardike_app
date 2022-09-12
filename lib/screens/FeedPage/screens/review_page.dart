@@ -63,6 +63,9 @@ class Reviewpage extends StatelessWidget {
                                       fontSize: getProportionateScreenWidth(10),
                                       overflow: TextOverflow.ellipsis),
                                 ),
+                                SizedBox(
+                                  height: getProportionateScreenHeight(5),
+                                ),
                                 result.product.featureImage == ""
                                     ? Container(
                                         height: SizeConfig.screenHeight * 0.3,

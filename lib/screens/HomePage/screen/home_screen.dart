@@ -13,6 +13,7 @@ import 'package:chardike/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../SearchPage/screen/main_search_screen.dart';
 import '../components/multi_part_banner.dart';
 import '../components/top_offers.dart';
 import '../components/just_for_you.dart';
@@ -58,12 +59,7 @@ class HomeScreen extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => SubSearchScreen(
-                            id: _homeController.firstCategoryId.value,
-                            searchType:
-                                _homeController.firstCategoryName.value)));
+                    context, MaterialPageRoute(builder: (_) => SearchScreen()));
               },
               child: Container(
                 margin: EdgeInsets.symmetric(
@@ -142,7 +138,15 @@ class HomeScreen extends StatelessWidget {
                     height: getProportionateScreenHeight(15),
                   ),
                   CategorySection(),
-                  JustForYouSection(),
+                  Obx(() {
+                    if (_homeController.isBannerLoading.value ||
+                        _homeController.onlyForYouBanner == null ||
+                        _homeController.onlyForYouBanner!.products.isEmpty) {
+                      return SizedBox();
+                    } else {
+                      return JustForYouSection();
+                    }
+                  }),
                   MultiPartBannerSection(),
                   AllProductSection(),
                   SizedBox(

@@ -53,7 +53,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
 
   @override
   void initState() {
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
     scrollController = AutoScrollController();
     super.initState();
   }
@@ -530,7 +530,6 @@ class _ProductDetailsScreenState extends State<ProductDetails>
               ),
               Tab(text: "Product Reviews"),
               Tab(text: "Product Inquiry"),
-              Tab(text: "Shipping/Return/Exchange"),
             ],
             onTap: (index) => animateAndScrollTo(index),
           ),
@@ -694,6 +693,7 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                               SizedBox(
                                 height: getProportionateScreenHeight(10),
                               ),
+
                               Row(
                                 children: <Widget>[
                                   Text("Brand"),
@@ -728,8 +728,10 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                                         ),
                                         Icon(Icons.arrow_right),
                                         Text(
-                                          productModel
-                                              .subCategory[0].subCategoryName,
+                                          productModel.subCategory.isEmpty
+                                              ? ""
+                                              : productModel.subCategory[0]
+                                                  .subCategoryName,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -1021,342 +1023,354 @@ class _ProductDetailsScreenState extends State<ProductDetails>
                             ),
                           ),
                         )
-                      : index == 2
-                          ? RectGetter(
-                              key: itemKeys[index],
-                              child: AutoScrollTag(
-                                key: ValueKey(index),
-                                index: index,
-                                controller: scrollController,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          getProportionateScreenWidth(15)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(20),
-                                      ),
-                                      Text(
-                                        "SHIPPING & DELIVERY",
-                                        style: TextStyle(
-                                            fontSize:
-                                                getProportionateScreenWidth(15),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(10),
-                                      ),
-                                      const Text(
-                                        "প্রোডাক্ট নষ্ট কিংবা ভাঙা হলে",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(3),
-                                      ),
-                                      const Text(
-                                          "প্রোডাক্ট ডেলিভারি করার সময় যদি ভাঙা কিংবা ড্যামেজ অবস্থায় পেয়ে থাকেন তাহলে অবশ্যই ডেলিভারিম্যান সামনে থাকা অবস্থায় আমাদেরকে কল করে জানাতে হবে। আমাদেরকে কল করতে পারেন 01790 270066 এই নাম্বার এ ।কোন কারণে আপনি নিজে প্রোডাক্ট রিসিভ না করতে পারলে যিনি আপনার পরিবর্তে প্রোডাক্ট টি বুঝে নিবেন তাকে অবশ্যই এই ব্যাপারে অবহিত করবেন ।ডেলিভারি ম্যান চলে যাবার পর এই ধরনের কোন অভিযোগ গ্রহণযোগ্য হবে না ।"),
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(10),
-                                      ),
-                                      const Text(
-                                        "ভুল প্রোডাক্ট কিংবা সংখ্যা ঠিক না হলে",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(3),
-                                      ),
-                                      const Text(
-                                          "প্রোডাক্ট রিসিভ করার সময় যদি আপনার অর্ডারকৃত অর্ডার সংখ্যা এবং রিসিভ করা প্রোডাক্ট এক না হয় তাহলে আমাদেরকে কল করে জানাতে হবে ডেলিভারিম্যান সামনে থাকা অবস্থায় ।আমরা মিসিং প্রোডাক্ট গুলো ৪৮-৭২ ঘন্টার মধ্যে আপনাকে পৌঁছে দেবো এবং এর জন্য আপনাকে অতিরিক্ত কোন ও ডেলিভারি চার্জ দিতে হবে না ।"),
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(10),
-                                      ),
-                                      const Text(
-                                        "প্রোডাক্ট রিটার্ন করতে চাইলে",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(3),
-                                      ),
-                                      const Text(
-                                          "প্রোডাক্ট রিসিভ করার সর্বোচ্চ ৭২ ঘন্টার মধ্যে প্রোডাক্টটি রিটার্ন করতে পারবেন যদি প্রোডাক্টে কোনও ফল্ট থাকে । সে ক্ষেত্রে আমাদেরকে অবশ্যই প্রোডাক্টটি ব্যবহারের ভিডিও কিংবা পিকচার পাঠাতে হবে।আপনার অভিযোগ গ্রহনের ১-২ কর্মদিবসের মধ্যে আমরা আপনার সাথে যোগাযোগ করবো এবং প্রোডাক্ট রিটার্ন, রিপ্লেসমেন্ট কিংবা টাকা ফেরত দেয়ার ব্যবস্থা নেব।"),
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(10),
-                                      ),
-                                      const Text(
-                                        "প্রোডাক্ট অর্ডার করার পর ক্যান্সেল করতে চাইলে",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(3),
-                                      ),
-                                      const Text(
-                                          "প্রোডাক্ট অর্ডার করার পর ক্যান্সেল করতে চাইলে, যেদিন অর্ডার করেছেন সেদিন বিকাল ৫ টার পূর্বে আমাদের কে জানাতে হবে। প্রোডাক্ট আপনার এরিয়া কিংবা বাসায় নিচে গিয়ে ডেলিভারি ম্যান কল করার পর ক্যান্সেল করতে চাইলে সে ক্ষেত্রে ক্যান্সেলেশন চার্জ দিয়ে দিতে হবে । ( ঢাকার মধ্যে ৯০ টাকা, ঢাকার বাইরে ১২০ টাকা)।")
-                                    ],
+                      //: index == 2
+                      // ? RectGetter(
+                      //     key: itemKeys[index],
+                      //     child: AutoScrollTag(
+                      //       key: ValueKey(index),
+                      //       index: index,
+                      //       controller: scrollController,
+                      //       child: Padding(
+                      //         padding: EdgeInsets.symmetric(
+                      //             horizontal:
+                      //                 getProportionateScreenWidth(15)),
+                      //         child: Column(
+                      //           crossAxisAlignment:
+                      //               CrossAxisAlignment.start,
+                      //           children: <Widget>[
+                      //             SizedBox(
+                      //               height:
+                      //                   getProportionateScreenHeight(20),
+                      //             ),
+                      //             Text(
+                      //               "SHIPPING & DELIVERY",
+                      //               style: TextStyle(
+                      //                   fontSize:
+                      //                       getProportionateScreenWidth(15),
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //             SizedBox(
+                      //               height:
+                      //                   getProportionateScreenHeight(10),
+                      //             ),
+                      //             const Text(
+                      //               "প্রোডাক্ট নষ্ট কিংবা ভাঙা হলে",
+                      //               style: TextStyle(
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //             SizedBox(
+                      //               height: getProportionateScreenHeight(3),
+                      //             ),
+                      //             const Text(
+                      //                 "প্রোডাক্ট ডেলিভারি করার সময় যদি ভাঙা কিংবা ড্যামেজ অবস্থায় পেয়ে থাকেন তাহলে অবশ্যই ডেলিভারিম্যান সামনে থাকা অবস্থায় আমাদেরকে কল করে জানাতে হবে। আমাদেরকে কল করতে পারেন 01790 270066 এই নাম্বার এ ।কোন কারণে আপনি নিজে প্রোডাক্ট রিসিভ না করতে পারলে যিনি আপনার পরিবর্তে প্রোডাক্ট টি বুঝে নিবেন তাকে অবশ্যই এই ব্যাপারে অবহিত করবেন ।ডেলিভারি ম্যান চলে যাবার পর এই ধরনের কোন অভিযোগ গ্রহণযোগ্য হবে না ।"),
+                      //             SizedBox(
+                      //               height:
+                      //                   getProportionateScreenHeight(10),
+                      //             ),
+                      //             const Text(
+                      //               "ভুল প্রোডাক্ট কিংবা সংখ্যা ঠিক না হলে",
+                      //               style: TextStyle(
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //             SizedBox(
+                      //               height: getProportionateScreenHeight(3),
+                      //             ),
+                      //             const Text(
+                      //                 "প্রোডাক্ট রিসিভ করার সময় যদি আপনার অর্ডারকৃত অর্ডার সংখ্যা এবং রিসিভ করা প্রোডাক্ট এক না হয় তাহলে আমাদেরকে কল করে জানাতে হবে ডেলিভারিম্যান সামনে থাকা অবস্থায় ।আমরা মিসিং প্রোডাক্ট গুলো ৪৮-৭২ ঘন্টার মধ্যে আপনাকে পৌঁছে দেবো এবং এর জন্য আপনাকে অতিরিক্ত কোন ও ডেলিভারি চার্জ দিতে হবে না ।"),
+                      //             SizedBox(
+                      //               height:
+                      //                   getProportionateScreenHeight(10),
+                      //             ),
+                      //             const Text(
+                      //               "প্রোডাক্ট রিটার্ন করতে চাইলে",
+                      //               style: TextStyle(
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //             SizedBox(
+                      //               height: getProportionateScreenHeight(3),
+                      //             ),
+                      //             const Text(
+                      //                 "প্রোডাক্ট রিসিভ করার সর্বোচ্চ ৭২ ঘন্টার মধ্যে প্রোডাক্টটি রিটার্ন করতে পারবেন যদি প্রোডাক্টে কোনও ফল্ট থাকে । সে ক্ষেত্রে আমাদেরকে অবশ্যই প্রোডাক্টটি ব্যবহারের ভিডিও কিংবা পিকচার পাঠাতে হবে।আপনার অভিযোগ গ্রহনের ১-২ কর্মদিবসের মধ্যে আমরা আপনার সাথে যোগাযোগ করবো এবং প্রোডাক্ট রিটার্ন, রিপ্লেসমেন্ট কিংবা টাকা ফেরত দেয়ার ব্যবস্থা নেব।"),
+                      //             SizedBox(
+                      //               height:
+                      //                   getProportionateScreenHeight(10),
+                      //             ),
+                      //             const Text(
+                      //               "প্রোডাক্ট অর্ডার করার পর ক্যান্সেল করতে চাইলে",
+                      //               style: TextStyle(
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //             SizedBox(
+                      //               height: getProportionateScreenHeight(3),
+                      //             ),
+                      //             const Text(
+                      //                 "প্রোডাক্ট অর্ডার করার পর ক্যান্সেল করতে চাইলে, যেদিন অর্ডার করেছেন সেদিন বিকাল ৫ টার পূর্বে আমাদের কে জানাতে হবে। প্রোডাক্ট আপনার এরিয়া কিংবা বাসায় নিচে গিয়ে ডেলিভারি ম্যান কল করার পর ক্যান্সেল করতে চাইলে সে ক্ষেত্রে ক্যান্সেলেশন চার্জ দিয়ে দিতে হবে । ( ঢাকার মধ্যে ৯০ টাকা, ঢাকার বাইরে ১২০ টাকা)।")
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   )
+
+                      : RectGetter(
+                          key: itemKeys[index],
+                          child: AutoScrollTag(
+                            key: ValueKey(index),
+                            index: index,
+                            controller: scrollController,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getProportionateScreenWidth(15)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: getProportionateScreenHeight(20),
                                   ),
-                                ),
-                              ),
-                            )
-                          : RectGetter(
-                              key: itemKeys[index],
-                              child: AutoScrollTag(
-                                key: ValueKey(index),
-                                index: index,
-                                controller: scrollController,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          getProportionateScreenWidth(15)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(20),
-                                      ),
-                                      Text(
-                                        "RELATED PRODUCT",
-                                        style: TextStyle(
-                                            fontSize:
-                                                getProportionateScreenWidth(15),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: getProportionateScreenHeight(5),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(200),
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount: _homeController
-                                              .popularProductList.length,
-                                          itemBuilder: (context, index) {
-                                            var result = _homeController
-                                                .popularProductList[index];
-                                            return InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(context,
-                                                      ProductDetails.routeName,
-                                                      arguments: {
-                                                        "type": true,
-                                                        "ds": "0",
-                                                        "product": result
-                                                      });
-                                                },
-                                                child: SizedBox(
-                                                  height:
-                                                      SizeConfig.screenWidth *
-                                                          0.45,
-                                                  width:
-                                                      SizeConfig.screenWidth *
-                                                          0.32,
-                                                  child: Card(
-                                                    color: Colors.white,
-                                                    elevation: 1,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      side: BorderSide(
-                                                          color: Colors.grey
-                                                              .withOpacity(
-                                                                  0.3)),
-                                                      borderRadius: BorderRadius
-                                                          .circular(SizeConfig
-                                                                  .screenWidth *
-                                                              0.02),
-                                                    ),
-                                                    child: Padding(
-                                                      padding: EdgeInsets.all(
+                                  Text(
+                                    "RELATED PRODUCT",
+                                    style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(15),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: getProportionateScreenHeight(5),
+                                  ),
+                                  SizedBox(
+                                    height: getProportionateScreenHeight(200),
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: _homeController
+                                          .popularProductList.length,
+                                      itemBuilder: (context, index) {
+                                        var result = _homeController
+                                            .popularProductList[index];
+                                        return InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  ProductDetails.routeName,
+                                                  arguments: {
+                                                    "type": true,
+                                                    "ds": "0",
+                                                    "product": result
+                                                  });
+                                            },
+                                            child: SizedBox(
+                                              height:
+                                                  SizeConfig.screenWidth * 0.45,
+                                              width:
+                                                  SizeConfig.screenWidth * 0.32,
+                                              child: Card(
+                                                color: Colors.white,
+                                                elevation: 1,
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.3)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
                                                           SizeConfig
                                                                   .screenWidth *
-                                                              0.01),
-                                                      child: Column(
-                                                        children: <Widget>[
-                                                          Container(
-                                                            height: SizeConfig
+                                                              0.02),
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(
+                                                      SizeConfig.screenWidth *
+                                                          0.01),
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: SizeConfig
+                                                                .screenWidth *
+                                                            0.26,
+                                                        padding: EdgeInsets.all(
+                                                            SizeConfig
                                                                     .screenWidth *
-                                                                0.26,
-                                                            padding: EdgeInsets
-                                                                .all(SizeConfig
-                                                                        .screenWidth *
-                                                                    0.01),
-                                                            decoration: BoxDecoration(
-                                                                color: Colors
-                                                                    .green
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                borderRadius: BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        SizeConfig.screenWidth *
-                                                                            0.02)),
-                                                                image: DecorationImage(
-                                                                    image: NetworkImage(
-                                                                        result
-                                                                            .featureImage),
-                                                                    fit: BoxFit
-                                                                        .fill)),
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: <
-                                                                  Widget>[
-                                                                Container(
-                                                                  padding: EdgeInsets.all(
-                                                                      SizeConfig
-                                                                              .screenWidth *
-                                                                          0.001),
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(SizeConfig.screenWidth *
+                                                                0.01),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.green
+                                                                .withOpacity(
+                                                                    0.2),
+                                                            borderRadius: BorderRadius.all(
+                                                                Radius.circular(
+                                                                    SizeConfig
+                                                                            .screenWidth *
+                                                                        0.02)),
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(
+                                                                    result
+                                                                        .featureImage),
+                                                                fit: BoxFit
+                                                                    .fill)),
+                                                        child: Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              padding: EdgeInsets
+                                                                  .all(SizeConfig
+                                                                          .screenWidth *
+                                                                      0.001),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          SizeConfig.screenWidth *
                                                                               0.006),
-                                                                      color: Colors
-                                                                          .grey
-                                                                          .withOpacity(
-                                                                              0.3)),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .star,
-                                                                        size: SizeConfig.screenWidth *
-                                                                            0.02,
-                                                                        color: Colors
-                                                                            .orange,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width: SizeConfig.screenWidth *
-                                                                            0.005,
-                                                                      ),
-                                                                      Text(
-                                                                        "${CommonData.calculateRating(result.reviews)}",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontSize: SizeConfig.screenWidth * 0.02),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                  height: SizeConfig
-                                                                          .screenWidth *
-                                                                      0.05,
-                                                                  width: SizeConfig
-                                                                          .screenWidth *
-                                                                      0.05,
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .favorite,
-                                                                    color: Colors
-                                                                        .orange,
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.3)),
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.star,
                                                                     size: SizeConfig
                                                                             .screenWidth *
-                                                                        0.03,
+                                                                        0.02,
+                                                                    color: Colors
+                                                                        .orange,
                                                                   ),
-                                                                  decoration: BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                      color: Colors
-                                                                          .grey
-                                                                          .withOpacity(
-                                                                              0.3)),
-                                                                )
-                                                              ],
+                                                                  SizedBox(
+                                                                    width: SizeConfig
+                                                                            .screenWidth *
+                                                                        0.005,
+                                                                  ),
+                                                                  Text(
+                                                                    "${CommonData.calculateRating(result.reviews)}",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            SizeConfig.screenWidth *
+                                                                                0.02),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: SizeConfig
-                                                                    .screenWidth *
-                                                                0.01,
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                Text(
-                                                                  result
-                                                                      .productName,
-                                                                  maxLines: 2,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          SizeConfig.screenWidth *
-                                                                              0.028,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: SizeConfig
-                                                                          .screenWidth *
-                                                                      0.003,
-                                                                ),
-                                                                RichText(
-                                                                    text: TextSpan(
-                                                                        children: [
-                                                                      TextSpan(
-                                                                          style: TextStyle(
-                                                                              color: Colors.red,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: SizeConfig.screenWidth * 0.027),
-                                                                          text: CommonData.takaSign + result.sellingPrice.toString()),
-                                                                      TextSpan(
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.w600,
-                                                                              color: Colors.black,
-                                                                              decoration: TextDecoration.lineThrough,
-                                                                              fontSize: SizeConfig.screenWidth * 0.019),
-                                                                          text: " " + CommonData.takaSign + result.regularPrice.toString())
-                                                                    ])),
-                                                                SizedBox(
-                                                                  height: SizeConfig
-                                                                          .screenWidth *
-                                                                      0.005,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
+                                                            Container(
+                                                              height: SizeConfig
+                                                                      .screenWidth *
+                                                                  0.05,
+                                                              width: SizeConfig
+                                                                      .screenWidth *
+                                                                  0.05,
+                                                              child: Icon(
+                                                                Icons.favorite,
+                                                                color: Colors
+                                                                    .orange,
+                                                                size: SizeConfig
+                                                                        .screenWidth *
+                                                                    0.03,
+                                                              ),
+                                                              decoration: BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.3)),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
+                                                      SizedBox(
+                                                        height: SizeConfig
+                                                                .screenWidth *
+                                                            0.01,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          children: [
+                                                            Text(
+                                                              result
+                                                                  .productName,
+                                                              maxLines: 2,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      SizeConfig
+                                                                              .screenWidth *
+                                                                          0.028,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis),
+                                                            ),
+                                                            SizedBox(
+                                                              height: SizeConfig
+                                                                      .screenWidth *
+                                                                  0.003,
+                                                            ),
+                                                            RichText(
+                                                                text: TextSpan(
+                                                                    children: [
+                                                                  TextSpan(
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .red,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize: SizeConfig.screenWidth *
+                                                                              0.027),
+                                                                      text: CommonData
+                                                                              .takaSign +
+                                                                          result
+                                                                              .sellingPrice
+                                                                              .toString()),
+                                                                  TextSpan(
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          color: Colors
+                                                                              .black,
+                                                                          decoration: TextDecoration
+                                                                              .lineThrough,
+                                                                          fontSize: SizeConfig.screenWidth *
+                                                                              0.019),
+                                                                      text: " " +
+                                                                          CommonData
+                                                                              .takaSign +
+                                                                          result
+                                                                              .regularPrice
+                                                                              .toString())
+                                                                ])),
+                                                            SizedBox(
+                                                              height: SizeConfig
+                                                                      .screenWidth *
+                                                                  0.005,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                ));
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                                ),
+                                              ),
+                                            ));
+                                      },
+                                    ),
+                                  )
+                                ],
                               ),
-                            );
+                            ),
+                          ),
+                        );
             },
-            childCount: 4, // 1000 list items
+            childCount: 3, // 1000 list items
           ),
         ),
       ],

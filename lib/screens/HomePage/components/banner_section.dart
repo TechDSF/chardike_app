@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../size_config.dart';
 import '../../BannerProducts/banner_products.dart';
+import 'only_you_products_new.dart';
 
 class BannerSection extends StatelessWidget {
   BannerSection({Key? key, required this.bannerModel, this.type})
@@ -37,12 +38,8 @@ class BannerSection extends StatelessWidget {
           return InkWell(
             onTap: () {
               if (type == "ProductForYou") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => ProductsYouDetails(
-                              type: true,
-                            )));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => OnlyYouDetails()));
               } else if (type == "NewArrival") {
                 Navigator.push(
                     context,
